@@ -1,5 +1,8 @@
-# quran
+# Qur'an
 Cross-reference verses of the  Quran (in Arabic and English) with Jewish source texts (in Hebrew and English)
+
+![](design/interface.png)
+
 
 ## TODO 
 - Get Quran arabic from arabic corpus
