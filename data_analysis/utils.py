@@ -3,6 +3,7 @@ from typing import Dict, Set
 ############ INSTALLED IMPORTS ###########################
 from pandas import read_csv, concat, DataFrame
 from sklearn.feature_extraction.text import CountVectorizer
+from numpy import argsort
 ############   LOCAL IMPORTS   ###########################
 ##########################################################
 class RawQuranArabicGrammarCSVHeaders:
@@ -109,8 +110,7 @@ def similarity_of_two_sets_of_features(features_a:set, features_b:set) -> float:
     """ returns a similarity score given two sets. 1.0=Identical. 0.0=Nothing in Common"""
     features_in_common = features_a.intersection(features_b)
     features_in_total = features_a | features_b
-    feature_similarity = len(features_in_common) / len(features_in_total)
-    return round(feature_similarity, 3)
+    return  len(features_in_common) / len(features_in_total)
 
 def save_searchable_quran_to_file(filename:str, arabic_feature_sets:Dict[str,Set[str]]) -> None:
     """ this stores the quran in a format that can be queried for similar verses to csv file (verse similarities are pre-computed) """
@@ -118,8 +118,8 @@ def save_searchable_quran_to_file(filename:str, arabic_feature_sets:Dict[str,Set
         arabic_feature_sets.items(),
         columns = ["VERSE","FEATURE"]
     )
-    data["VERSE CROSS-REFERENCE SIMILARITY"] = data["FEATURE"].apply(
-        lambda feature_set_a: list(
+    data["CROSS-REFERENCE"] = data["FEATURE"].apply(
+        lambda feature_set_a: argsort(
             map(
                 lambda feature_set_b: similarity_of_two_sets_of_features(
                     features_a=feature_set_b,
@@ -127,10 +127,10 @@ def save_searchable_quran_to_file(filename:str, arabic_feature_sets:Dict[str,Set
                 ),
                 arabic_feature_sets.values()
             )
-        )
+        )[:10]
     )
     data = data.set_index('VERSE')
-    data.to_csv(filename, columns=["VERSE CROSS-REFERENCE SIMILARITY"], sep="\t")
+    data.to_csv(filename, columns=["CROSS-REFERENCE"], sep="\t")
 
 
 save_searchable_quran_to_file(
