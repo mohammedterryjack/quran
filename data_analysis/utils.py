@@ -6,9 +6,14 @@ from sklearn.feature_extraction.text import CountVectorizer
 from numpy import argsort
 ############   LOCAL IMPORTS   ###########################
 ##########################################################
+class RawQuranEnglishParallels:
+    _PATH = "../raw_data/{filename}.txt"
+    _FILENAME = "quran_english_translations"
+    _CHAPTER_VERSE_SEPARATOR = "-"
+
 class RawQuranArabicGrammarCSVHeaders:
-    _PATH = "../raw_data/{filename}"
-    _FILENAME = "quran_arabic_grammar.txt"
+    _PATH = "../raw_data/{filename}.txt"
+    _FILENAME = "quran_arabic_grammar"
     _DELIMITER = "\t"
     WORD_INDEX = "LOCATION"
     WORD = "FORM"
@@ -140,10 +145,28 @@ def save_searchable_quran_to_file(filename:str, arabic_feature_sets:Dict[str,Set
     data.to_csv(filename, columns=["CROSS-REFERENCE"], sep="\t")
 
 
-save_searchable_quran_to_file(
-    arabic_feature_sets = generate_arabic_feature_set(
-        arabic_features=analyse_quran_arabic_grammar_file()
-    ),
-    top_n_search_results=10,
-    filename="../data/quran_cross_referenced.csv"
-)
+def analyse_quran_english_parallels_file() -> DataFrame:
+    with open(RawQuranEnglishParallels._PATH.format(
+            filename=RawQuranEnglishParallels._FILENAME,
+        ),
+        encoding="utf8",
+    ) as english_parallels_file:
+        raw_lines = english_parallels_file.readlines()
+    
+    verse_name = None
+    verse_translations = {}
+    for raw_line in raw_lines:
+        line =raw_line.strip()
+        try:
+            chapter_verse = line.split(RawQuranEnglishParallels._CHAPTER_VERSE_SEPARATOR)
+            chapter,verse = map(int,chapter_verse)
+            verse_name = f"{chapter}:{verse}"
+            verse_translations[verse_name] = []
+            line = ""
+        except:
+            pass
+
+        if line and verse_name:
+            verse_translations[verse_name].append(line)
+    
+    return DataFrame(verse_translations).T
