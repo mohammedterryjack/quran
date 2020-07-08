@@ -112,7 +112,7 @@ def similarity_of_two_sets_of_features(features_a:set, features_b:set) -> float:
     features_in_total = features_a | features_b
     return  len(features_in_common) / len(features_in_total)
 
-def save_searchable_quran_to_file(filename:str, arabic_feature_sets:Dict[str,Set[str]]) -> None:
+def save_searchable_quran_to_file(filename:str, arabic_feature_sets:Dict[str,Set[str]], top_n_search_results:int) -> None:
     """ this stores the quran in a format that can be queried for similar verses to csv file (verse similarities are pre-computed) """
     data = DataFrame(
         arabic_feature_sets.items(),
@@ -127,7 +127,7 @@ def save_searchable_quran_to_file(filename:str, arabic_feature_sets:Dict[str,Set
                 ),
                 arabic_feature_sets.values()
             )
-        )[:10]
+        )[:top_n_search_results]
     )
     data = data.set_index('VERSE')
     data.to_csv(filename, columns=["CROSS-REFERENCE"], sep="\t")
@@ -137,5 +137,6 @@ save_searchable_quran_to_file(
     arabic_feature_sets = generate_arabic_feature_set(
         arabic_features=analyse_quran_arabic_grammar_file()
     ),
+    top_n_search_results=10,
     filename="../data/quran.csv"
 )
