@@ -7,14 +7,15 @@ Cross-reference verses of the  Quran (in Arabic and English) with Jewish source 
 ## TODO
 
 ### Data
-- Get Quran arabic from arabic corpus
-- Get word-by-word translation from arabic corpus
-- scrape together parallel english translations 
+- ✅ Get Quran arabic from arabic corpus
+- ✅ Get word-by-word translation from arabic corpus
+- ✅ scrape together parallel english translations 
 - get audio of quran in hafs (mishary), warsh (jazari), hamza (sufi)
 - Access sefaria api for cross-referencing material
 
 ### Backend AI / NLP (python3)
-- store each verse of quran in arabic and parallel english (csv)
+- ✅ store each verse of quran in arabic and parallel english (csv)
+- ✅ encode each verse by arabic root letters + arabic bigram root letters + arabic trigram root letters + arabic words + morph features and cross-reference against each other and save cross-reference results for later retrieval
 - encode each verse by arabic root letters + arabic bigram root letters + arabic trigram root letters + arabic words + morph features + english words + english trigrams
 - encode sefaria data into similar space
 
@@ -23,11 +24,12 @@ Cross-reference verses of the  Quran (in Arabic and English) with Jewish source 
 - index search quran by verse
 - fuzzy search words/strings across quran verses
 - semantic search words/strings across quran verses
-- search verse of quran against quran and sefaria
+- ✅ search verse of quran against quran 
+- search verse of quran against sefaria
 
 ### Deployment
-- basic flask
-- minamilist interface (search by verse, search by chapter, search by string, display arabic alongside english parallel, play audio)
+- setup a basic flask
+- minimalist interface (search by verse, search by chapter, search by string, display arabic alongside english parallel, play audio)
 - host backend on heroku
 
 ### Polishing
