@@ -4,8 +4,8 @@ from pandas import read_csv
 ############   LOCAL IMPORTS   ###########################
 ##########################################################
 
-quran_cross_references = read_csv("data/quran_cross_referenced.csv", sep="\t")
-quran_translation = read_csv("data/quran_english.csv", sep="\t")
+quran_cross_references = read_csv("../data/quran_cross_referenced.csv", sep="\t")
+quran_translation = read_csv("../data/quran_english.csv", sep="\t")
 
 example_verse = input("\n>")
 
