@@ -135,7 +135,7 @@ def save_searchable_quran_to_file(filename:str, arabic_feature_sets:Dict[str,Set
         )
     )
     data["CROSS-REFERENCE INDICES"] = data["CROSS-REFERENCE SCORES"].apply(
-        lambda scores:argsort(scores)[:top_n_search_results]
+        lambda scores:argsort(scores)[:-top_n_search_results-1:-1]
     )
     verse_names = list(arabic_feature_sets.keys())
     data["CROSS-REFERENCE"] = data["CROSS-REFERENCE INDICES"].apply(
