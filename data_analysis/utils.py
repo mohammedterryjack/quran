@@ -118,8 +118,8 @@ def save_searchable_quran_to_file(filename:str, arabic_feature_sets:Dict[str,Set
         arabic_feature_sets.items(),
         columns = ["VERSE","FEATURE"]
     )
-    data["CROSS-REFERENCE"] = data["FEATURE"].apply(
-        lambda feature_set_a: argsort(
+    data["CROSS-REFERENCE SCORES"] = data["FEATURE"].apply(
+        lambda feature_set_a: list(
             map(
                 lambda feature_set_b: similarity_of_two_sets_of_features(
                     features_a=feature_set_b,
@@ -127,7 +127,14 @@ def save_searchable_quran_to_file(filename:str, arabic_feature_sets:Dict[str,Set
                 ),
                 arabic_feature_sets.values()
             )
-        )[:top_n_search_results]
+        )
+    )
+    data["CROSS-REFERENCE INDICES"] = data["CROSS-REFERENCE SCORES"].apply(
+        lambda scores:argsort(scores)[:top_n_search_results]
+    )
+    verse_names = list(arabic_feature_sets.keys())
+    data["CROSS-REFERENCE"] = data["CROSS-REFERENCE INDICES"].apply(
+        lambda verse_indexes: list(map(lambda index:verse_names[index],verse_indexes))
     )
     data = data.set_index('VERSE')
     data.to_csv(filename, columns=["CROSS-REFERENCE"], sep="\t")
@@ -138,5 +145,5 @@ save_searchable_quran_to_file(
         arabic_features=analyse_quran_arabic_grammar_file()
     ),
     top_n_search_results=10,
-    filename="../data/quran.csv"
+    filename="../data/quran_cross_referenced.csv"
 )
