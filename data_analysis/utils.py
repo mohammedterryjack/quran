@@ -155,23 +155,24 @@ def analyse_quran_english_parallels_file() -> DataFrame:
 
 def save_searchable_quran_to_file(path:str, arabic_feature_sets:Dict[str,Set[str]], top_n_search_results:int) -> None:
     """ this stores the quran in a format that can be queried for similar verses to csv file (verse similarities are pre-computed) """
-    english_quran = analyse_quran_english_parallels_file()["ENGLISH"]
+    english_quran = analyse_quran_english_parallels_file()
     english_quran.to_csv(f"{path}/quran_en.csv", sep="|")
     quran = DataFrame(
         arabic_feature_sets.items(),
         columns = ["VERSE","MORPHOLOGICAL FEATURES"]
     )
-    quran["SEMANTIC FEATURES"] = english_quran.apply(
-        lambda sentences: set_of_semantic_features_for_sentences(sentences)
-    )
-    print(quran)
+    quran["SEMANTIC FEATURES"] = [
+        set_of_semantic_features_for_sentences(
+            sentences=sentences
+        ) for sentences in english_quran["ENGLISH"].to_list()
+    ]    
+    quran = quran.set_index('VERSE')
     quran["FEATURES"] = [
         morphological_features | semantic_features for morphological_features,semantic_features in zip(
-            quran["MORPHOLOGICAL FEATURES"], 
-            quran["SEMANTIC FEATURES"]
+            quran["MORPHOLOGICAL FEATURES"].to_list(),
+            quran["SEMANTIC FEATURES"].to_list()
         )
     ]
-    print(quran)
     quran["CROSS-REFERENCE SCORES"] = quran["FEATURES"].apply(
         lambda feature_set_a: list(
             map(
@@ -190,5 +191,4 @@ def save_searchable_quran_to_file(path:str, arabic_feature_sets:Dict[str,Set[str
     quran["CROSS-REFERENCE"] = quran["CROSS-REFERENCE INDICES"].apply(
         lambda verse_indexes: list(map(lambda index:verse_names[index],verse_indexes))
     )
-    quran = quran.set_index('VERSE')
     quran.to_csv(f"{path}/quran.csv", columns=["CROSS-REFERENCE", "SEMANTIC FEATURES"], sep="\t")
