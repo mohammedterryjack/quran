@@ -1,7 +1,7 @@
 ############   NATIVE IMPORTS  ###########################
 from typing import Dict, Set
 ############ INSTALLED IMPORTS ###########################
-from pandas import read_csv, concat, DataFrame
+from pandas import read_csv, concat, DataFrame, set_option
 from sklearn.feature_extraction.text import CountVectorizer
 from numpy import argsort
 ############   LOCAL IMPORTS   ###########################
@@ -119,10 +119,15 @@ def similarity_of_two_sets_of_features(features_a:set, features_b:set) -> float:
 
 def save_searchable_quran_to_file(filename:str, arabic_feature_sets:Dict[str,Set[str]], top_n_search_results:int) -> None:
     """ this stores the quran in a format that can be queried for similar verses to csv file (verse similarities are pre-computed) """
+    set_option('display.max_colwidth', None)
     data = DataFrame(
         arabic_feature_sets.items(),
         columns = ["VERSE","FEATURE"]
     )
+    data["ENGLISH"] = [ 
+        translations for _,translations in analyse_quran_english_parallels_file().T.iteritems()
+    ]
+    #TODO: add english features to arabic features
     data["CROSS-REFERENCE SCORES"] = data["FEATURE"].apply(
         lambda feature_set_a: list(
             map(
@@ -142,7 +147,7 @@ def save_searchable_quran_to_file(filename:str, arabic_feature_sets:Dict[str,Set
         lambda verse_indexes: list(map(lambda index:verse_names[index],verse_indexes))
     )
     data = data.set_index('VERSE')
-    data.to_csv(filename, columns=["CROSS-REFERENCE"], sep="\t")
+    data.to_csv(filename, columns=["CROSS-REFERENCE", "ENGLISH"], sep="\t")
 
 
 def analyse_quran_english_parallels_file() -> DataFrame:
