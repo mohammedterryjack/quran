@@ -131,8 +131,9 @@ def save_searchable_quran_to_file(filename:str, arabic_feature_sets:Dict[str,Set
     data["SEMANTIC FEATURES"] = data["ENGLISH"].apply(
         lambda sentences: set_of_semantic_features_for_sentence(sentences)
     )
-    data["FEATURES"] = data["SEMANTIC FEATURES"] + data["MORPHOLOGICAL FEATURES"]
-    #TODO: convert english translations into wordnet vectors/features and add those features into data["FEATURE"] to improve search
+    data["FEATURES"] = [
+        morphological_features | semantic_features for _,morphological_features,semantic_features in data.iteritems()
+    ]
     data["CROSS-REFERENCE SCORES"] = data["FEATURES"].apply(
         lambda feature_set_a: list(
             map(
