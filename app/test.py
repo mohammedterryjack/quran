@@ -4,14 +4,17 @@ from pandas import read_csv
 ############   LOCAL IMPORTS   ###########################
 ##########################################################
 
-quran_cross_references = read_csv("../data/quran_cross_referenced.csv", sep="\t")
-quran_translation = read_csv("../data/quran_english.csv", sep="\t")
+quran = read_csv("data/quran_cross_referenced.csv", sep="\t")
 
-example_verse = input("\n>")
+while True:
+    translator = max(0,min(17,int(input("\nEnter a number between 0 and 17: "))))
+    example_verse = input("\n>")
 
-example_cross_references = quran_cross_references[quran_cross_references["VERSE"]==example_verse]["CROSS-REFERENCE"]
-example_cross_references = example_cross_references.to_list()[0].strip("[]").split(",")
-for cross_reference in example_cross_references:
-    verse_name = cross_reference.lstrip(" '").rstrip("'")
-    example_translation = quran_translation[quran_translation["VERSE"]==verse_name]["0"]
-    print(verse_name, example_translation.to_list()[0])
+    example_cross_references = quran[quran["VERSE"]==example_verse]["CROSS-REFERENCE"]
+    example_cross_references = example_cross_references.to_list()[0].strip("[]").split(",")
+    for cross_reference in example_cross_references:
+        verse_name = cross_reference.lstrip(" '").rstrip("'")
+        translations = quran["ENGLISH"][quran["VERSE"]==verse_name].to_list()[0].split("\n")
+        example_translation = translations[translator].lstrip(f"{translator}").strip()
+        print(f"{verse_name} = {example_translation}")
+
