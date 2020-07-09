@@ -21,6 +21,7 @@ Cross-reference verses of the  Quran (in Arabic and English) with Jewish source 
 -  store english translations in same table
 - encode each verse by english words + english trigrams (wordnet vectors?, BERT?) + save vectors
 - encode sefaria data into same space
+- compare encoded query to all verses in quran fast using dot product/matrix factorisation
 
 ### Backend Functions (python3)
 - index search quran by chapter
@@ -30,10 +31,10 @@ Cross-reference verses of the  Quran (in Arabic and English) with Jewish source 
 - ✅ search verse of quran against quran 
 - search verse of quran against sefaria
 
-### Deployment
+### Deployment (python3 - flask, heroku)
 - setup a basic flask
 - minimalist interface (search by verse, search by chapter, search by string, display arabic alongside english parallel, play audio)
 - host backend on heroku
 
-### Polishing
-- implement mock design frontend in css/html/js
+### Frontend (css/html/js)
+- implement mock design frontend
