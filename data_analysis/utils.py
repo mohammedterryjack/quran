@@ -131,7 +131,7 @@ def analyse_quran_english_parallels_file() -> DataFrame:
     verse_names = []
     verse_translations = []
     for raw_line in raw_lines:
-        line =raw_line.strip()
+        line =raw_line.strip("\'\" ")
         try:
             chapter_verse = line.split(RawQuranEnglishParallels._CHAPTER_VERSE_SEPARATOR)
             chapter,verse = map(int,chapter_verse)
@@ -156,7 +156,7 @@ def analyse_quran_english_parallels_file() -> DataFrame:
 def save_searchable_quran_to_file(path:str, arabic_feature_sets:Dict[str,Set[str]], top_n_search_results:int) -> None:
     """ this stores the quran in a format that can be queried for similar verses to csv file (verse similarities are pre-computed) """
     english_quran = analyse_quran_english_parallels_file()
-    english_quran.to_csv(f"{path}/quran_en.csv", sep="|")
+    english_quran.to_json(f"{path}/quran_en.json", orient='index')
     quran = DataFrame(
         arabic_feature_sets.items(),
         columns = ["VERSE","MORPHOLOGICAL FEATURES"]
