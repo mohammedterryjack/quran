@@ -5,7 +5,10 @@ from pandas import read_csv, concat, DataFrame, set_option
 from sklearn.feature_extraction.text import CountVectorizer
 from numpy import argsort
 ############   LOCAL IMPORTS   ###########################
-from data_analysis.semantic_featuriser import set_of_semantic_features_for_sentences
+from data_analysis.semantic_featuriser import (
+    set_of_semantic_features_for_sentences,
+    similarity_of_two_sets_of_features
+)
 ##########################################################
 class RawQuranEnglishParallels:
     _PATH = "raw_data/{filename}.txt"
@@ -111,12 +114,6 @@ def generate_arabic_feature_set(arabic_features:DataFrame) -> dict:
         vector_features[vector_key] |= set(ngrams)
 
     return vector_features
-
-def similarity_of_two_sets_of_features(features_a:set, features_b:set) -> float:
-    """ returns a similarity score given two sets. 1.0=Identical. 0.0=Nothing in Common"""
-    features_in_common = features_a.intersection(features_b)
-    features_in_total = features_a | features_b
-    return  len(features_in_common) / len(features_in_total)
 
 def analyse_quran_english_parallels_file() -> DataFrame:
     with open(RawQuranEnglishParallels._PATH.format(

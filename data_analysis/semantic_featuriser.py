@@ -67,3 +67,13 @@ def set_of_semantic_features_for_sentences(sentences:List[str]) -> Set[str]:
     returns a single set of semantic features for a synonymous group of sentences 
     """
     return set(chain.from_iterable(map(set_of_semantic_features_for_sentence,sentences)))
+
+
+def similarity_of_two_sets_of_features(features_a:set, features_b:set) -> float:
+    """ 
+    returns a similarity score given two sets. 
+    1.0=Identical. 0.0=Nothing in Common
+    """
+    features_in_common = features_a.intersection(features_b)
+    features_in_total = features_a | features_b
+    return  len(features_in_common) / len(features_in_total)
