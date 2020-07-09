@@ -20,13 +20,12 @@ Cross-reference verses of the  Quran (in Arabic and English) with Jewish source 
 - ✅ improve cross-reference results using wordnet vectors 
 - ✅ encode each verse by wordnet vectors + save vectors
 - encode sefaria data into same space
-- compare encoded query to all verses in quran fast using dot product/matrix factorisation
 
 ### Backend Functions (python3)
-- index search quran by chapter
-- index search quran by verse
+- ✅ index search quran by chapter
+- ✅ index search quran by verse
 - fuzzy search words/strings across quran verses
-- semantic search words/strings across quran verses
+- ✅ semantic search words/strings across quran verses
 - ✅ search verse of quran against quran 
 - search verse of quran against sefaria
 
