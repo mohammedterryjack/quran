@@ -61,3 +61,9 @@ def set_of_semantic_features_for_sentence(sentence:str) -> Set[str]:
             )
         )
     )
+
+def set_of_semantic_features_for_sentences(sentences:List[str]) -> Set[str]:
+    """
+    returns a single set of semantic features for a synonymous group of sentences 
+    """
+    return set(chain.from_iterable(map(set_of_semantic_features_for_sentence,sentences)))
