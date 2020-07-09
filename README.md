@@ -16,7 +16,10 @@ Cross-reference verses of the  Quran (in Arabic and English) with Jewish source 
 ### Backend AI / NLP (python3)
 - ✅ store each verse of quran in arabic and parallel english (csv)
 - ✅ encode each verse by arabic root letters + arabic bigram root letters + arabic trigram root letters + arabic words + morph features and cross-reference against each other and save cross-reference results for later retrieval
-- encode each verse by english words + english trigrams (wordnet vectors?, BERT?)
+- encode query into wordnet vectors
+- improve cross-reference results using wordnet vectors 
+-  store english translations in same table
+- encode each verse by english words + english trigrams (wordnet vectors?, BERT?) + save vectors
 - encode sefaria data into same space
 
 ### Backend Functions (python3)
