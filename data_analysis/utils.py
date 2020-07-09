@@ -5,6 +5,7 @@ from pandas import read_csv, concat, DataFrame, set_option
 from sklearn.feature_extraction.text import CountVectorizer
 from numpy import argsort
 ############   LOCAL IMPORTS   ###########################
+from semantic_featuriser import set_of_semantic_features_for_sentence
 ##########################################################
 class RawQuranEnglishParallels:
     _PATH = "../raw_data/{filename}.txt"
@@ -122,13 +123,17 @@ def save_searchable_quran_to_file(filename:str, arabic_feature_sets:Dict[str,Set
     set_option('display.max_colwidth', None)
     data = DataFrame(
         arabic_feature_sets.items(),
-        columns = ["VERSE","FEATURE"]
+        columns = ["VERSE","MORPHOLOGICAL FEATURES"]
     )
     data["ENGLISH"] = [ 
         translations for _,translations in analyse_quran_english_parallels_file().T.iteritems()
     ]
+    data["SEMANTIC FEATURES"] = data["ENGLISH"].apply(
+        lambda sentences: set_of_semantic_features_for_sentence(sentences)
+    )
+    data["FEATURES"] = data["SEMANTIC FEATURES"] + data["MORPHOLOGICAL FEATURES"]
     #TODO: convert english translations into wordnet vectors/features and add those features into data["FEATURE"] to improve search
-    data["CROSS-REFERENCE SCORES"] = data["FEATURE"].apply(
+    data["CROSS-REFERENCE SCORES"] = data["FEATURES"].apply(
         lambda feature_set_a: list(
             map(
                 lambda feature_set_b: similarity_of_two_sets_of_features(
@@ -147,7 +152,7 @@ def save_searchable_quran_to_file(filename:str, arabic_feature_sets:Dict[str,Set
         lambda verse_indexes: list(map(lambda index:verse_names[index],verse_indexes))
     )
     data = data.set_index('VERSE')
-    data.to_csv(filename, columns=["CROSS-REFERENCE", "ENGLISH"], sep="\t")
+    data.to_csv(filename, columns=["CROSS-REFERENCE", "ENGLISH", "SEMANTIC FEATURES"], sep="\t")
 
 
 def analyse_quran_english_parallels_file() -> DataFrame:
