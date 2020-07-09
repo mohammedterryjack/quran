@@ -155,17 +155,14 @@ def analyse_quran_english_parallels_file() -> DataFrame:
 
 def save_searchable_quran_to_file(path:str, arabic_feature_sets:Dict[str,Set[str]], top_n_search_results:int) -> None:
     """ this stores the quran in a format that can be queried for similar verses to csv file (verse similarities are pre-computed) """
-    set_option('display.max_colwidth', None)
     english_quran = analyse_quran_english_parallels_file()["ENGLISH"]
-    english_quran.to_csv(f"{path}/quran_en.csv", sep="\t")
-    print(english_quran)
+    english_quran.to_csv(f"{path}/quran_en.csv", sep="|")
     quran = DataFrame(
         arabic_feature_sets.items(),
         columns = ["VERSE","MORPHOLOGICAL FEATURES"]
     )
-    print(quran)
     quran["SEMANTIC FEATURES"] = english_quran.apply(
-        lambda sentences: set_of_semantic_features_for_sentences(sentences.to_list())
+        lambda sentences: set_of_semantic_features_for_sentences(sentences)
     )
     print(quran)
     quran["FEATURES"] = [
