@@ -5,15 +5,15 @@ from pandas import read_csv, concat, DataFrame, set_option
 from sklearn.feature_extraction.text import CountVectorizer
 from numpy import argsort
 ############   LOCAL IMPORTS   ###########################
-from semantic_featuriser import set_of_semantic_features_for_sentences
+from data_analysis.semantic_featuriser import set_of_semantic_features_for_sentences
 ##########################################################
 class RawQuranEnglishParallels:
-    _PATH = "../raw_data/{filename}.txt"
+    _PATH = "raw_data/{filename}.txt"
     _FILENAME = "quran_english_translations"
     _CHAPTER_VERSE_SEPARATOR = "-"
 
 class RawQuranArabicGrammarCSVHeaders:
-    _PATH = "../raw_data/{filename}.txt"
+    _PATH = "raw_data/{filename}.txt"
     _FILENAME = "quran_arabic_grammar"
     _DELIMITER = "\t"
     WORD_INDEX = "LOCATION"
@@ -154,7 +154,7 @@ def analyse_quran_english_parallels_file() -> DataFrame:
     return data.set_index("VERSE")
 
 def save_searchable_quran_to_file(path:str, arabic_feature_sets:Dict[str,Set[str]], top_n_search_results:int) -> None:
-    """ this stores the quran in a format that can be queried for similar verses to csv file (verse similarities are pre-computed) """
+    """ this stores the quran in a format that can be queried for similar verses to json files (verse similarities are pre-computed) """
     english_quran = analyse_quran_english_parallels_file()
     english_quran.to_json(f"{path}/quran_en.json", orient='index')
     quran = DataFrame(
@@ -191,4 +191,4 @@ def save_searchable_quran_to_file(path:str, arabic_feature_sets:Dict[str,Set[str
     quran["CROSS-REFERENCE"] = quran["CROSS-REFERENCE INDICES"].apply(
         lambda verse_indexes: list(map(lambda index:verse_names[index],verse_indexes))
     )
-    quran.to_csv(f"{path}/quran.csv", columns=["CROSS-REFERENCE", "SEMANTIC FEATURES"], sep="\t")
+    quran[["CROSS-REFERENCE","SEMANTIC FEATURES"]].to_json(f"{path}/quran.json", orient='index')
