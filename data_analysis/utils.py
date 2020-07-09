@@ -127,7 +127,7 @@ def save_searchable_quran_to_file(filename:str, arabic_feature_sets:Dict[str,Set
     data["ENGLISH"] = [ 
         translations for _,translations in analyse_quran_english_parallels_file().T.iteritems()
     ]
-    #TODO: add english features to arabic features
+    #TODO: convert english translations into wordnet vectors/features and add those features into data["FEATURE"] to improve search
     data["CROSS-REFERENCE SCORES"] = data["FEATURE"].apply(
         lambda feature_set_a: list(
             map(
