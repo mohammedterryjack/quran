@@ -71,9 +71,19 @@ def set_of_semantic_features_for_sentences(sentences:List[str]) -> Set[str]:
 
 def similarity_of_two_sets_of_features(features_a:set, features_b:set) -> float:
     """ 
-    returns a similarity score given two sets. 
+    returns a simple similarity score given two sets. 
     1.0=Identical. 0.0=Nothing in Common
     """
     features_in_common = features_a.intersection(features_b)
     features_in_total = features_a | features_b
     return  len(features_in_common) / len(features_in_total)
+
+
+def cosine_similarity_for_sets(features_a:set, features_b:set) -> float: 
+    """
+    returns the cosine similarity of two sets
+    1.0=Identical. 0.0=Nothing in Common
+    """
+    features_in_common = features_a.intersection(features_b)
+    denominator = len(features_a)**.5 * len(features_b)**.5
+    return len(features_in_common)/denominator if denominator else .0

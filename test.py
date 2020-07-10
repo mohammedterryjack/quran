@@ -5,7 +5,8 @@ from pandas import read_json
 ############   LOCAL IMPORTS   ###########################
 from data_analysis.semantic_featuriser import (
     set_of_semantic_features_for_sentence,
-    similarity_of_two_sets_of_features
+    similarity_of_two_sets_of_features,
+    cosine_similarity_for_sets
 )
 ##########################################################
 
@@ -16,7 +17,7 @@ def semantic_features(quran:dict) -> Iterable[Set[str]]:
     for verse in quran:
         yield set(quran[verse]["SEMANTIC FEATURES"])
 
-def english_translation_of_verse(verse:str,quran_en:dict,translator:Optional[int]=6) -> str:
+def english_translation_of_verse(verse:str,quran_en:dict,translator:Optional[int]=8) -> str:
     parallel_translations_of_verse = quran_en[verse]["ENGLISH"]
     return parallel_translations_of_verse[max(min(translator,17),0)] if translator else parallel_translations_of_verse
 
@@ -28,14 +29,15 @@ def most_similar_verse_to_query(query:str,quran:dict,top_n:int=1) -> str:
     query_features = set_of_semantic_features_for_sentence(query)
     semantic_scores = list(
         map(
-            lambda verse_features: similarity_of_two_sets_of_features(
+            lambda verse_features: cosine_similarity_for_sets(
                 features_a=query_features,
                 features_b=verse_features
             ),
             semantic_features(quran)
         )
     )
-    verse_index = semantic_scores.index(max(semantic_scores))
+    best_score = max(semantic_scores)
+    verse_index = semantic_scores.index(best_score)
     return verse_names[verse_index]
 
 
