@@ -2,13 +2,14 @@
 from typing import Set, Tuple, List
 from itertools import chain
 ############ INSTALLED IMPORTS ###########################
-from nltk.corpus import wordnet
+from nltk.corpus import wordnet, stopwords
 from nltk import pos_tag, word_tokenize
 from nltk.util import ngrams
 ############   LOCAL IMPORTS   ###########################
 ##########################################################
 parent_synsets_for_synset = lambda synset:[synset] + list(synset.closure(lambda parent_synset:parent_synset.hypernyms()))
 parent_synsets_for_synsets = lambda synsets: list(chain.from_iterable(map(parent_synsets_for_synset, synsets)))
+STOPWORDS = stopwords.words('english')
 
 def tokenise(sentence:str) -> List[str]:
     """
@@ -67,11 +68,13 @@ def part_of_speech(tokens:List[str]) -> List[Tuple[str,str]]:
         )
     )
 
-
 def set_of_semantic_features_for_word(word:str, part_of_speech:str) -> Set[str]:
     """ 
     uses wordnet to return a semantic concepts related to a given word
+    ignores stopwords
     """
+    if word in STOPWORDS:
+        return set()
     root_synsets = wordnet.synsets(word,pos=part_of_speech)
     if not any(root_synsets):
         root_synsets = wordnet.synsets(word)
