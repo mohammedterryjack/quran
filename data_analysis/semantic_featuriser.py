@@ -4,10 +4,39 @@ from itertools import chain
 ############ INSTALLED IMPORTS ###########################
 from nltk.corpus import wordnet
 from nltk import pos_tag, word_tokenize
+from nltk.util import ngrams
 ############   LOCAL IMPORTS   ###########################
 ##########################################################
 parent_synsets_for_synset = lambda synset:[synset] + list(synset.closure(lambda parent_synset:parent_synset.hypernyms()))
 parent_synsets_for_synsets = lambda synsets: list(chain.from_iterable(map(parent_synsets_for_synset, synsets)))
+
+def tokenise(sentence:str) -> List[str]:
+    """
+    tokenise string but maintain compound phrases
+    e.g. the couple were in love -> ["the","couple","were","in love"] 
+    """
+    tokens = word_tokenize(sentence)
+    token_found = list(map(lambda _:False,tokens))
+
+    ngram_range = range(len(tokens),0,-1)
+
+    for ngram_size in ngram_range:
+        for index_start,ngram_string in enumerate(
+            map('_'.join,ngrams(sequence=tokens,n=ngram_size))
+        ):
+            index_end = index_start+ngram_size
+            contains_word_included_in_another_ngram = any(token_found[index_start:index_end])
+            if wordnet.synsets(ngram_string) and not contains_word_included_in_another_ngram:
+                token_found[index_start:index_end] = [ngram_string.replace("_"," ")] + ["PAD"]*(ngram_size-1)
+
+    for index,found in enumerate(token_found):
+        if not found:
+            token_found[index] = tokens[index]
+        if found == "PAD":
+            token_found.pop(index)
+
+    return token_found
+
 
 def part_of_speech(tokens:List[str]) -> List[Tuple[str,str]]:
     """ 
@@ -25,7 +54,7 @@ def part_of_speech(tokens:List[str]) -> List[Tuple[str,str]]:
             lambda token_pos: token_pos[1] is not None,
             map(
                 lambda token_pos: (
-                    token_pos[0],
+                    token_pos[0].replace(" ","_"),
                     WORDNET_POS_MAP.get(token_pos[1])
                 ),
                 pos_tag(tokens,tagset="universal")
@@ -57,7 +86,7 @@ def set_of_semantic_features_for_sentence(sentence:str) -> Set[str]:
         chain.from_iterable(
             map(
                 lambda token_pos:set_of_semantic_features_for_word(*token_pos),
-                part_of_speech(word_tokenize(sentence))
+                part_of_speech(tokenise(sentence))
             )
         )
     )
