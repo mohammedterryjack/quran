@@ -7,7 +7,7 @@ from numpy import argsort
 ############   LOCAL IMPORTS   ###########################
 from data_analysis.semantic_featuriser import (
     set_of_semantic_features_for_sentences,
-    similarity_of_two_sets_of_features
+    cosine_similarity_for_sets
 )
 ##########################################################
 class RawQuranEnglishParallels:
@@ -173,7 +173,7 @@ def save_searchable_quran_to_file(path:str, arabic_feature_sets:Dict[str,Set[str
     quran["CROSS-REFERENCE SCORES"] = quran["FEATURES"].apply(
         lambda feature_set_a: list(
             map(
-                lambda feature_set_b: similarity_of_two_sets_of_features(
+                lambda feature_set_b: cosine_similarity_for_sets(
                     features_a=feature_set_b,
                     features_b=feature_set_a
                 ),
