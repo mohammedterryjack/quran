@@ -41,10 +41,9 @@ def most_similar_verse_to_query(query:str,quran:dict,top_n:int=1) -> str:
 
 while True:
     query = input(">")
-    similar_verses = most_similar_verse_to_query(query=query,quran=quran)
-    for verse in similar_verses:
-        related_verses = similar_verses_to_verse(verse=verse,quran=quran)
-        for verse in related_verses:
-            print(verse)
-            print(english_translation_of_verse(verse=verse,quran_en=quran_en))
-            print()
+    verse = most_similar_verse_to_query(query=query,quran=quran)
+    related_verse = similar_verses_to_verse(verse=verse,quran=quran)
+    for verse in related_verses:
+        print(verse)
+        print(english_translation_of_verse(verse=verse,quran_en=quran_en))
+        print()
