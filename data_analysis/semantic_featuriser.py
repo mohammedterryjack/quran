@@ -74,11 +74,14 @@ def set_of_morphological_features_for_word(word:str) -> Set[str]:
     """
     returns the word and various sized ngrams of it
     """
-    return {word.lower()} | set(
-        CountVectorizer(
-            ngram_range=(2,4),
-            analyzer="char_wb"
-        ).fit([word]).get_feature_names()
+    return {word.upper()} | set(
+        map(
+            lambda ngram:ngram.upper(),
+            CountVectorizer(
+                ngram_range=(2,4),
+                analyzer="char_wb"
+            ).fit([word]).get_feature_names()
+        )
     )
 
 
