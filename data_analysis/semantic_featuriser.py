@@ -5,11 +5,13 @@ from itertools import chain
 from nltk.corpus import wordnet, stopwords
 from nltk import pos_tag, word_tokenize
 from nltk.util import ngrams
+from sklearn.feature_extraction.stop_words import ENGLISH_STOP_WORDS
+from sklearn.feature_extraction.text import CountVectorizer
 ############   LOCAL IMPORTS   ###########################
 ##########################################################
 parent_synsets_for_synset = lambda synset:[synset] + list(synset.closure(lambda parent_synset:parent_synset.hypernyms()))
 parent_synsets_for_synsets = lambda synsets: list(chain.from_iterable(map(parent_synsets_for_synset, synsets)))
-STOPWORDS = stopwords.words('english')
+STOPWORDS = set(stopwords.words('english')) | ENGLISH_STOP_WORDS
 
 def tokenise(sentence:str) -> List[str]:
     """
@@ -68,23 +70,35 @@ def part_of_speech(tokens:List[str]) -> List[Tuple[str,str]]:
         )
     )
 
+def set_of_morphological_features_for_word(word:str) -> Set[str]:
+    """
+    returns the word and various sized ngrams of it
+    """
+    return {word.lower()} | set(
+        CountVectorizer(
+            ngram_range=(2,4),
+            analyzer="char_wb"
+        ).fit([word]).get_feature_names()
+    )
+
+
 def set_of_semantic_features_for_word(word:str, part_of_speech:str) -> Set[str]:
     """ 
     uses wordnet to return a semantic concepts related to a given word
-    ignores stopwords
+    stopwords are only encoded morphologically but not semantically
     """
-    if word in STOPWORDS:
-        return set()
-    root_synsets = wordnet.synsets(word,pos=part_of_speech)
-    if not any(root_synsets):
-        root_synsets = wordnet.synsets(word)
-    return set(
-        map(
-            lambda synset:synset.name(), 
-            parent_synsets_for_synsets(root_synsets)
+    features = set_of_morphological_features_for_word(word)
+    if word not in STOPWORDS:
+        root_synsets = wordnet.synsets(word,pos=part_of_speech)
+        if not any(root_synsets):
+            root_synsets = wordnet.synsets(word)
+        features |= set(
+            map(
+                lambda synset:synset.name(), 
+                parent_synsets_for_synsets(root_synsets)
+            )
         )
-    )
-
+    return features
 
 def set_of_semantic_features_for_sentence(sentence:str) -> Set[str]:
     """
