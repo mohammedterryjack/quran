@@ -29,6 +29,7 @@ Cross-reference verses of the  Quran (in Arabic and English) with Jewish source 
 - ✅ semantic search words/strings across quran verses
 - ✅ search verse of quran against quran 
 - search verse of quran against sefaria
+- display what features the match was based on 
 
 ### Deployment (python3 - flask, heroku)
 - setup a basic flask
