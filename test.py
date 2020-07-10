@@ -1,14 +1,11 @@
 ############   NATIVE IMPORTS  ###########################
 from typing import List,Iterable,Set,Optional,Tuple
-from difflib import SequenceMatcher
 from json import load
 ############ INSTALLED IMPORTS ###########################
 from pandas import read_json
-from numpy import argsort
 ############   LOCAL IMPORTS   ###########################
 from data_analysis.semantic_featuriser import (
     set_of_semantic_features_for_sentence,
-    similarity_of_two_sets_of_features,
     cosine_similarity_for_sets
 )
 ##########################################################
@@ -49,31 +46,9 @@ def most_semantically_similar_verse_to_query(query:str,quran_features:dict,verse
     verse_index = semantic_scores.index(best_score)
     return verse_names[verse_index]
 
-def syntactically_similar_verse_to_query(query:str,quran_en:dict) -> List[str]:
-    verses,translations = zip(*list_english_translations_for_all_verses(quran_en))
-    similarity_scores = list(
-        map(
-            lambda translation:SequenceMatcher(None, query, translation).ratio(),
-            translations
-        )
-    )
-    best_indexes = argsort(similarity_scores)[:-4:-1]
-    best_verses = list(map(lambda index:verses[index], best_indexes))
-    best_verses_no_duplicates = []
-    for verse in best_verses:
-        if verse not in best_verses_no_duplicates:
-            best_verses_no_duplicates.append(verse)
-    return best_verses_no_duplicates
 
 while True:
     query = input(">")
-    # print("FUZZY")
-    # verses = syntactically_similar_verse_to_query(query=query,quran_en=quran_en)
-    # for verse in verses:
-    #     print(verse)
-    #     print(english_translation_of_verse(verse=verse,quran_en=quran_en))
-    #     print()
-    # print("MEANING")
     verse = most_semantically_similar_verse_to_query(
         query=query,
         quran_features=quran_features,
