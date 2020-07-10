@@ -18,13 +18,14 @@ Cross-reference verses of the  Quran (in Arabic and English) with Jewish source 
 - ✅ encode each verse by arabic root letters + arabic bigram root letters + arabic trigram root letters + arabic words + morph features and cross-reference against each other and save cross-reference results for later retrieval
 - ✅ encode query into wordnet vectors
 - ✅ improve cross-reference results using wordnet vectors 
+- ✅ improve cross-reference results using morphological vectors
 - ✅ encode each verse by wordnet vectors + save vectors
 - encode sefaria data into same space
 
 ### Backend Functions (python3)
 - ✅ index search quran by chapter
 - ✅ index search quran by verse
-- fuzzy search words/strings across quran verses
+- ✅ fuzzy search words/strings across quran verses
 - ✅ semantic search words/strings across quran verses
 - ✅ search verse of quran against quran 
 - search verse of quran against sefaria
