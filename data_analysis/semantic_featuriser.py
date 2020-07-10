@@ -6,8 +6,8 @@ from nltk.corpus import wordnet
 from nltk import pos_tag, word_tokenize
 ############   LOCAL IMPORTS   ###########################
 ##########################################################
-_parent_synsets = lambda synset:[synset] + list(synset.closure(lambda parent_synset:parent_synset.hypernyms()))
-parent_synsets = lambda synsets: list(chain.from_iterable(map(lambda synset: _parent_synsets(synset), synsets)))
+parent_synsets_for_synset = lambda synset:[synset] + list(synset.closure(lambda parent_synset:parent_synset.hypernyms()))
+parent_synsets_for_synsets = lambda synsets: list(chain.from_iterable(map(parent_synsets_for_synset, synsets)))
 
 def part_of_speech(tokens:List[str]) -> List[Tuple[str,str]]:
     """ 
@@ -44,7 +44,7 @@ def set_of_semantic_features_for_word(word:str, part_of_speech:str) -> Set[str]:
     return set(
         map(
             lambda synset:synset.name(), 
-            parent_synsets(root_synsets)
+            parent_synsets_for_synsets(root_synsets)
         )
     )
 
