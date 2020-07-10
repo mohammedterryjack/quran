@@ -24,10 +24,12 @@ def tokenise(sentence:str) -> List[str]:
         for index_start,ngram_string in enumerate(
             map('_'.join,ngrams(sequence=tokens,n=ngram_size))
         ):
+            if all(token_found):
+                break
             index_end = index_start+ngram_size
             contains_word_included_in_another_ngram = any(token_found[index_start:index_end])
             if wordnet.synsets(ngram_string) and not contains_word_included_in_another_ngram:
-                token_found[index_start:index_end] = [ngram_string.replace("_"," ")] + ["PAD"]*(ngram_size-1)
+                token_found[index_start:index_end] = [ngram_string] + ["PAD"]*(ngram_size-1)
 
     for index,found in enumerate(token_found):
         if not found:
@@ -54,7 +56,7 @@ def part_of_speech(tokens:List[str]) -> List[Tuple[str,str]]:
             lambda token_pos: token_pos[1] is not None,
             map(
                 lambda token_pos: (
-                    token_pos[0].replace(" ","_"),
+                    token_pos[0],
                     WORDNET_POS_MAP.get(token_pos[1])
                 ),
                 pos_tag(tokens,tagset="universal")
