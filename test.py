@@ -3,6 +3,7 @@ from typing import List,Iterable,Set,Optional,Tuple
 from json import load
 ############ INSTALLED IMPORTS ###########################
 from pandas import read_json
+from numpy import argsort
 ############   LOCAL IMPORTS   ###########################
 from data_analysis.semantic_featuriser import (
     set_of_semantic_features_for_sentence,
@@ -31,7 +32,7 @@ def english_translation_of_verse(verse:str,quran_en:dict,translator:Optional[int
 def similar_verses_to_verse(verse:str, quran:dict, top_n:int=3) -> List[str]:
     return quran[verse][:max(min(top_n,10),0)]
 
-def most_semantically_similar_verse_to_query(query:str,quran_features:dict,verse_names:List[str]) -> str:
+def semantically_similar_verses_to_query(query:str,quran_features:dict,verse_names:List[str],top_n:int=3) -> List[str]:
     query_features = set_of_semantic_features_for_sentence(query)
     semantic_scores = list(
         map(
@@ -42,20 +43,19 @@ def most_semantically_similar_verse_to_query(query:str,quran_features:dict,verse
             semantic_features(quran_features)
         )
     )
-    best_score = max(semantic_scores)
-    verse_index = semantic_scores.index(best_score)
-    return verse_names[verse_index]
+    verse_indexes = argsort(semantic_scores)[:-top_n-1:-1]
+    return list(map(lambda index:verse_names[index], verse_indexes))
 
 
 while True:
     query = input(">")
-    verse = most_semantically_similar_verse_to_query(
+    verses = semantically_similar_verses_to_query(
         query=query,
         quran_features=quran_features,
         verse_names = list(quran_en.keys())
     )
-    related_verses = similar_verses_to_verse(verse=verse,quran=quran)
-    for verse in related_verses:
+    for verse in verses:
         print(verse)
-        print(english_translation_of_verse(verse=verse,quran_en=quran_en))
-        print()
+        for related_verse in similar_verses_to_verse(verse=verse,quran=quran):
+            print("\t",related_verse)
+            print("\t",english_translation_of_verse(verse=related_verse,quran_en=quran_en))
