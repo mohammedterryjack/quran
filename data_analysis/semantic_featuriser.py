@@ -5,8 +5,7 @@ from itertools import chain
 from nltk.corpus import wordnet, stopwords
 from nltk import pos_tag, word_tokenize
 from nltk.util import ngrams
-from sklearn.feature_extraction.stop_words import ENGLISH_STOP_WORDS
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, ENGLISH_STOP_WORDS
 ############   LOCAL IMPORTS   ###########################
 ##########################################################
 parent_synsets_for_synset = lambda synset:[synset] + list(synset.closure(lambda parent_synset:parent_synset.hypernyms()))
