@@ -2,7 +2,6 @@
 from typing import List,Iterable,Set,Optional
 ############ INSTALLED IMPORTS ###########################
 from pandas import read_json
-from numpy import argsort
 ############   LOCAL IMPORTS   ###########################
 from data_analysis.semantic_featuriser import (
     set_of_semantic_features_for_sentence,
@@ -24,7 +23,7 @@ def english_translation_of_verse(verse:str,quran_en:dict,translator:Optional[int
 def similar_verses_to_verse(verse:str, quran:dict, top_n:int=3) -> List[str]:
     return quran[verse]["CROSS-REFERENCE"][:max(min(top_n,10),0)]
 
-def similar_verses_to_query(query:str,quran:dict,top_n:int=3) -> List[str]:
+def most_similar_verse_to_query(query:str,quran:dict,top_n:int=1) -> str:
     verse_names = list(quran.keys())
     query_features = set_of_semantic_features_for_sentence(query)
     semantic_scores = list(
@@ -36,21 +35,16 @@ def similar_verses_to_query(query:str,quran:dict,top_n:int=3) -> List[str]:
             semantic_features(quran)
         )
     )
-    print(max(semantic_scores))
-    return list(
-        map(
-            lambda verse_index:verse_names[verse_index],
-            argsort(semantic_scores)[:-top_n-1:-1] 
-        )
-    )
+    verse_index = semantic_scores.index(max(semantic_scores))
+    return verse_names[verse_index]
 
 
 while True:
     query = input(">")
-    similar_verses = similar_verses_to_query(query=query,quran=quran, top_n=2)
+    similar_verses = most_similar_verse_to_query(query=query,quran=quran)
     for verse in similar_verses:
         related_verses = similar_verses_to_verse(verse=verse,quran=quran)
         for verse in related_verses:
-            print("\t",verse)
-            print("\t",english_translation_of_verse(verse=verse,quran_en=quran_en))
+            print(verse)
+            print(english_translation_of_verse(verse=verse,quran_en=quran_en))
             print()
