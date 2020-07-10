@@ -160,9 +160,10 @@ def save_searchable_quran_to_file(path:str, arabic_feature_sets:Dict[str,Set[str
     )
     quran["SEMANTIC FEATURES"] = [
         set_of_semantic_features_for_sentences(
-            sentences=sentences
+            sentences=sentences[:-3]
         ) for sentences in english_quran["ENGLISH"].to_list()
     ]    
+    quran["SEMANTIC FEATURES"].to_json(f"{path}/quran_features.json", orient='index')
     quran = quran.set_index('VERSE')
     quran["FEATURES"] = [
         morphological_features | semantic_features for morphological_features,semantic_features in zip(
@@ -188,4 +189,4 @@ def save_searchable_quran_to_file(path:str, arabic_feature_sets:Dict[str,Set[str
     quran["CROSS-REFERENCE"] = quran["CROSS-REFERENCE INDICES"].apply(
         lambda verse_indexes: list(map(lambda index:verse_names[index],verse_indexes))
     )
-    quran[["CROSS-REFERENCE","SEMANTIC FEATURES"]].to_json(f"{path}/quran.json", orient='index')
+    quran["CROSS-REFERENCE"].to_json(f"{path}/quran.json", orient='index')
