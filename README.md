@@ -10,6 +10,7 @@ Cross-reference verses of the  Quran (in Arabic and English) with Jewish source 
 - ✅ Get Quran arabic from arabic corpus
 - ✅ Get word-by-word translation from arabic corpus
 - ✅ scrape together parallel english translations 
+- Get arabic verses of Quran to display
 - get audio of quran in hafs (mishary), warsh (jazari), hamza (sufi)
 - Access sefaria api for cross-referencing material
 
@@ -28,8 +29,8 @@ Cross-reference verses of the  Quran (in Arabic and English) with Jewish source 
 - ✅ fuzzy search words/strings across quran verses
 - ✅ semantic search words/strings across quran verses
 - ✅ search verse of quran against quran 
+- ✅ display what features the match was based on 
 - search verse of quran against sefaria
-- display what features the match was based on 
 
 ### Deployment (python3 - flask, heroku)
 - setup a basic flask
