@@ -1,6 +1,7 @@
 DATA,SOURCE
-Arabic text of the Quran,https://github.com/semarketir/quranjson
+Arabic text of the Quran,http://tanzil.net/download/
 Arabic audio files of the Quran,https://everyayah.com/data/status.php
 Morphological Annotations of the Quran,http://corpus.quran.com/wordbyword.jsp
-English Translations of the Quran,Various
+English Translations of the Quran,Various Online
+Chapter/Surah names of the Quran,https://github.com/semarketir/quranjson
 Biblical source texts in English and Hebrew,https://github.com/Sefaria/Sefaria-Export
