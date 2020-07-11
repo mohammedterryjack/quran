@@ -10,8 +10,8 @@ Cross-reference verses of the  Quran (in Arabic and English) with Jewish source 
 - ✅ Get Quran arabic from arabic corpus
 - ✅ Get word-by-word translation from arabic corpus
 - ✅ scrape together parallel english translations 
-- Get arabic verses of Quran to display
-- get audio of quran in hafs (mishary), warsh (jazari), hamza (sufi)
+- ✅ Get arabic verses of Quran to display (https://github.com/semarketir/quranjson/tree/master/source/translation/ar)
+- ✅ get audio of quran in hafs (mishary), warsh (jazari), hamza (sufi) (https://everyayah.com/data/)
 - Access sefaria api for cross-referencing material
 
 ### Backend AI / NLP (python3)
