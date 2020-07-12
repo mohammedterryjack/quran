@@ -34,7 +34,7 @@ Cross-reference verses of the  Quran (in Arabic and English) with Jewish source 
 - search verse of quran against sefaria
 
 ### Deployment (python3 - flask, heroku)
-- setup a basic flask
+- ✅ setup a basic flask
 - minimalist interface (search by verse, search by chapter, search by string, display arabic alongside english parallel, play audio)
 - host backend on heroku
 

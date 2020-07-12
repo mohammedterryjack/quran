@@ -6,18 +6,24 @@ from utils import (
     QURAN_AUDIO, QURAN, QURAN_EN, QURAN_AR, QURAN_FEATURES,
     VERSE_NAMES,semantic_features_for_verse,arabic_verse, 
     english_translation_of_verse, similar_verses_to_verse,
-    semantically_similar_verses_to_query,MAIN_PAGE_HTML_TEMPLATE
+    semantically_similar_verses_to_query,MAIN_PAGE_TEMPLATE
 )
 from data_analysis.semantic_featuriser import set_of_semantic_features_for_sentence
 ##########################################################
-
 app = Flask(__name__)
 
-@app.route('/')
-def test():
-    verse = "1:1"
-    return MAIN_PAGE_HTML_TEMPLATE.format(
+@app.route('/<verse>')
+def display_verse(verse:str):
+    return MAIN_PAGE_TEMPLATE.format(
         verse_number=verse,
+        verse_audio_hafs=QURAN_AUDIO.url(
+            verse_name=verse,
+            reciter=0
+        ),
+        verse_audio_warsh=QURAN_AUDIO.url(
+            verse_name=verse,
+            reciter=1
+        ),
         verse_in_arabic=arabic_verse(
             verse=verse,
             quran_ar=QURAN_AR
