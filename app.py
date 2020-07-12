@@ -1,9 +1,15 @@
 ############   NATIVE IMPORTS  ###########################
+from typing import List
 ############ INSTALLED IMPORTS ###########################
 from flask import Flask
 ############   LOCAL IMPORTS   ###########################
 from utils import QuranAudio,BibleAudio,BibleText,QuranText
 ##########################################################
+def format_and_link_verses_for_html(verses:List[str]) -> str:
+    return ' '.join(  
+        f"<p><small><a href= /quran/{verse.replace(':','/')}>{verse}</a></small></p>" for verse in verses[1:]
+    )
+
 def format_sentence_for_html(sentence:str) -> str:
     return sentence.replace(",",",<br>").replace(";",";<br>").replace(
         ":",":<br>").replace(".",".<br><br>").replace(
@@ -51,9 +57,7 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
         verse_in_english=format_sentence_for_html(
             sentence=QURAN.english_translation_of_verse(verse_key)
         ),
-        related_verses='<br>'.join(QURAN.similar_verses_to_verse(verse_key).to_list()),
-        next_verse=next_verse_key,
-        previous_verse=previous_verse_key,
+        related_verses=format_and_link_verses_for_html(QURAN.similar_verses_to_verse(verse_key, top_n=5).to_list()),
         next_page_url = f"/quran/{next_verse_key.replace(':','/')}",
         previous_page_url = f"/quran/{previous_verse_key.replace(':','/')}"
     )
