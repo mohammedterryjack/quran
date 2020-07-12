@@ -82,13 +82,6 @@ if __name__ == '__main__':
 #         verse_names = VERSE_NAMES
 #     )
 #     for verse in verses:
-#         print(verse)
-#         print(QURAN_AUDIO.filename(verse_name=verse,reciter=0))
-#         verse_features = semantic_features_for_verse(
-#             verse=verse, 
-#             quran_features=QURAN_FEATURES,
-#             verse_names=VERSE_NAMES
-#         )
 #         common_features = query_features.intersection(verse_features)
 #         print(common_features)
 #         for related_verse in similar_verses_to_verse(verse=verse,quran=QURAN):
