@@ -40,4 +40,4 @@ Cross-reference verses of the  Quran (in Arabic and English) with Jewish source 
 
 ### Frontend (css/html/js)
 - implement mock design frontend
-- play verse
+- play audio
