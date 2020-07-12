@@ -15,8 +15,10 @@
         <source src="{verse_audio_warsh}" type="audio/mpeg">
     </audio>
     <p><small>Related Verses:</small></p>
-    <p><small>{related_verses}</small></p>
-    <p><small>Previous Verse: <a href="{previous_page_url}">{previous_verse}</a></small></p>
-    <p><small>Next Verse: <a href={next_page_url}>{next_verse}</a></small></p>
+    {related_verses}
+    <p>
+        <a href="{previous_page_url}">Previous Verse</a> -
+        <a href={next_page_url}>Next Verse</a>
+    </p>
 </body> 
 </html> 
