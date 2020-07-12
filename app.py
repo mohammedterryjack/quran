@@ -7,7 +7,8 @@ from utils import (
     VERSE_NAMES,semantic_features_for_verse,arabic_verse, 
     english_translation_of_verse, similar_verses_to_verse,
     semantically_similar_verses_to_query,QURAN_VERSE_TEMPLATE,
-    BIBLE_VERSE_TEMPLATE,BIBLE_AUDIO,BIBLE_EN,BIBLE_HE,get_biblical_verse
+    BIBLE_VERSE_TEMPLATE,BIBLE_AUDIO,BIBLE_EN,BIBLE_HE,get_biblical_verse,
+    format_sentence_for_html
 )
 from data_analysis.semantic_featuriser import set_of_semantic_features_for_sentence
 ##########################################################
@@ -20,12 +21,14 @@ def display_bible_verse(cannon:str,book:str,chapter:str,verse:str) -> str:
         book=book,
         chapter=chapter,
         verse=verse,
-        verse_in_english=get_biblical_verse(
-            bible_translation=BIBLE_EN,
-            cannon=cannon,
-            book=book,
-            chapter=int(chapter),
-            verse=int(verse)
+        verse_in_english=format_sentence_for_html(
+            sentence=get_biblical_verse(
+                bible_translation=BIBLE_EN,
+                cannon=cannon,
+                book=book,
+                chapter=int(chapter),
+                verse=int(verse)
+            )
         ),
         verse_in_hebrew=get_biblical_verse(
             bible_translation=BIBLE_HE,
@@ -59,21 +62,11 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
             verse=verse_key,
             quran_ar=QURAN_AR
         ),
-        verse_in_english=english_translation_of_verse(
-            verse=verse_key,
-            quran_en=QURAN_EN
-        ).replace(
-            ",",",<br>"
-        ).replace(
-            ";",";<br>"
-        ).replace(
-            ":",":<br>"
-        ).replace(
-            ".",".<br><br>"
-        ).replace(
-            "!","!<br><br>"
-        ).replace(
-            "?","?<br><br>"
+        verse_in_english=format_sentence_for_html(
+            sentence=english_translation_of_verse(
+                verse=verse_key,
+                quran_en=QURAN_EN
+            )
         ),
     )
 

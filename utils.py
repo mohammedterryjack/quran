@@ -114,6 +114,11 @@ def get_bible(language_code:str) -> dict:
 def get_biblical_verse(bible_translation:dict, cannon:str, book:str, chapter:int, verse:int) -> str:
     return bible_translation[cannon][book][chapter-1][verse-1]
 
+def format_sentence_for_html(sentence:str) -> str:
+    return sentence.replace(",",",<br>").replace(";",";<br>").replace(
+        ":",":<br>").replace(".",".<br><br>").replace(
+        "!","!<br><br>").replace("?","?<br><br>")
+
 QURAN_AUDIO = QuranAudioFiles()
 BIBLE_AUDIO = BibleAudioFiles()
 QURAN = read_json("data/mushaf/quran.json")
