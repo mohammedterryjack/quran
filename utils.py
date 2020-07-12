@@ -44,13 +44,13 @@ class BibleAudioFiles:
         self.AUDIO_FORMAT = "mp3"
         self.BOOKS = {
             "Torah/Genesis":"01","Torah/Exodus":"02","Torah/Leviticus":"03","Torah/Numbers":"04","Torah/Deuteronomy":"05",
-            "Prophets/Joshua":"06","Prophets/Judges":"07","Prophets/1Samuel":"08a","Prophets/2Samuel":"08b",
-            "Prophets/1Kings":"09a","Prophets/2Kings":"09b","Prophets/Isaiah":"10","Prophets/Jeremiah":"11",
+            "Prophets/Joshua":"06","Prophets/Judges":"07","Prophets/I Samuel":"08a","Prophets/II Samuel":"08b",
+            "Prophets/I Kings":"09a","Prophets/II Kings":"09b","Prophets/Isaiah":"10","Prophets/Jeremiah":"11",
             "Prophets/Ezekiel":"12","Prophets/Hosea":"13","Prophets/Joel":"14","Prophets/Amos":"15","Prophets/Obadiah":"16",
             "Prophets/Jonah":"17","Prophets/Micah":"18","Prophets/Nahum":"19","Prophets/Habakkuk":"20",
             "Prophets/Zephaniah":"21","Prophets/Haggai":"22","Prophets/Zechariah":"23","Prophets/Malachi":"24",
-            "Writings/1Chronicles":"25a","Writings/2Chronicles":"25b","Writings/Psalms":"26","Writings/Job":"27",
-            "Writings/Proverbs":"28","Writings/Ruth":"29","Writings/Song of songs":"30","Writings/Ecclesiastes":"31",
+            "Writings/I Chronicles":"25a","Writings/II Chronicles":"25b","Writings/Psalms":"26","Writings/Job":"27",
+            "Writings/Proverbs":"28","Writings/Ruth":"29","Writings/Song of Songs":"30","Writings/Ecclesiastes":"31",
             "Writings/Lamentations":"32","Writings/Esther":"33","Writings/Daniel":"34","Writings/Ezra":"35a","Writings/Nehemia":"35b"
         }
 
