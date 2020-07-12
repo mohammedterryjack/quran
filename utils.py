@@ -7,7 +7,7 @@ from numpy import argsort
 ############   LOCAL IMPORTS   ###########################
 from data_analysis.semantic_featuriser import cosine_similarity_for_sets
 ##########################################################
-class AudioFiles:
+class QuranAudioFiles:
     def __init__(self) -> None:
         self.URL = "https://raw.githubusercontent.com/mohammedterryjack/quran/master/"
         self.PATH = "data/audio"
@@ -38,6 +38,25 @@ class AudioFiles:
         PATH_AND_FILENAME = self.local_filename(verse_name=verse_name, reciter=reciter)
         return f"{self.URL}/{PATH_AND_FILENAME}?raw=true"
 
+class BibleAudioFiles:
+    def __init__(self) -> None:
+        self.URL = "http://www.mechon-mamre.org/mp3"
+        self.AUDIO_FORMAT = "mp3"
+        self.BOOKS = {
+            "Torah/Genesis":"01","Torah/Exodus":"02","Torah/Leviticus":"03","Torah/Numbers":"04","Torah/Deuteronomy":"05",
+            "Prophets/Joshua":"06","Prophets/Judges":"07","Prophets/1Samuel":"08a","Prophets/2Samuel":"08b",
+            "Prophets/1Kings":"09a","Prophets/2Kings":"09b","Prophets/Isaiah":"10","Prophets/Jeremiah":"11",
+            "Prophets/Ezekiel":"12","Prophets/Hosea":"13","Prophets/Joel":"14","Prophets/Amos":"15","Prophets/Obadiah":"16",
+            "Prophets/Jonah":"17","Prophets/Micah":"18","Prophets/Nahum":"19","Prophets/Habakkuk":"20",
+            "Prophets/Zephaniah":"21","Prophets/Haggai":"22","Prophets/Zechariah":"23","Prophets/Malachi":"24",
+            "Writings/1Chronicles":"25a","Writings/2Chronicles":"25b","Writings/Psalms":"26","Writings/Job":"27",
+            "Writings/Proverbs":"28","Writings/Ruth":"29","Writings/Song of songs":"30","Writings/Ecclesiastes":"31",
+            "Writings/Lamentations":"32","Writings/Esther":"33","Writings/Daniel":"34","Writings/Ezra":"35a","Writings/Nehemia":"35b"
+        }
+
+    def url(self, book_name:str, chapter:int) -> str:
+        """ get url of audio file for book """
+        return f"{self.URL}/t{self.BOOKS.get(book_name)}{chapter.zfill(2)}"
 
 def semantic_features_for_verse(verse:str, verse_names:List[str], quran_features:dict) -> Set[str]:
     index = str(VERSE_NAMES.index(verse))
@@ -76,7 +95,8 @@ def semantically_similar_verses_to_query(query_features:Set[str],quran_features:
     return list(map(lambda index:verse_names[index], verse_indexes))
 
 
-QURAN_AUDIO = AudioFiles()
+QURAN_AUDIO = QuranAudioFiles()
+BIBLE_AUDIO = BibleAudioFiles()
 QURAN = read_json("data/mushaf/quran.json")
 QURAN_EN = read_json("data/mushaf/quran_en.json")
 QURAN_AR = read_json("data/mushaf/quran_ar.json")
