@@ -6,8 +6,7 @@ from utils import (
     QURAN_AUDIO, QURAN, QURAN_EN, QURAN_AR, QURAN_FEATURES,
     VERSE_NAMES,semantic_features_for_verse,arabic_verse, 
     english_translation_of_verse, similar_verses_to_verse,
-    semantically_similar_verses_to_query,MAIN_PAGE_TEMPLATE,
-    BIBLE_AUDIO
+    semantically_similar_verses_to_query,MAIN_PAGE_TEMPLATE
 )
 from data_analysis.semantic_featuriser import set_of_semantic_features_for_sentence
 ##########################################################
@@ -45,10 +44,6 @@ def display_verse(verse:str):
         ).replace(
             "?","?<br><br>"
         ),
-        bible_audio=BIBLE_AUDIO.url(
-            book_name= "Prophets/Job",
-            chapter=1
-        )
     )
 
 if __name__ == '__main__':
@@ -76,3 +71,7 @@ if __name__ == '__main__':
 #             print("\t",related_verse)
 #             print("\t",english_translation_of_verse(verse=related_verse,quran_en=QURAN_EN))
 #             print("\t",arabic_verse(verse=verse,quran_ar=QURAN_AR))
+        # bible_audio=BIBLE_AUDIO.url(
+        #     book_name= "Prophets/Habakkuk",
+        #     chapter=2
+        # )
