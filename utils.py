@@ -54,9 +54,9 @@ class BibleAudioFiles:
             "Writings/Lamentations":"32","Writings/Esther":"33","Writings/Daniel":"34","Writings/Ezra":"35a","Writings/Nehemia":"35b"
         }
 
-    def url(self, book_name:str, chapter:int) -> str:
+    def url(self, cannon:str, book:str, chapter:int) -> str:
         """ get url of audio file for book """
-        return f"{self.URL}/t{self.BOOKS.get(book_name)}{str(chapter).zfill(2)}.{self.AUDIO_FORMAT}"
+        return f"{self.URL}/t{self.BOOKS.get(f'{cannon.title()}/{book.title()}')}{str(chapter).zfill(2)}.{self.AUDIO_FORMAT}"
 
 def semantic_features_for_verse(verse:str, verse_names:List[str], quran_features:dict) -> Set[str]:
     index = str(VERSE_NAMES.index(verse))
@@ -95,6 +95,25 @@ def semantically_similar_verses_to_query(query_features:Set[str],quran_features:
     return list(map(lambda index:verse_names[index], verse_indexes))
 
 
+def get_bible(language_code:str) -> dict:
+    bible = {}
+    for book_name in BIBLE_AUDIO.BOOKS:
+        directory,book = book_name.lower().split("/")
+        if directory not in bible:
+            bible[directory] = {}
+        path = f"data/tanakh/{directory}/{book}_{language_code}.json"
+        try:
+            with open(path,encoding='utf-8') as json_file:
+                BOOK = load(json_file)["text"]
+            bible[directory][book] = BOOK
+        except:
+            print(directory,book)
+    return bible 
+
+
+def get_biblical_verse(bible_translation:dict, cannon:str, book:str, chapter:int, verse:int) -> str:
+    return bible_translation[cannon][book][chapter-1][verse-1]
+
 QURAN_AUDIO = QuranAudioFiles()
 BIBLE_AUDIO = BibleAudioFiles()
 QURAN = read_json("data/mushaf/quran.json")
@@ -103,5 +122,9 @@ QURAN_AR = read_json("data/mushaf/quran_ar.json")
 with open("data/mushaf/quran_features.json") as json_file:
     QURAN_FEATURES = load(json_file)
 VERSE_NAMES = list(QURAN_EN.keys())
-with open("html_templates/main_page.html") as html_file:
-    MAIN_PAGE_TEMPLATE = html_file.read()
+with open("html_templates/quran_verse.html") as html_file:
+    QURAN_VERSE_TEMPLATE = html_file.read()
+with open("html_templates/bible_verse.html") as html_file:
+    BIBLE_VERSE_TEMPLATE = html_file.read()
+BIBLE_EN = get_bible(language_code="en")
+BIBLE_HE = get_bible(language_code="he")
