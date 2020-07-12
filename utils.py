@@ -16,6 +16,12 @@ QURAN_AR = read_json("data/quran_ar.json")
 with open("data/quran_features.json") as json_file:
     QURAN_FEATURES = load(json_file)
 VERSE_NAMES = list(QURAN_EN.keys())
+MAIN_PAGE_HTML_TEMPLATE = """
+{verse_number}
+
+{verse_in_arabic}
+{verse_in_english}
+"""
 
 def semantic_features_for_verse(verse:str, verse_names:List[str], quran_features:dict) -> Set[str]:
     index = str(VERSE_NAMES.index(verse))
