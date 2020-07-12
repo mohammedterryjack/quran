@@ -30,6 +30,7 @@ Cross-reference verses of the  Quran (in Arabic and English) with Jewish source 
 - ✅ semantic search words/strings across quran verses
 - ✅ search verse of quran against quran 
 - ✅ display what features the match was based on 
+- ✅ display arabic verse
 - search verse of quran against sefaria
 
 ### Deployment (python3 - flask, heroku)
@@ -39,3 +40,4 @@ Cross-reference verses of the  Quran (in Arabic and English) with Jewish source 
 
 ### Frontend (css/html/js)
 - implement mock design frontend
+- play verse

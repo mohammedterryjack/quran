@@ -13,6 +13,7 @@ from data_analysis.semantic_featuriser import (
 
 quran = read_json("data/quran.json")
 quran_en = read_json("data/quran_en.json")
+quran_ar = read_json("data/quran_ar.json")
 with open("data/quran_features.json") as json_file:
     quran_features = load(json_file)
 
@@ -30,6 +31,9 @@ def list_english_translations_for_all_verses(quran_en:dict) -> Iterable[Tuple[st
     for verse in quran_en:
         for translator in range(0,17):
             yield verse,quran_en[verse]["ENGLISH"][translator]
+
+def arabic_verse(verse:str,quran_ar:dict) -> str:
+    return quran_ar[verse]["ARABIC"]
 
 def english_translation_of_verse(verse:str,quran_en:dict,translator:Optional[int]=8) -> str:
     parallel_translations_of_verse = quran_en[verse]["ENGLISH"]
@@ -71,3 +75,4 @@ while True:
         for related_verse in similar_verses_to_verse(verse=verse,quran=quran):
             print("\t",related_verse)
             print("\t",english_translation_of_verse(verse=related_verse,quran_en=quran_en))
+            print("\t",arabic_verse(verse=verse,quran_ar=quran_ar))

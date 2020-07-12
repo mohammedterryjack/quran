@@ -10,6 +10,11 @@ from data_analysis.semantic_featuriser import (
     cosine_similarity_for_sets
 )
 ##########################################################
+class RawQuranArabic:
+    _PATH = "raw_data/{filename}.txt"
+    _FILENAME = "quran_arabic"
+    _DELIMITER = "|"
+
 class RawQuranEnglishParallels:
     _PATH = "raw_data/{filename}.txt"
     _FILENAME = "quran_english_translations"
@@ -150,8 +155,36 @@ def analyse_quran_english_parallels_file() -> DataFrame:
     )
     return data.set_index("VERSE")
 
+
+def analyse_quran_arabic_file() -> DataFrame:
+    with open(RawQuranArabic._PATH.format(
+            filename=RawQuranArabic._FILENAME,
+        ),
+        encoding="utf-8",
+    ) as arabic_quran_file:
+        raw_lines = arabic_quran_file.readlines()
+    
+    verse_names = []
+    quran_ar = []
+    for line in raw_lines:
+        try:
+            chapter,verse,arabic = line.split(RawQuranArabic._DELIMITER)
+            verse_names.append(f"{chapter}:{verse}")
+            quran_ar.append(arabic.strip())
+        except:
+            pass
+    data = DataFrame(
+        {
+            "VERSE":verse_names,
+            "ARABIC":quran_ar
+        }
+    )
+    return data.set_index("VERSE")
+
+
 def save_searchable_quran_to_file(path:str, arabic_feature_sets:Dict[str,Set[str]], top_n_search_results:int) -> None:
     """ this stores the quran in a format that can be queried for similar verses to json files (verse similarities are pre-computed) """
+    analyse_quran_arabic_file().to_json(f"{path}/quran_ar.json",orient="index")
     english_quran = analyse_quran_english_parallels_file()
     english_quran.to_json(f"{path}/quran_en.json", orient='index')
     quran = DataFrame(
