@@ -31,7 +31,19 @@ def display_verse(verse:str):
         verse_in_english=english_translation_of_verse(
             verse=verse,
             quran_en=QURAN_EN
-        ).replace(",",",<br>").replace(".",".<br><br>")
+        ).replace(
+            ",",",<br>"
+        ).replace(
+            ";",";<br>"
+        ).replace(
+            ":",":<br>"
+        ).replace(
+            ".",".<br><br>"
+        ).replace(
+            "!","!<br><br>"
+        ).replace(
+            "?","?<br><br>"
+        )
     )
 
 if __name__ == '__main__':
