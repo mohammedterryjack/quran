@@ -6,30 +6,61 @@ from utils import (
     QURAN_AUDIO, QURAN, QURAN_EN, QURAN_AR, QURAN_FEATURES,
     VERSE_NAMES,semantic_features_for_verse,arabic_verse, 
     english_translation_of_verse, similar_verses_to_verse,
-    semantically_similar_verses_to_query,MAIN_PAGE_TEMPLATE
+    semantically_similar_verses_to_query,QURAN_VERSE_TEMPLATE,
+    BIBLE_VERSE_TEMPLATE,BIBLE_AUDIO,BIBLE_EN,BIBLE_HE,get_biblical_verse
 )
 from data_analysis.semantic_featuriser import set_of_semantic_features_for_sentence
 ##########################################################
 app = Flask(__name__)
 
-@app.route('/<verse>')
-def display_verse(verse:str):
-    return MAIN_PAGE_TEMPLATE.format(
-        verse_number=verse,
+@app.route('/bible/<cannon>/<book>/<chapter>/<verse>')
+def display_bible_verse(cannon:str,book:str,chapter:str,verse:str) -> str:
+    return BIBLE_VERSE_TEMPLATE.format(
+        cannon=cannon,
+        book=book,
+        chapter=chapter,
+        verse=verse,
+        verse_in_english=get_biblical_verse(
+            bible_translation=BIBLE_EN,
+            cannon=cannon,
+            book=book,
+            chapter=int(chapter),
+            verse=int(verse)
+        ),
+        verse_in_hebrew=get_biblical_verse(
+            bible_translation=BIBLE_HE,
+            cannon=cannon,
+            book=book,
+            chapter=int(chapter),
+            verse=int(verse)
+        ),
+        audio_hebrew=BIBLE_AUDIO.url(
+            cannon=cannon,
+            book=book,
+            chapter=chapter
+        )
+    )
+
+@app.route('/quran/<chapter>/<verse>')
+def display_quranic_verse(chapter:str,verse:str) -> str:
+    verse_key = f"{chapter}:{verse}"
+    return QURAN_VERSE_TEMPLATE.format(
+        chapter=chapter,
+        verse=verse,
         verse_audio_hafs=QURAN_AUDIO.url(
-            verse_name=verse,
+            verse_name=verse_key,
             reciter=0
         ),
         verse_audio_warsh=QURAN_AUDIO.url(
-            verse_name=verse,
+            verse_name=verse_key,
             reciter=1
         ),
         verse_in_arabic=arabic_verse(
-            verse=verse,
+            verse=verse_key,
             quran_ar=QURAN_AR
         ),
         verse_in_english=english_translation_of_verse(
-            verse=verse,
+            verse=verse_key,
             quran_en=QURAN_EN
         ).replace(
             ",",",<br>"
@@ -71,7 +102,3 @@ if __name__ == '__main__':
 #             print("\t",related_verse)
 #             print("\t",english_translation_of_verse(verse=related_verse,quran_en=QURAN_EN))
 #             print("\t",arabic_verse(verse=verse,quran_ar=QURAN_AR))
-        # bible_audio=BIBLE_AUDIO.url(
-        #     book_name= "Prophets/Habakkuk",
-        #     chapter=2
-        # )
