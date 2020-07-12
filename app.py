@@ -39,6 +39,8 @@ def display_bible_verse(cannon:str,book:str,chapter:str,verse:str) -> str:
 @app.route('/quran/<chapter>/<verse>')
 def display_quranic_verse(chapter:str,verse:str) -> str:
     verse_key = f"{chapter}:{verse}"
+    next_verse_key = QURAN.next_verse(verse_key)
+    previous_verse_key = QURAN.previous_verse(verse_key)
     return QURAN_VERSE_TEMPLATE.format(
         chapter=chapter,
         verse=verse,
@@ -50,8 +52,10 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
             sentence=QURAN.english_translation_of_verse(verse_key)
         ),
         related_verses='<br>'.join(QURAN.similar_verses_to_verse(verse_key).to_list()),
-        next_verse=QURAN.next_verse(verse_key),
-        previous_verse=QURAN.previous_verse(verse_key)
+        next_verse=next_verse_key,
+        previous_verse=previous_verse_key,
+        next_page_url = f"/quran/{next_verse_key.replace(':','/')}",
+        previous_page_url = f"/quran/{previous_verse_key.replace(':','/')}"
     )
 
 if __name__ == '__main__':
