@@ -49,7 +49,9 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
         verse_in_english=format_sentence_for_html(
             sentence=QURAN.english_translation_of_verse(verse_key)
         ),
-        related_verses='<br>'.join(QURAN.similar_verses_to_verse(verse_key).to_list())
+        related_verses='<br>'.join(QURAN.similar_verses_to_verse(verse_key).to_list()),
+        next_verse=QURAN.next_verse(verse_key),
+        previous_verse=QURAN.previous_verse(verse_key)
     )
 
 if __name__ == '__main__':

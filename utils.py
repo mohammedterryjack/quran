@@ -48,6 +48,18 @@ class QuranText:
         self.VERSE_NAMES = list(self.ENGLISH.keys())
         self.CHAPTER_NAMES = self._get_surah_names()
 
+    def next_verse(self, verse:str) -> str:  
+        return self._increase_verse_by_n(verse=verse,n=1)
+
+    def previous_verse(self, verse:str) -> str:  
+        return self._increase_verse_by_n(verse=verse,n=-1)
+
+    def _increase_verse_by_n(self, verse:str,n:int) -> str:
+        verse_index = self.VERSE_NAMES.index(verse)
+        verse_index += n
+        verse_index %= len(self.VERSE_NAMES)
+        return self.VERSE_NAMES[verse_index]
+
     def _get_surah_names(self) -> List[str]:
         surah_names = []
         for index in range(1,115):
