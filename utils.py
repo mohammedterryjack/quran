@@ -56,7 +56,7 @@ class BibleAudioFiles:
 
     def url(self, cannon:str, book:str, chapter:int) -> str:
         """ get url of audio file for book """
-        return f"{self.URL}/t{self.BOOKS.get(f'{cannon.title()}/{book.title()}')}{str(chapter).zfill(2)}.{self.AUDIO_FORMAT}"
+        return f"{self.URL}/t{self.BOOKS.get(f'{cannon}/{book}')}{str(chapter).zfill(2)}.{self.AUDIO_FORMAT}"
 
 def semantic_features_for_verse(verse:str, verse_names:List[str], quran_features:dict) -> Set[str]:
     index = str(VERSE_NAMES.index(verse))
