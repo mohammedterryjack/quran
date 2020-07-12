@@ -1,5 +1,5 @@
 ############   NATIVE IMPORTS  ###########################
-from typing import List,Iterable,Set,Optional,Tuple
+from typing import List,Iterable,Set,Tuple
 from json import load
 ############ INSTALLED IMPORTS ###########################
 from pandas import read_json
@@ -7,7 +7,7 @@ from numpy import argsort
 ############   LOCAL IMPORTS   ###########################
 from data_analysis.semantic_featuriser import cosine_similarity_for_sets
 ##########################################################
-class QuranAudioFiles:
+class QuranAudio:
     def __init__(self) -> None:
         self.URL = "https://raw.githubusercontent.com/mohammedterryjack/quran/master/"
         self.PATH = "data/audio"
@@ -38,10 +38,53 @@ class QuranAudioFiles:
         PATH_AND_FILENAME = self.local_filename(verse_name=verse_name, reciter=reciter)
         return f"{self.URL}/{PATH_AND_FILENAME}?raw=true"
 
-class BibleAudioFiles:
+class QuranText:
     def __init__(self) -> None:
-        self.URL = "http://www.mechon-mamre.org/mp3"
-        self.AUDIO_FORMAT = "mp3"
+        self.CROSS_REFERENCES = read_json("data/mushaf/quran.json")
+        self.ENGLISH = read_json("data/mushaf/quran_en.json")
+        self.ARABIC = read_json("data/mushaf/quran_ar.json")
+        with open("data/mushaf/quran_features.json") as json_file:
+            self.FEATURES = load(json_file)
+        self.VERSE_NAMES = list(self.ENGLISH.keys())
+        self.CHAPTER_NAMES = None #TODO
+
+    def semantic_features_for_verse(self, verse:str) -> Set[str]:
+        index = str(self.VERSE_NAMES.index(verse))
+        return set(self.FEATURES[index])
+
+    def _semantic_features(self) -> Iterable[Set[str]]:
+        for features in self.FEATURES.values():
+            yield set(features)
+        
+    def list_english_translations_for_all_verses(self) -> Iterable[Tuple[str,str]]:
+        for verse in self.ENGLISH:
+            for translator in range(0,17):
+                yield verse,self.ENGLISH[verse]["ENGLISH"][translator]
+
+    def arabic_verse(self,verse:str) -> str:
+        return self.ARABIC[verse]["ARABIC"]
+
+    def english_translation_of_verse(self,verse:str,translator:int=8) -> str:
+        return self.ENGLISH[verse]["ENGLISH"][max(min(translator,17),0)]
+
+    def similar_verses_to_verse(self,verse:str, top_n:int=3) -> List[str]:
+        return self.CROSS_REFERENCES[verse][:max(min(top_n,10),0)]
+
+    def semantically_similar_verses_to_query(self,query_features:Set[str],top_n:int=3) -> List[str]:
+        semantic_scores = list(
+            map(
+                lambda verse_features: cosine_similarity_for_sets(
+                    features_a=query_features,
+                    features_b=verse_features
+                ),
+                self._semantic_features()
+            )
+        )
+        verse_indexes = argsort(semantic_scores)[:-top_n-1:-1]
+        return list(map(lambda index:self.VERSE_NAMES[index], verse_indexes))
+
+class Bible:
+    def __init__(self) -> None:
         self.BOOKS = {
             "torah/genesis":"01","torah/exodus":"02","torah/leviticus":"03","torah/numbers":"04","torah/deuteronomy":"05",
             "prophets/joshua":"06","prophets/judges":"07","prophets/i%20samuel":"08a","prophets/ii%20samuel":"08b",
@@ -51,85 +94,43 @@ class BibleAudioFiles:
             "prophets/zephaniah":"21","prophets/haggai":"22","prophets/zechariah":"23","prophets/malachi":"24",
             "writings/i%20chronicles":"25a","writings/ii%20chronicles":"25b","writings/psalms":"26","writings/job":"27",
             "writings/proverbs":"28","writings/ruth":"29","writings/song%20of%20songs":"30","writings/ecclesiastes":"31",
-            "writings/lamentations":"32","writings/esther":"33","writings/daniel":"34","writings/ezra":"35a","writings/nehemia":"35b"
+            "writings/lamentations":"32","writings/esther":"33","writings/daniel":"34","writings/ezra":"35a","writings/nehemiah":"35b"
         }
+
+
+class BibleAudio(Bible):
+    def __init__(self) -> None:
+        super().__init__() 
+        self.URL = "http://www.mechon-mamre.org/mp3"
+        self.AUDIO_FORMAT = "mp3"
 
     def url(self, cannon:str, book:str, chapter:int) -> str:
         """ get url of audio file for book """
         return f"{self.URL}/t{self.BOOKS.get(f'{cannon}/{book}')}{str(chapter).zfill(2)}.{self.AUDIO_FORMAT}"
 
-def semantic_features_for_verse(verse:str, verse_names:List[str], quran_features:dict) -> Set[str]:
-    index = str(VERSE_NAMES.index(verse))
-    return set(quran_features[index])
+class BibleText(Bible):
+    def __init__(self) -> None:
+        super().__init__() 
+        self.PATH = "data/tanakh/{directory}/{book}_{language_code}.json"
+        self.ENGLISH = self._load(language_code="en")
+        self.HEBREW = self._load(language_code="he")
 
-def semantic_features(quran_features:dict) -> Iterable[Set[str]]:
-    for index in quran_features:
-        yield set(quran_features[index])
-    
-def list_english_translations_for_all_verses(quran_en:dict) -> Iterable[Tuple[str,str]]:
-    for verse in quran_en:
-        for translator in range(0,17):
-            yield verse,quran_en[verse]["ENGLISH"][translator]
-
-def arabic_verse(verse:str,quran_ar:dict) -> str:
-    return quran_ar[verse]["ARABIC"]
-
-def english_translation_of_verse(verse:str,quran_en:dict,translator:Optional[int]=8) -> str:
-    parallel_translations_of_verse = quran_en[verse]["ENGLISH"]
-    return parallel_translations_of_verse[max(min(translator,17),0)] if translator else parallel_translations_of_verse
-
-def similar_verses_to_verse(verse:str, quran:dict, top_n:int=3) -> List[str]:
-    return quran[verse][:max(min(top_n,10),0)]
-
-def semantically_similar_verses_to_query(query_features:Set[str],quran_features:dict,verse_names:List[str],top_n:int=3) -> List[str]:
-    semantic_scores = list(
-        map(
-            lambda verse_features: cosine_similarity_for_sets(
-                features_a=query_features,
-                features_b=verse_features
-            ),
-            semantic_features(quran_features)
-        )
-    )
-    verse_indexes = argsort(semantic_scores)[:-top_n-1:-1]
-    return list(map(lambda index:verse_names[index], verse_indexes))
-
-
-def get_bible(language_code:str) -> dict:
-    bible = {}
-    for book_name in BIBLE_AUDIO.BOOKS:
-        directory,book = book_name.lower().split("/")
-        if directory not in bible:
-            bible[directory] = {}
-        path = f"data/tanakh/{directory}/{book}_{language_code}.json"
-        try:
+    def _load(self, language_code:str) -> dict:
+        bible = {}
+        for book_name in self.BOOKS:
+            directory,book = book_name.lower().split("/")
+            if directory not in bible:
+                bible[directory] = {}
+            path = self.PATH.format(
+                directory=directory,
+                book=book,
+                language_code=language_code
+            )
             with open(path,encoding='utf-8') as json_file:
-                BOOK = load(json_file)["text"]
-            bible[directory][book] = BOOK
-        except:
-            print(directory,book)
-    return bible 
+                bible[directory][book] = load(json_file)["text"]
+        return bible 
 
+    def verse(self, language_code:str, cannon:str, book:str, chapter:int, verse:int) -> str:
+        version = (self.HEBREW,self.ENGLISH)[int(language_code=="en")]
+        return version[cannon][book][chapter-1][verse-1] 
 
-def get_biblical_verse(bible_translation:dict, cannon:str, book:str, chapter:int, verse:int) -> str:
-    return bible_translation[cannon][book][chapter-1][verse-1]
-
-def format_sentence_for_html(sentence:str) -> str:
-    return sentence.replace(",",",<br>").replace(";",";<br>").replace(
-        ":",":<br>").replace(".",".<br><br>").replace(
-        "!","!<br><br>").replace("?","?<br><br>")
-
-QURAN_AUDIO = QuranAudioFiles()
-BIBLE_AUDIO = BibleAudioFiles()
-QURAN = read_json("data/mushaf/quran.json")
-QURAN_EN = read_json("data/mushaf/quran_en.json")
-QURAN_AR = read_json("data/mushaf/quran_ar.json")
-with open("data/mushaf/quran_features.json") as json_file:
-    QURAN_FEATURES = load(json_file)
-VERSE_NAMES = list(QURAN_EN.keys())
-with open("html_templates/quran_verse.html") as html_file:
-    QURAN_VERSE_TEMPLATE = html_file.read()
-with open("html_templates/bible_verse.html") as html_file:
-    BIBLE_VERSE_TEMPLATE = html_file.read()
-BIBLE_EN = get_bible(language_code="en")
-BIBLE_HE = get_bible(language_code="he")

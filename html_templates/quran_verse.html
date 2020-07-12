@@ -4,7 +4,7 @@
     <title>Qur'an</title> 
 </head> 
 <body> 
-    <p>Surah {chapter} - Ayah {verse}</p>
+    <p>Surah {chapter_name} - {chapter}:{verse}</p>
     <p><small>{verse_in_english}</small></p>
     <p>{verse_in_arabic}</p> 
     <audio controls>
@@ -14,5 +14,6 @@
         <source src="{verse_audio_warsh}" type="audio/mpeg">
     </audio>
     <p><small>Recitation <i>(Hafs & Warsh)</i></small></p>
+    <p>{related_verses}</p>
 </body> 
 </html> 
