@@ -42,14 +42,14 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
     return QURAN_VERSE_TEMPLATE.format(
         chapter=chapter,
         verse=verse,
-        chapter_name=QURAN.CHAPTER_NAMES.get(chapter),
+        chapter_name=QURAN.CHAPTER_NAMES[int(chapter)],
         verse_audio_hafs=QURAN_AUDIO.url(verse_key,0),
         verse_audio_warsh=QURAN_AUDIO.url(verse_key,1),
         verse_in_arabic=QURAN.arabic_verse(verse_key),
         verse_in_english=format_sentence_for_html(
             sentence=QURAN.english_translation_of_verse(verse_key)
         ),
-        related_verses=QURAN.similar_verses_to_verse(verse)
+        related_verses='<br>'.join(QURAN.similar_verses_to_verse(verse_key).to_list())
     )
 
 if __name__ == '__main__':

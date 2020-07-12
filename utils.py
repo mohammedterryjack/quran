@@ -20,7 +20,7 @@ class QuranAudio:
         RECITER = (
             self.HAFS_FILES, 
             self.WARSH_FILES
-        )[min(max(reciter,0),2)]
+        )[min(max(reciter,0),1)]
         try:
             chapter,verse = verse_name.split(":")
             VERSE_NAME = f"{chapter.zfill(3)}{verse.zfill(3)}"
@@ -46,7 +46,14 @@ class QuranText:
         with open("data/mushaf/quran_features.json") as json_file:
             self.FEATURES = load(json_file)
         self.VERSE_NAMES = list(self.ENGLISH.keys())
-        self.CHAPTER_NAMES = None #TODO
+        self.CHAPTER_NAMES = self._get_surah_names()
+
+    def _get_surah_names(self) -> List[str]:
+        surah_names = []
+        for index in range(1,115):
+            with open(f"raw_data/quran_surah_names/surah_{index}.json", encoding='utf-8') as json_file:
+                surah_names.append(load(json_file)["name"])
+        return surah_names
 
     def semantic_features_for_verse(self, verse:str) -> Set[str]:
         index = str(self.VERSE_NAMES.index(verse))
@@ -56,11 +63,6 @@ class QuranText:
         for features in self.FEATURES.values():
             yield set(features)
         
-    def list_english_translations_for_all_verses(self) -> Iterable[Tuple[str,str]]:
-        for verse in self.ENGLISH:
-            for translator in range(0,17):
-                yield verse,self.ENGLISH[verse]["ENGLISH"][translator]
-
     def arabic_verse(self,verse:str) -> str:
         return self.ARABIC[verse]["ARABIC"]
 
