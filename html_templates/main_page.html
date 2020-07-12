@@ -4,14 +4,15 @@
     <title>Bold</title> 
 </head> 
 <body> 
-    <p>{verse_number}) {verse_in_english}</p>
+    <p>{verse_number}</p>
+    <p><small>{verse_in_english}</small></p>
     <p>{verse_in_arabic}</p> 
-    <p>Recitation (Hafs & Warsh)</p>
     <audio controls>
         <source src="{verse_audio_hafs}" type="audio/mpeg">
     </audio>
     <audio controls>
         <source src="{verse_audio_warsh}" type="audio/mpeg">
     </audio>
+    <p><small>Recitation <i>(Hafs & Warsh)</i></small></p>
 </body> 
 </html> 
