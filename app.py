@@ -17,8 +17,8 @@ app = Flask(__name__)
 @app.route('/bible/<cannon>/<book>/<chapter>/<verse>')
 def display_bible_verse(cannon:str,book:str,chapter:str,verse:str) -> str:
     return BIBLE_VERSE_TEMPLATE.format(
-        cannon=cannon,
-        book=book,
+        cannon=cannon.title(),
+        book=book.title(),
         chapter=chapter,
         verse=verse,
         verse_in_english=format_sentence_for_html(
