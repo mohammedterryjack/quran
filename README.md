@@ -36,12 +36,12 @@ Cross-reference verses of the  Quran (in Arabic and English) with Jewish source 
 ### Deployment (python3 - flask, heroku)
 - ✅ setup a basic flask
 - ✅ search by verse, 
-- search by chapter, 
-- search by string, 
+- ✅ search by chapter, 
 - ✅ display arabic 
 - ✅ display english parallel
 - ✅ play audio (arabic)
 - ✅ play audio (bible)
+- search by string, 
 - host backend on heroku
 
 ### Frontend (css/html/js)

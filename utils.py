@@ -43,15 +43,15 @@ class BibleAudioFiles:
         self.URL = "http://www.mechon-mamre.org/mp3"
         self.AUDIO_FORMAT = "mp3"
         self.BOOKS = {
-            "Torah/Genesis":"01","Torah/Exodus":"02","Torah/Leviticus":"03","Torah/Numbers":"04","Torah/Deuteronomy":"05",
-            "Prophets/Joshua":"06","Prophets/Judges":"07","Prophets/I Samuel":"08a","Prophets/II Samuel":"08b",
-            "Prophets/I Kings":"09a","Prophets/II Kings":"09b","Prophets/Isaiah":"10","Prophets/Jeremiah":"11",
-            "Prophets/Ezekiel":"12","Prophets/Hosea":"13","Prophets/Joel":"14","Prophets/Amos":"15","Prophets/Obadiah":"16",
-            "Prophets/Jonah":"17","Prophets/Micah":"18","Prophets/Nahum":"19","Prophets/Habakkuk":"20",
-            "Prophets/Zephaniah":"21","Prophets/Haggai":"22","Prophets/Zechariah":"23","Prophets/Malachi":"24",
-            "Writings/I Chronicles":"25a","Writings/II Chronicles":"25b","Writings/Psalms":"26","Writings/Job":"27",
-            "Writings/Proverbs":"28","Writings/Ruth":"29","Writings/Song of Songs":"30","Writings/Ecclesiastes":"31",
-            "Writings/Lamentations":"32","Writings/Esther":"33","Writings/Daniel":"34","Writings/Ezra":"35a","Writings/Nehemia":"35b"
+            "torah/genesis":"01","torah/exodus":"02","torah/leviticus":"03","torah/numbers":"04","torah/deuteronomy":"05",
+            "prophets/joshua":"06","prophets/judges":"07","prophets/i%20samuel":"08a","prophets/ii%20samuel":"08b",
+            "prophets/i%20kings":"09a","prophets/ii%20kings":"09b","prophets/isaiah":"10","prophets/jeremiah":"11",
+            "prophets/ezekiel":"12","prophets/hosea":"13","prophets/joel":"14","prophets/amos":"15","prophets/obadiah":"16",
+            "prophets/jonah":"17","prophets/micah":"18","prophets/nahum":"19","prophets/habakkuk":"20",
+            "prophets/zephaniah":"21","prophets/haggai":"22","prophets/zechariah":"23","prophets/malachi":"24",
+            "writings/i%20chronicles":"25a","writings/ii%20chronicles":"25b","writings/psalms":"26","writings/job":"27",
+            "writings/proverbs":"28","writings/ruth":"29","writings/song%20of%20songs":"30","writings/ecclesiastes":"31",
+            "writings/lamentations":"32","writings/esther":"33","writings/daniel":"34","writings/ezra":"35a","writings/nehemia":"35b"
         }
 
     def url(self, cannon:str, book:str, chapter:int) -> str:
