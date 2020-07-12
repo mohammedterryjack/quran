@@ -1,7 +1,7 @@
-DIRECTORY OR FILENAME,USAGE,SOURCE
-quran_arabic.txt,Arabic text of the Quran,http://tanzil.net/download/
-audio/*,Arabic audio files of the Quran,https://everyayah.com/data/status.php
-quran_arabic_grammar.txt,Morphological Annotations of the Quran,http://corpus.quran.com/wordbyword.jsp
-quran_english_translations.txt,English Translations of the Quran,Various Online
-quran_surah_names/*,Chapter/Surah names of the Quran,https://github.com/semarketir/quranjson
-sefaria/*,Biblical source texts in English and Hebrew,https://github.com/Sefaria/Sefaria-Export
+FILENAME,USAGE,SOURCE
+data/quran_arabic.txt,Arabic text of the Quran,http://tanzil.net/download/
+data/audio/*,Arabic audio files of the Quran,https://everyayah.com/data/status.php
+data/quran_arabic_grammar.txt,Morphological Annotations of the Quran,http://corpus.quran.com/wordbyword.jsp
+data/quran_english_translations.txt,English Translations of the Quran,Various Online
+data/quran_surah_names/*,Chapter/Surah names of the Quran,https://github.com/semarketir/quranjson
+data/sefaria/*,Biblical source texts in English and Hebrew,https://github.com/Sefaria/Sefaria-Export
