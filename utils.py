@@ -77,10 +77,10 @@ def semantically_similar_verses_to_query(query_features:Set[str],quran_features:
 
 
 QURAN_AUDIO = AudioFiles()
-QURAN = read_json("data/quran.json")
-QURAN_EN = read_json("data/quran_en.json")
-QURAN_AR = read_json("data/quran_ar.json")
-with open("data/quran_features.json") as json_file:
+QURAN = read_json("data/mushaf/quran.json")
+QURAN_EN = read_json("data/mushaf/quran_en.json")
+QURAN_AR = read_json("data/mushaf/quran_ar.json")
+with open("data/mushaf/quran_features.json") as json_file:
     QURAN_FEATURES = load(json_file)
 VERSE_NAMES = list(QURAN_EN.keys())
 with open("html_templates/main_page.html") as html_file:
