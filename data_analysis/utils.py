@@ -30,27 +30,7 @@ class RawQuranArabicGrammarCSVHeaders:
     FEATURES = "FEATURES"
     _FEATURE_DELIMITER = "|"
     _LEMMA_PREFIX = "LEM:"
-    _ROOT_PREFIX = "ROOT:"
-
-class AudioFiles:
-    def __init__(self) -> None:
-        self.PATH = "data/audio"
-        self.AUDIO_FORMAT = "mp3"
-        self.WARSH_FILES = "warsh_aljazari"
-        self.HAFS_FILES = "hafs_alafasy"
-
-    def filename(self, verse_name:str, reciter:int) -> str:
-        RECITER = (
-            self.HAFS_FILES, 
-            self.WARSH_FILES
-        )[min(max(reciter,0),2)]
-        try:
-            chapter,verse = verse_name.split(":")
-            VERSE_NAME = f"{chapter.zfill(3)}{verse.zfill(3)}"
-        except:
-            VERSE_NAME = "audhubillah"
-        return f"{self.PATH}/{RECITER}/{VERSE_NAME}.{self.AUDIO_FORMAT}"
-        
+    _ROOT_PREFIX = "ROOT:"       
 
 def analyse_quran_arabic_grammar_file() -> DataFrame:
     """ 
