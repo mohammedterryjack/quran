@@ -9,8 +9,10 @@ from data_analysis.semantic_featuriser import (
     set_of_semantic_features_for_sentence,
     cosine_similarity_for_sets
 )
+from data_analysis.utils import AudioFiles
 ##########################################################
 
+quran_audio = AudioFiles()
 quran = read_json("data/quran.json")
 quran_en = read_json("data/quran_en.json")
 quran_ar = read_json("data/quran_ar.json")
@@ -65,6 +67,7 @@ while True:
     )
     for verse in verses:
         print(verse)
+        print(quran_audio.filename(verse_name=verse,reciter=0))
         verse_features = semantic_features_for_verse(
             verse=verse, 
             quran_features=quran_features,
