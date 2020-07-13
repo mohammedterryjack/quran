@@ -40,7 +40,8 @@ class QuranAudio:
 
 class QuranText:
     def __init__(self) -> None:
-        self.CROSS_REFERENCES = read_json("data/mushaf/quran.json")
+        self.CROSS_REFERENCES_QURAN = read_json("data/mushaf/quran.json")
+        self.CROSS_REFERENCES_BIBLE = read_json("data/mushaf/quran_biblical_crossreferences.json")
         self.ENGLISH = read_json("data/mushaf/quran_en.json")
         self.ARABIC = read_json("data/mushaf/quran_ar.json")
         with open("data/mushaf/quran_features.json") as json_file:
@@ -81,11 +82,16 @@ class QuranText:
     def english_translations_of_verse(self,verse:str) -> List[str]:
         return self.ENGLISH[verse]["ENGLISH"][:-1]
 
-    def english_translation_of_verse(self,verse:str,translator:int=8) -> str:
+    def english_translation_of_verse(self,verse:str,translator:int) -> str:
         return self.ENGLISH[verse]["ENGLISH"][max(min(translator,17),0)]
 
-    def similar_verses_to_verse(self,verse:str, top_n:int=3) -> List[str]:
-        return self.CROSS_REFERENCES[verse][:max(min(top_n,10),0)]
+    def similar_verses_to_verse(self,verse:str, scripture:int, top_n:int=3) -> List[str]:
+        SCRIPTURE = (self.CROSS_REFERENCES_QURAN,self.CROSS_REFERENCES_BIBLE)[scripture]
+        return SCRIPTURE[verse][:max(min(top_n,10),0)].to_list()
+
+    def similar_bible_verses_to_verse(self,verse:str, top_n:int=3) -> List[str]:
+
+        return self.CROSS_REFERENCES_BIBLE[verse][:max(min(top_n,10),0)]
 
     def semantically_similar_verses_to_query(self,query_features:Set[str],top_n:int=3) -> List[str]:
         semantic_scores = list(

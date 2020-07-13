@@ -36,6 +36,8 @@ def search() -> str:
     next_verse_key = QURAN.next_verse(verse_key)
     previous_verse_key = QURAN.previous_verse(verse_key)
     related_verses = verses[1:]
+    bible_verses = QURAN.similar_verses_to_verse(verse_key, scripture=1, top_n=10)[1:]
+
     return QURAN_VERSE_TEMPLATE.format(
         chapter=chapter,
         verse=verse,
@@ -48,7 +50,7 @@ def search() -> str:
             default_displayed=6
         ),
         related_verses_quran=format_and_link_verses_for_html(related_verses,"quran"),
-        related_verses_bible="",#format_and_link_verses_for_html(bible_verses,"bible"),
+        related_verses_bible=format_and_link_verses_for_html(bible_verses,"bible"),
         next_page_url = f"/quran/{next_verse_key.replace(':','/')}",
         previous_page_url = f"/quran/{previous_verse_key.replace(':','/')}",
     )
@@ -58,7 +60,8 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
     verse_key = f"{chapter}:{verse}"
     next_verse_key = QURAN.next_verse(verse_key)
     previous_verse_key = QURAN.previous_verse(verse_key)
-    related_verses = QURAN.similar_verses_to_verse(verse_key, top_n=5).to_list()[1:]
+    related_verses = QURAN.similar_verses_to_verse(verse_key, scripture=0, top_n=5)[1:]
+    bible_verses = QURAN.similar_verses_to_verse(verse_key, scripture=1, top_n=10)
     return QURAN_VERSE_TEMPLATE.format(
         chapter=chapter,
         verse=verse,
@@ -71,7 +74,7 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
             default_displayed=6
         ),
         related_verses_quran=format_and_link_verses_for_html(related_verses,"quran"),
-        related_verses_bible="(coming soon)",
+        related_verses_bible=format_and_link_verses_for_html(bible_verses,"bible"),
         next_page_url = f"/quran/{next_verse_key.replace(':','/')}",
         previous_page_url = f"/quran/{previous_verse_key.replace(':','/')}"
     )
