@@ -128,22 +128,29 @@ class BibleAudio(Bible):
 class BibleText(Bible):
     def __init__(self) -> None:
         super().__init__() 
-        self.PATH = "data/tanakh/{directory}/{book}_{language_code}.json"
-        self.ENGLISH = self._load(language_code="en")
-        self.HEBREW = self._load(language_code="he")
+        PATH = "data/tanakh/{directory}/{book}_{language_code}.json"
+        self.ENGLISH = self._load(path=PATH,language_code="en")
+        self.HEBREW = self._load(path=PATH,language_code="he")
+        self.FEATURES = self._load_features()
 
-    def _load(self, language_code:str) -> dict:
+    @staticmethod
+    def _load_features() -> dict:
+         with open("data/tanakh/bible_features.json") as json_file:
+            return load(json_file)
+
+    @staticmethod
+    def _load(path:str, language_code:str) -> dict:
         bible = {}
         for book_name in self.BOOKS:
             directory,book = book_name.lower().split("/")
             if directory not in bible:
                 bible[directory] = {}
-            path = self.PATH.format(
+            full_path = path.format(
                 directory=directory,
                 book=book,
                 language_code=language_code
             )
-            with open(path,encoding='utf-8') as json_file:
+            with open(full_path,encoding='utf-8') as json_file:
                 bible[directory][book] = load(json_file)["text"]
         return bible 
 

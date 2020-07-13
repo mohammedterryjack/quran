@@ -1,14 +1,17 @@
 ############   NATIVE IMPORTS  ###########################
 from typing import Dict, Set
+from json import dump
 ############ INSTALLED IMPORTS ###########################
-from pandas import read_csv, concat, DataFrame, set_option
+from pandas import read_csv, concat, DataFrame
 from sklearn.feature_extraction.text import CountVectorizer
 from numpy import argsort
 ############   LOCAL IMPORTS   ###########################
 from data_analysis.semantic_featuriser import (
     set_of_semantic_features_for_sentences,
+    set_of_semantic_features_for_sentence,
     cosine_similarity_for_sets
 )
+from utils import BibleText
 ##########################################################
 class RawQuranArabic:
     _PATH = "raw_data/{filename}.txt"
@@ -32,9 +35,36 @@ class RawQuranArabicGrammarCSVHeaders:
     _LEMMA_PREFIX = "LEM:"
     _ROOT_PREFIX = "ROOT:"       
 
+def generate_bible_features() -> None:
+    """
+    get semantic and syntactic features from bible verses
+    """
+    FEATURES = {}
+    BIBLE_EN = BibleText._load(
+        path="data/tanakh/{directory}/{book}_{language_code}.json",
+        language_code="en"
+    )
+    for cannon,books in BIBLE_EN.items():
+        print(cannon)
+        FEATURES[cannon] = {}
+        for book,chapters in books.items():
+            print(book)
+            chapter_features = []
+            for chapter_index,verses in enumerate(chapters):
+                print(chapter_index)
+                verse_features = []
+                for verse_index,verse in enumerate(verses):
+                    print(verse_index)
+                    feature_set = set_of_semantic_features_for_sentence(verse)
+                    verse_features.append(feature_set)
+                chapter_features.append(verse_features)
+            FEATURES[cannon][book] = chapter_features
+    with open('data/tanakh/bible_features.json', 'w') as json_file:
+        dump(FEATURES, json_file, default=list)
+
 def analyse_quran_arabic_grammar_file() -> DataFrame:
     """ 
-    given the raw datafile obtained from http://corpus.quran.com/
+    given the raw datafile 
     containing the quran and its morphological and syntactic features for each word in the quran 
     The most important features are extracted for later analysis
     """
