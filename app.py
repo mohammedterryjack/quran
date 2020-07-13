@@ -1,51 +1,15 @@
 ############   NATIVE IMPORTS  ###########################
-from typing import List
 ############ INSTALLED IMPORTS ###########################
 from flask import Flask, request
 ############   LOCAL IMPORTS   ###########################
 from utils import QuranAudio,BibleAudio,BibleText,QuranText
+from html_templates.utils import (
+    format_sentences_to_be_hidden_html,
+    format_and_link_verses_for_html,
+    format_sentence_for_html
+)
 from data_analysis.semantic_featuriser import set_of_semantic_features_for_sentence
 ##########################################################
-def format_sentences_to_be_hidden_html(sentences:List[str],default_displayed:int) -> str:
-    indexes = range(len(sentences))
-    HIDE = 'none'
-    SHOW = 'block'
-    hide = "hide"
-    show = "show"
-    SELECTED = 'selected="selected"'
-    UNSELECTED = ''
-    return '\n'.join(
-        map(
-            lambda index,sentence:f'<div id="translation{index}" style="display:{(HIDE,SHOW)[index==default_displayed]}"><small>{format_sentence_for_html(sentence)}</small></div>',
-            indexes,
-            sentences
-        )
-    ) + '<select id="translator">' + '\n'.join(
-        map(
-            lambda index: f'<option {(UNSELECTED,SELECTED)[index==default_displayed]} value="{index}"> English Translation {index}</option>',
-            indexes
-        )
-    ) + '</select>' + "<script>$('#translator').on('change', function () {" + '\n'.join(
-            map(
-                lambda selected_index:f'if( $(this).val()==="{selected_index}")' + "{" + '\n'.join(
-                    map(
-                        lambda index: f'$("#translation{index}").{(hide,show)[selected_index==index]}()',
-                        indexes
-                    ) 
-                ) + "}",
-                indexes
-            )
-        ) + "});</script>"
-    
-def format_and_link_verses_for_html(verses:List[str]) -> str:
-    return ' '.join(  
-        f"<p><small><a href= /quran/{verse.replace(':','/')}>{verse}</a></small></p>" for verse in verses
-    )
-
-def format_sentence_for_html(sentence:str) -> str:
-    return sentence.replace(",",",<br>").replace(";",";<br>").replace(
-        ":",":<br>").replace("-","-<br>").replace(".",".<br><br>").replace(
-        "!","!<br><br>").replace("?","?<br><br>")
 
 QURAN_AUDIO = QuranAudio()
 QURAN = QuranText()
