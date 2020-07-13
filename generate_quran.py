@@ -15,12 +15,12 @@ from data_analysis.utils import (
 #         arabic_features=analyse_quran_arabic_grammar_file()
 #     ),
 #     top_n_search_results=10,
-#     path = "data"
+#     path = "data/mushaf"
 # )
 
 # generate_bible_features()
 
 save_crossreference_quran_bible_to_file(
-    path="data",
+    path="data/mushaf",
     top_n_search_results=10,
 )
