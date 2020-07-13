@@ -45,6 +45,8 @@ Cross-reference verses of the  Quran (in Arabic and English) with Jewish source 
 - ✅ play audio (arabic)
 - ✅ play audio (bible)
 - ✅ search by string, 
+- dropdown for chapter (quran and bible)
+- dropdown for verse (quran and bible)
 - host backend on heroku
 
 ### Frontend (css/html/js)
