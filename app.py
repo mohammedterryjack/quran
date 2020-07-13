@@ -6,6 +6,37 @@ from flask import Flask, request
 from utils import QuranAudio,BibleAudio,BibleText,QuranText
 from data_analysis.semantic_featuriser import set_of_semantic_features_for_sentence
 ##########################################################
+def format_sentences_to_be_hidden_html(sentences:List[str],default_displayed:int) -> str:
+    indexes = range(len(sentences))
+    HIDE = 'none'
+    DISPLAY = 'block'
+    SELECTED = 'selected="selected"'
+    UNSELECTED = ''
+    return '\n'.join(
+        map(
+            lambda index,sentence:f'<div id="translation{index}" style="display:{(HIDE,DISPLAY)[index==default_displayed]}"><small>{format_sentence_for_html(sentence)}</small></div>',
+            indexes,
+            sentences
+        )
+    ) + '<select id="translator">' + '\n'.join(
+        map(
+            lambda index: f'<option {(UNSELECTED,SELECTED)[index==default_displayed]} value="{index}"> English Translation {index}</option>',
+            indexes
+        )
+    ) + '</select>' + "<script>$(document).ready(function(){$('#translator').on('change', function() {" + '\n'.join(
+        map(
+            lambda selected_index: f"if ( this.value == '{selected_index}')" + '{' + '\n'.join(
+                map(
+                    lambda index: f'document.getElementById("translation{index}").style.display = "{(HIDE,DISPLAY)[index==selected_index]}";',
+                    indexes
+                )
+            ) + '};',
+            indexes
+        )
+    ) + '});});</script>'
+  
+               
+
 def format_and_link_verses_for_html(verses:List[str]) -> str:
     return ' '.join(  
         f"<p><small><a href= /quran/{verse.replace(':','/')}>{verse}</a></small></p>" for verse in verses
@@ -47,28 +78,15 @@ def search() -> str:
         verse_audio_hafs=QURAN_AUDIO.url(verse_key,0),
         verse_audio_warsh=QURAN_AUDIO.url(verse_key,1),
         verse_in_arabic=QURAN.arabic_verse(verse_key),
-        verse_in_english=format_sentence_for_html(
-            sentence=QURAN.english_translation_of_verse(verse_key)
+        verses_in_english=format_sentences_to_be_hidden_html(
+            sentences=QURAN.english_translations_of_verse(verse_key),
+            default_displayed=6
         ),
         related_verses=format_and_link_verses_for_html(related_verses),
         next_page_url = f"/quran/{next_verse_key.replace(':','/')}",
-        previous_page_url = f"/quran/{previous_verse_key.replace(':','/')}"
+        previous_page_url = f"/quran/{previous_verse_key.replace(':','/')}",
     )
     
-@app.route('/bible/<cannon>/<book>/<chapter>/<verse>')
-def display_bible_verse(cannon:str,book:str,chapter:str,verse:str) -> str:
-    return BIBLE_VERSE_TEMPLATE.format(
-        cannon=cannon.title(),
-        book=book.title(),
-        chapter=chapter,
-        verse=verse,
-        verse_in_english=format_sentence_for_html(
-            sentence=BIBLE.verse("en",cannon,book,int(chapter),int(verse))
-        ),
-        verse_in_hebrew=BIBLE.verse("he",cannon,book,int(chapter),int(verse)),
-        audio_hebrew=BIBLE_AUDIO.url(cannon,book,chapter)
-    )
-
 @app.route('/quran/<chapter>/<verse>')
 def display_quranic_verse(chapter:str,verse:str) -> str:
     verse_key = f"{chapter}:{verse}"
@@ -82,12 +100,27 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
         verse_audio_hafs=QURAN_AUDIO.url(verse_key,0),
         verse_audio_warsh=QURAN_AUDIO.url(verse_key,1),
         verse_in_arabic=QURAN.arabic_verse(verse_key),
-        verse_in_english=format_sentence_for_html(
-            sentence=QURAN.english_translation_of_verse(verse_key)
+        verses_in_english=format_sentences_to_be_hidden_html(
+            sentences=QURAN.english_translations_of_verse(verse_key),
+            default_displayed=6
         ),
         related_verses=format_and_link_verses_for_html(related_verses),
         next_page_url = f"/quran/{next_verse_key.replace(':','/')}",
         previous_page_url = f"/quran/{previous_verse_key.replace(':','/')}"
+    )
+
+@app.route('/bible/<cannon>/<book>/<chapter>/<verse>')
+def display_bible_verse(cannon:str,book:str,chapter:str,verse:str) -> str:
+    return BIBLE_VERSE_TEMPLATE.format(
+        cannon=cannon.title(),
+        book=book.title(),
+        chapter=chapter,
+        verse=verse,
+        verse_in_english=format_sentence_for_html(
+            sentence=BIBLE.verse("en",cannon,book,int(chapter),int(verse))
+        ),
+        verse_in_hebrew=BIBLE.verse("he",cannon,book,int(chapter),int(verse)),
+        audio_hebrew=BIBLE_AUDIO.url(cannon,book,chapter)
     )
 
 if __name__ == '__main__':

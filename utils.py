@@ -78,6 +78,9 @@ class QuranText:
     def arabic_verse(self,verse:str) -> str:
         return self.ARABIC[verse]["ARABIC"]
 
+    def english_translations_of_verse(self,verse:str) -> List[str]:
+        return self.ENGLISH[verse]["ENGLISH"]
+
     def english_translation_of_verse(self,verse:str,translator:int=8) -> str:
         return self.ENGLISH[verse]["ENGLISH"][max(min(translator,17),0)]
 
