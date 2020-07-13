@@ -43,7 +43,7 @@ Cross-reference verses of the  Quran (in Arabic and English) with Jewish source 
 - ✅ display english parallel
 - ✅ play audio (arabic)
 - ✅ play audio (bible)
-- search by string, 
+- ✅ search by string, 
 - host backend on heroku
 
 ### Frontend (css/html/js)
