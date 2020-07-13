@@ -9,12 +9,12 @@ from data_analysis.semantic_featuriser import set_of_semantic_features_for_sente
 def format_sentences_to_be_hidden_html(sentences:List[str],default_displayed:int) -> str:
     indexes = range(len(sentences))
     HIDE = 'none'
-    DISPLAY = 'block'
+    SHOW = 'block'
     SELECTED = 'selected="selected"'
     UNSELECTED = ''
     return '\n'.join(
         map(
-            lambda index,sentence:f'<div id="translation{index}" style="display:{(HIDE,DISPLAY)[index==default_displayed]}"><small>{format_sentence_for_html(sentence)}</small></div>',
+            lambda index,sentence:f'<div id="translation{index}" style="display:{(HIDE,SHOW)[index==default_displayed]}"><small>{format_sentence_for_html(sentence)}</small></div>',
             indexes,
             sentences
         )
@@ -23,20 +23,18 @@ def format_sentences_to_be_hidden_html(sentences:List[str],default_displayed:int
             lambda index: f'<option {(UNSELECTED,SELECTED)[index==default_displayed]} value="{index}"> English Translation {index}</option>',
             indexes
         )
-    ) + '</select>' + "<script>$(document).ready(function(){$('#translator').on('change', function() {" + '\n'.join(
-        map(
-            lambda selected_index: f"if ( this.value == '{selected_index}')" + '{' + '\n'.join(
-                map(
-                    lambda index: f'document.getElementById("translation{index}").style.display = "{(HIDE,DISPLAY)[index==selected_index]}";',
-                    indexes
-                )
-            ) + '};',
-            indexes
-        )
-    ) + '});});</script>'
-  
-               
-
+    ) + '</select>' + "<script>$('#translator').on('change', function () {" + '\n'.join(
+            map(
+                lambda selected_index:'\n'.join(
+                    map(
+                        lambda index: f'$("#translation{selected_index}").css("display", (this.value == "{index}") ? "{(SHOW,HIDE)[selected_index==index]}" : "{(HIDE,SHOW)[selected_index==index]}");',
+                        indexes
+                    )
+                ),
+                indexes
+            )
+        ) + "});</script>"
+    
 def format_and_link_verses_for_html(verses:List[str]) -> str:
     return ' '.join(  
         f"<p><small><a href= /quran/{verse.replace(':','/')}>{verse}</a></small></p>" for verse in verses
