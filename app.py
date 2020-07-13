@@ -28,7 +28,6 @@ app = Flask(__name__)
 def search() -> str:
     query = request.args.get('query')
     query_features = set_of_semantic_features_for_sentence(query)
-    #bible_verses = BIBLE.semantically_similar_verses_to_query(query_features,top_n=5)
     verses = QURAN.semantically_similar_verses_to_query(query_features, top_n=5)
     first_verse = verses[0]
     chapter,verse = first_verse.split(":")
@@ -36,7 +35,7 @@ def search() -> str:
     next_verse_key = QURAN.next_verse(verse_key)
     previous_verse_key = QURAN.previous_verse(verse_key)
     related_verses = verses[1:]
-    bible_verses = QURAN.similar_verses_to_verse(verse_key, scripture=1, top_n=10)[1:]
+    bible_verses = BIBLE.semantically_similar_verses_to_query(query_features,top_n=10)
 
     return QURAN_VERSE_TEMPLATE.format(
         chapter=chapter,
