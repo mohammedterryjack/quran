@@ -129,9 +129,10 @@ class BibleText(Bible):
     def __init__(self) -> None:
         super().__init__() 
         PATH = "data/tanakh/{directory}/{book}_{language_code}.json"
-        self.ENGLISH = self._load(path=PATH,language_code="en")
-        self.HEBREW = self._load(path=PATH,language_code="he")
+        self.ENGLISH = self._load(path=PATH,language_code="en",book_names=self.BOOKS)
+        self.HEBREW = self._load(path=PATH,language_code="he",book_names=self.BOOKS)
         self.FEATURES = self._load_features()
+        self.VERSE_NAMES = list(self._verse_names())
 
     @staticmethod
     def _load_features() -> dict:
@@ -139,9 +140,9 @@ class BibleText(Bible):
             return load(json_file)
 
     @staticmethod
-    def _load(path:str, language_code:str) -> dict:
+    def _load(path:str, language_code:str, book_names:List[str]) -> dict:
         bible = {}
-        for book_name in self.BOOKS:
+        for book_name in book_names:
             directory,book = book_name.lower().split("/")
             if directory not in bible:
                 bible[directory] = {}
@@ -158,3 +159,30 @@ class BibleText(Bible):
         version = (self.HEBREW,self.ENGLISH)[int(language_code=="en")]
         return version[cannon][book][chapter-1][verse-1] 
 
+
+    def _semantic_features(self) -> Iterable[Set[str]]:
+        for cannon,books in self.FEATURES.items():
+            for book,chapters in books.items():
+                for verses in chapters:
+                    for verse_features in verses:
+                        yield set(verse_features)
+
+    def _verse_names(self) -> Iterable[str]:
+        for cannon,books in self.FEATURES.items():
+            for book,chapters in books.items():
+                for chapter_index,verses in enumerate(chapters):
+                    for verse_index,verse_features in enumerate(verses):
+                        yield f"{cannon}/{book}/{chapter_index}/{verse_index}"
+
+    def semantically_similar_verses_to_query(self,query_features:Set[str],top_n:int=3) -> List[str]:
+        semantic_scores = list(
+            map(
+                lambda verse_features: cosine_similarity_for_sets(
+                    features_a=query_features,
+                    features_b=verse_features
+                ),
+                self._semantic_features()
+            )
+        )
+        verse_indexes = argsort(semantic_scores)[:-top_n-1:-1]
+        return list(map(lambda index:self.VERSE_NAMES[index], verse_indexes))
