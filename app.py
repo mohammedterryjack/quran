@@ -28,7 +28,7 @@ app = Flask(__name__)
 def search() -> str:
     query = request.args.get('query')
     query_features = set_of_semantic_features_for_sentence(query)
-    print(BIBLE.semantically_similar_verses_to_query(query_features,top_n=5))
+    bible_verses = BIBLE.semantically_similar_verses_to_query(query_features,top_n=5)
     verses = QURAN.semantically_similar_verses_to_query(query_features, top_n=5)
     first_verse = verses[0]
     chapter,verse = first_verse.split(":")
@@ -47,7 +47,8 @@ def search() -> str:
             sentences=QURAN.english_translations_of_verse(verse_key),
             default_displayed=6
         ),
-        related_verses=format_and_link_verses_for_html(related_verses),
+        related_verses_quran=format_and_link_verses_for_html(related_verses,"quran"),
+        related_verses_bible=format_and_link_verses_for_html(bible_verses,"bible"),
         next_page_url = f"/quran/{next_verse_key.replace(':','/')}",
         previous_page_url = f"/quran/{previous_verse_key.replace(':','/')}",
     )
@@ -69,7 +70,8 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
             sentences=QURAN.english_translations_of_verse(verse_key),
             default_displayed=6
         ),
-        related_verses=format_and_link_verses_for_html(related_verses),
+        related_verses_quran=format_and_link_verses_for_html(related_verses,"quran"),
+        related_verses_bible="(coming soon)",
         next_page_url = f"/quran/{next_verse_key.replace(':','/')}",
         previous_page_url = f"/quran/{previous_verse_key.replace(':','/')}"
     )
@@ -82,9 +84,9 @@ def display_bible_verse(cannon:str,book:str,chapter:str,verse:str) -> str:
         chapter=chapter,
         verse=verse,
         verse_in_english=format_sentence_for_html(
-            sentence=BIBLE.verse("en",cannon,book,int(chapter),int(verse))
+            sentence=BIBLE.verse("en",cannon,book.replace(" ","%20"),int(chapter),int(verse))
         ),
-        verse_in_hebrew=BIBLE.verse("he",cannon,book,int(chapter),int(verse)),
+        verse_in_hebrew=BIBLE.verse("he",cannon,book.replace(" ","%20"),int(chapter),int(verse)),
         audio_hebrew=BIBLE_AUDIO.url(cannon,book,chapter)
     )
 

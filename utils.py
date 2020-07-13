@@ -172,7 +172,7 @@ class BibleText(Bible):
             for book,chapters in books.items():
                 for chapter_index,verses in enumerate(chapters):
                     for verse_index,verse_features in enumerate(verses):
-                        yield f"{cannon}/{book}/{chapter_index}/{verse_index}"
+                        yield f"{cannon}:{book}:{chapter_index+1}:{verse_index+1}"
 
     def semantically_similar_verses_to_query(self,query_features:Set[str],top_n:int=3) -> List[str]:
         semantic_scores = list(

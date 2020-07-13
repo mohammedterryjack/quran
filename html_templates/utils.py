@@ -35,9 +35,13 @@ def format_sentences_to_be_hidden_html(sentences:List[str],default_displayed:int
             )
         ) + "});</script>"
     
-def format_and_link_verses_for_html(verses:List[str]) -> str:
+def format_and_link_verses_for_html(verses:List[str],scripture:str) -> str:
     return ' '.join(  
-        f"<p><small><a href= /quran/{verse.replace(':','/')}>{verse}</a></small></p>" for verse in verses
+        "<p><small><a href= /{scripture}/{verse_address}>{verse}</a></small></p>".format(
+            scripture=scripture,
+            verse_address=verse.replace(':','/'),
+            verse=verse.replace('%20',' ')
+        ) for verse in verses
     )
 
 def format_sentence_for_html(sentence:str) -> str:
