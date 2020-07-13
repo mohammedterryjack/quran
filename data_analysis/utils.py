@@ -217,12 +217,13 @@ def save_crossreference_quran_bible_to_file(path:str, top_n_search_results:int) 
     BIBLE = BibleText()
     QURAN = QuranText()
     QURAN_CROSSREFERENCES_TO_BIBLE = {}
-    for quran_verse,quran_feature_set in QURAN.FEATURES.items():
+    for quran_verse,quran_feature_set in zip(QURAN.VERSE_NAMES,QURAN.FEATURES.values()):
+        print(quran_verse)
         semantic_scores = list(
             map(
-                lambda verse_features: cosine_similarity_for_sets(
-                    features_a=quran_feature_set,
-                    features_b=bible_feature_set
+                lambda bible_feature_set: cosine_similarity_for_sets(
+                    features_a=bible_feature_set,
+                    features_b=set(quran_feature_set)
                 ),
                 BIBLE._semantic_features()
             )
