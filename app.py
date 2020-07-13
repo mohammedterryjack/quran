@@ -10,6 +10,8 @@ def format_sentences_to_be_hidden_html(sentences:List[str],default_displayed:int
     indexes = range(len(sentences))
     HIDE = 'none'
     SHOW = 'block'
+    hide = "hide"
+    show = "show"
     SELECTED = 'selected="selected"'
     UNSELECTED = ''
     return '\n'.join(
@@ -25,12 +27,12 @@ def format_sentences_to_be_hidden_html(sentences:List[str],default_displayed:int
         )
     ) + '</select>' + "<script>$('#translator').on('change', function () {" + '\n'.join(
             map(
-                lambda selected_index:'\n'.join(
+                lambda selected_index:f'if( $(this).val()==="{selected_index}")' + "{" + '\n'.join(
                     map(
-                        lambda index: f'$("#translation{selected_index}").css("display", (this.value == "{index}") ? "{(SHOW,HIDE)[selected_index==index]}" : "{(HIDE,SHOW)[selected_index==index]}");',
+                        lambda index: f'$("#translation{index}").{(hide,show)[selected_index==index]}()',
                         indexes
-                    )
-                ),
+                    ) 
+                ) + "}",
                 indexes
             )
         ) + "});</script>"
@@ -72,7 +74,7 @@ def search() -> str:
     return QURAN_VERSE_TEMPLATE.format(
         chapter=chapter,
         verse=verse,
-        chapter_name=QURAN.CHAPTER_NAMES[int(chapter)],
+        chapter_name=QURAN.CHAPTER_NAMES[int(chapter)-1],
         verse_audio_hafs=QURAN_AUDIO.url(verse_key,0),
         verse_audio_warsh=QURAN_AUDIO.url(verse_key,1),
         verse_in_arabic=QURAN.arabic_verse(verse_key),
@@ -94,7 +96,7 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
     return QURAN_VERSE_TEMPLATE.format(
         chapter=chapter,
         verse=verse,
-        chapter_name=QURAN.CHAPTER_NAMES[int(chapter)],
+        chapter_name=QURAN.CHAPTER_NAMES[int(chapter)-1],
         verse_audio_hafs=QURAN_AUDIO.url(verse_key,0),
         verse_audio_warsh=QURAN_AUDIO.url(verse_key,1),
         verse_in_arabic=QURAN.arabic_verse(verse_key),
