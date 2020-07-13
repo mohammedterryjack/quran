@@ -11,7 +11,7 @@ from data_analysis.semantic_featuriser import (
     set_of_semantic_features_for_sentence,
     cosine_similarity_for_sets
 )
-from utils import BibleText, Bible
+from utils import BibleText, Bible, QuranText
 ##########################################################
 class RawQuranArabic:
     _PATH = "raw_data/{filename}.txt"
@@ -211,6 +211,27 @@ def analyse_quran_arabic_file() -> DataFrame:
         }
     )
     return data.set_index("VERSE")
+
+def save_crossreference_quran_bible_to_file(path:str, top_n_search_results:int) -> None:
+    """ this stores the quran with cross-references to biblical verses """
+    BIBLE = BibleText()
+    QURAN = QuranText()
+    QURAN_CROSSREFERENCES_TO_BIBLE = {}
+    for quran_verse,quran_feature_set in QURAN.FEATURES.items():
+        semantic_scores = list(
+            map(
+                lambda verse_features: cosine_similarity_for_sets(
+                    features_a=quran_feature_set,
+                    features_b=bible_feature_set
+                ),
+                BIBLE._semantic_features()
+            )
+        )
+        verse_indexes = argsort(semantic_scores)[:-top_n_search_results-1:-1]
+        related_bible_verses = list(map(lambda index:BIBLE.VERSE_NAMES[index], verse_indexes))
+        QURAN_CROSSREFERENCES_TO_BIBLE[quran_verse] = related_bible_verses
+    with open(f'{path}/quran_biblical_crossreferences.json', 'w') as json_file:
+        dump(QURAN_CROSSREFERENCES_TO_BIBLE, json_file, default=list)
 
 
 def save_searchable_quran_to_file(path:str, arabic_feature_sets:Dict[str,Set[str]], top_n_search_results:int) -> None:
