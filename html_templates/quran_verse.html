@@ -10,21 +10,33 @@
             <input type="text" placeholder="Search Qur'an" name="query" >
         </form>
     </div>
-    <p>Surat {chapter_name} - {chapter}:{verse}</p>
+    <div>
+        <b>Surat {chapter_name}</b> 
+        {chapter}:{verse}
+    </div>
     {verses_in_english}
-    <p>{verse_in_arabic}</p> 
-    <p><small>Recitation <i>(Hafs & Warsh)</i></small></p>
-    <audio controls>
-        <source src="{verse_audio_hafs}" type="audio/mpeg">
-    </audio>
-    <audio controls>
-        <source src="{verse_audio_warsh}" type="audio/mpeg">
-    </audio>
-    <p><small>Related Verses:</small></p>
-    {related_verses}
-    <p>
+    <div>
+        <p>{verse_in_arabic}</p>
+    </div> 
+    <div>
+        <p><small>
+            Recitation 
+            <i>(Hafs & Warsh)</i>
+        </small></p>
+        <audio controls>
+            <source src="{verse_audio_hafs}" type="audio/mpeg">
+        </audio>
+        <audio controls>
+            <source src="{verse_audio_warsh}" type="audio/mpeg">
+        </audio>
+    </div>
+    <div>
+        <small>Related Verses:</small>
+        {related_verses}
+    </div>
+    <div>
         <a href="{previous_page_url}">Previous Verse</a> -
         <a href={next_page_url}>Next Verse</a>
-    </p>
+    </div>
 </body> 
 </html> 

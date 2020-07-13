@@ -11,7 +11,7 @@ from data_analysis.semantic_featuriser import (
     set_of_semantic_features_for_sentence,
     cosine_similarity_for_sets
 )
-from utils import BibleText
+from utils import BibleText, Bible
 ##########################################################
 class RawQuranArabic:
     _PATH = "raw_data/{filename}.txt"
@@ -42,7 +42,8 @@ def generate_bible_features() -> None:
     FEATURES = {}
     BIBLE_EN = BibleText._load(
         path="data/tanakh/{directory}/{book}_{language_code}.json",
-        language_code="en"
+        language_code="en",
+        book_names=Bible().BOOKS
     )
     for cannon,books in BIBLE_EN.items():
         print(cannon)
