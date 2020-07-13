@@ -33,6 +33,7 @@ Cross-reference verses of the  Quran (in Arabic and English) with Jewish source 
 - ✅ search verse of quran against quran 
 - ✅ display what features the match was based on 
 - ✅ display arabic verse
+- include word-by-word english translation for Quran
 - search verse of quran against sefaria
 
 ### Deployment (python3 - flask, heroku)
