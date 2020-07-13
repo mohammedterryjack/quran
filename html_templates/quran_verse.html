@@ -4,6 +4,11 @@
     <title>Qur'an</title> 
 </head> 
 <body> 
+    <div class="search-container">
+        <form action="/search" method="GET">
+            <input type="text" placeholder="Search Qur'an" name="query" >
+        </form>
+    </div>
     <p>Surat {chapter_name} - {chapter}:{verse}</p>
     <p><small>{verse_in_english}</small></p>
     <p>{verse_in_arabic}</p> 
