@@ -46,5 +46,5 @@ def format_and_link_verses_for_html(verses:List[str],scripture:str) -> str:
 
 def format_sentence_for_html(sentence:str) -> str:
     return sentence.replace(",",",<br>").replace(";",";<br>").replace(
-        ":",":<br>").replace("-","-<br>").replace(".",".<br><br>").replace(
-        "!","!<br><br>").replace("?","?<br><br>")
+        ":",":<br>").replace("-","-<br>").replace("—","—<br>").replace(
+        ".",".<br><br>").replace("!","!<br><br>").replace("?","?<br><br>")
