@@ -20,7 +20,7 @@ def format_sentences_to_be_hidden_html(sentences:List[str],default_displayed:int
         )
     ) + '<select id="translator">' + '\n'.join(
         map(
-            lambda index: f'<option {(UNSELECTED,SELECTED)[index==default_displayed]} value="{index}"> English Translation {index}</option>',
+            lambda index: f'<option {(UNSELECTED,SELECTED)[index==default_displayed]} value="{index}">English Translation {index}</option>',
             indexes
         )
     ) + '</select>' + "<script>$('#translator').on('change', function () {" + '\n'.join(
