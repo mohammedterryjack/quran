@@ -12,7 +12,7 @@ def format_sentences_to_be_hidden_html(sentences:List[str],default_displayed:int
     show = "show"
     SELECTED = 'selected="selected"'
     UNSELECTED = ''
-    return '<div style = "text-align:center" class="parallel-english-translations-of-verse">' + '\n'.join(
+    return '<div style = "text-align:center;font-family:Arial, Helvetica, sans-serif" class="parallel-english-translations-of-verse">' + '\n'.join(
         map(
             lambda index,sentence:f'<div id="translation{index}" style="display:{(HIDE,SHOW)[index==default_displayed]}"><small>{format_sentence_for_html(sentence)}</small></div>',
             indexes,

@@ -7,28 +7,28 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head> 
 
-<body> 
+<body style="background-color:lightgoldenrodyellow;"> 
     
-    <div style = "text-align:center" class="search-container">
+    <div style = "text-align:center;font-family:Arial, Helvetica, sans-serif" class="search-container">
     <form action="/search" method="GET">
         <input type="text" placeholder="Search Qur'an" name="query" >
     </form>
     </div>
 
-    <div style = "text-align:center" class="chapter-and-verse-name">
-    <p style="font-family:'Courier New'">
-    <b>Surat {chapter_name}</b> 
+    <div style = "text-align:center;font-family:Arial, Helvetica, sans-serif" class="chapter-and-verse-name">
+    <p>
+    <h1>Surat {chapter_name}</h1> 
     {chapter}:{verse}
     </p>
     </div>
     
     {verses_in_english}
     
-    <div style="text-align:center" class="arabic-verse">
-    <p style="font-size:30px;font-family:'Tahoma'">{verse_in_arabic}</p>
+    <div style="text-align:center;font-family:'Tahoma';font-size:30px" class="arabic-verse">
+    <p>{verse_in_arabic}</p>
     </div> 
     
-    <div style="text-align:center" class="audio-recitations">
+    <div style="text-align:center;font-family:Arial, Helvetica, sans-serif" class="audio-recitations">
     <p><small>
     Recitation 
     <i>(Hafs & Warsh)</i>
@@ -41,12 +41,12 @@
     </audio>
     </div>
 
-    <div style="text-align:center" class="prev-next-verse">
+    <div style="text-align:center;font-family:'Courier New'"; class="prev-next-verse">
     <a href="{previous_page_url}">Previous Verse</a> -
     <a href={next_page_url}>Next Verse</a>
     </div>
     
-    <div style="text-align:center" class="related-verses">
+    <div style="text-align:center;font-family:Arial, Helvetica, sans-serif;font-size:20px" class="related-verses">
     <br>
     <p><u>Related Verses</u></p> 
     <br>    
