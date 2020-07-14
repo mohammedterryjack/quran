@@ -148,9 +148,4 @@ def display_bible_verse(cannon:str,book:str,chapter:str,verse:str) -> str:
     )
 
 if __name__ == '__main__':
-    app.run()
-
-
-#     for verse in verses:
-#         common_features = query_features.intersection(verse_features)
-#         print(common_features)
+    app.run(threaded=True, port=5000)
