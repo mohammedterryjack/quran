@@ -161,6 +161,18 @@ class BibleText(Bible):
                 bible[directory][book] = load(json_file)["text"]
         return bible 
 
+    def next_verse(self, verse:str) -> str:  
+        return self._increase_verse_by_n(verse=verse,n=1)
+
+    def previous_verse(self, verse:str) -> str:  
+        return self._increase_verse_by_n(verse=verse,n=-1)
+
+    def _increase_verse_by_n(self, verse:str,n:int) -> str:
+        verse_index = self.VERSE_NAMES.index(verse)
+        verse_index += n
+        verse_index %= len(self.VERSE_NAMES)
+        return self.VERSE_NAMES[verse_index]
+
     def verse(self, language_code:str, cannon:str, book:str, chapter:int, verse:int) -> str:
         version = (self.HEBREW,self.ENGLISH)[int(language_code=="en")]
         return version[cannon][book][chapter-1][verse-1] 
