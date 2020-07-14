@@ -34,6 +34,7 @@ Cross-reference verses of the  Quran (in Arabic and English) with Jewish source 
 - ✅ display what features the match was based on 
 - ✅ display arabic verse
 - ✅ search verse of quran against sefaria
+- tags to show features and reasons why verses are linked
 
 ### Deployment (python3 - flask, heroku)
 - ✅ setup a basic flask
