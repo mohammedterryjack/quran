@@ -12,9 +12,9 @@ def format_sentences_to_be_hidden_html(sentences:List[str],default_displayed:int
     show = "show"
     SELECTED = 'selected="selected"'
     UNSELECTED = ''
-    return '\n'.join(
+    return '<div style = "text-align:center" class="parallel-english-translations-of-verse">' + '\n'.join(
         map(
-            lambda index,sentence:f'<div id="translation{index}" style="text-align:center; display:{(HIDE,SHOW)[index==default_displayed]}"><small>{format_sentence_for_html(sentence)}</small></div>',
+            lambda index,sentence:f'<div id="translation{index}" style="display:{(HIDE,SHOW)[index==default_displayed]}"><small>{format_sentence_for_html(sentence)}</small></div>',
             indexes,
             sentences
         )
@@ -23,7 +23,7 @@ def format_sentences_to_be_hidden_html(sentences:List[str],default_displayed:int
             lambda index: f'<option {(UNSELECTED,SELECTED)[index==default_displayed]} value="{index}">English Translation {index}</option>',
             indexes
         )
-    ) + '</select>' + "<script>$('#translator').on('change', function () {" + '\n'.join(
+    ) + '</select>' + "</div>" + "<script>$('#translator').on('change', function () {" + '\n'.join(
             map(
                 lambda selected_index:f'if( $(this).val()==="{selected_index}")' + "{" + '\n'.join(
                     map(

@@ -10,7 +10,7 @@ from html_templates.utils import (
 )
 from data_analysis.semantic_featuriser import set_of_semantic_features_for_sentence
 ##########################################################
-
+DEFAULT_TRANSLATOR = 6
 QURAN_AUDIO = QuranAudio()
 QURAN = QuranText()
 with open("html_templates/quran_verse.html") as html_file:
@@ -80,7 +80,6 @@ def search() -> str:
     
 @app.route('/quran/<chapter>/<verse>')
 def display_quranic_verse(chapter:str,verse:str) -> str:
-    DEFAULT_TRANSLATOR = 6
     verse_key = f"{chapter}:{verse}"
     next_verse_key = QURAN.next_verse(verse_key)
     previous_verse_key = QURAN.previous_verse(verse_key)
