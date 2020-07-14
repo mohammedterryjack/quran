@@ -39,18 +39,30 @@ class QuranAudio:
 
 class QuranText:
     def __init__(self) -> None:
-        with open("data/mushaf/quran.json") as json_file:
-            self.CROSS_REFERENCES_QURAN = load(json_file)
-        with open("data/mushaf/quran_biblical_crossreferences.json") as json_file:
-            self.CROSS_REFERENCES_BIBLE = load(json_file)
         with open("data/mushaf/quran_en.json") as json_file:
-            self.ENGLISH = load(json_file)
-        with open("data/mushaf/quran_ar.json") as json_file:
-            self.ARABIC = load(json_file)
+            self.ENGLISH = load(json_file)        
         with open("data/mushaf/quran_features.json") as json_file:
             self.FEATURES = load(json_file)
         self.VERSE_NAMES = list(self.ENGLISH.keys())
-        self.CHAPTER_NAMES = self._get_surah_names()
+        
+    def ARABIC(self) -> dict:
+        with open("data/mushaf/quran_ar.json") as json_file:
+            return load(json_file)
+    
+    def CHAPTER_NAMES(self) -> List[str]:
+        surah_names = []
+        for index in range(1,115):
+            with open(f"raw_data/quran_surah_names/surah_{index}.json", encoding='utf-8') as json_file:
+                surah_names.append(load(json_file)["name"])
+        return surah_names
+
+    def CROSS_REFERENCES_QURAN(self) -> dict:
+        with open("data/mushaf/quran.json") as json_file:
+            return load(json_file)
+
+    def CROSS_REFERENCES_BIBLE(self) -> dict:
+        with open("data/mushaf/quran_biblical_crossreferences.json") as json_file:
+            return load(json_file)
 
     def common_features(self, query_features:Set[str], verse:str) -> Set[str]:
         return query_features.intersection(
@@ -69,13 +81,6 @@ class QuranText:
         verse_index %= len(self.VERSE_NAMES)
         return self.VERSE_NAMES[verse_index]
 
-    def _get_surah_names(self) -> List[str]:
-        surah_names = []
-        for index in range(1,115):
-            with open(f"raw_data/quran_surah_names/surah_{index}.json", encoding='utf-8') as json_file:
-                surah_names.append(load(json_file)["name"])
-        return surah_names
-
     def semantic_features_for_verse(self, verse:str) -> Set[str]:
         index = str(self.VERSE_NAMES.index(verse))
         return set(self.FEATURES[index])
@@ -85,7 +90,7 @@ class QuranText:
             yield set(features)
         
     def arabic_verse(self,verse:str) -> str:
-        return self.ARABIC[verse]["ARABIC"]
+        return self.ARABIC()[verse]["ARABIC"]
 
     def english_translations_of_verse(self,verse:str) -> List[str]:
         return self.ENGLISH[verse]["ENGLISH"][:-1]
@@ -94,7 +99,7 @@ class QuranText:
         return self.ENGLISH[verse]["ENGLISH"][max(min(translator,17),0)]
 
     def similar_verses_to_verse(self,verse:str, scripture:int, top_n:int=3) -> List[str]:
-        SCRIPTURE = (self.CROSS_REFERENCES_QURAN,self.CROSS_REFERENCES_BIBLE)[scripture]
+        SCRIPTURE = self.CROSS_REFERENCES_BIBLE() if scripture else self.CROSS_REFERENCES_QURAN()
         return SCRIPTURE[verse][:max(min(top_n,10),0)]
 
     def similar_bible_verses_to_verse(self,verse:str, top_n:int=3) -> List[str]:
@@ -148,11 +153,15 @@ class BibleAudio(Bible):
 class BibleText(Bible):
     def __init__(self) -> None:
         super().__init__() 
-        PATH = "data/tanakh/{directory}/{book}_{language_code}.json"
-        self.ENGLISH = self._load(path=PATH,language_code="en",book_names=self.BOOKS)
-        self.HEBREW = self._load(path=PATH,language_code="he",book_names=self.BOOKS)
+        self.PATH = "data/tanakh/{directory}/{book}_{language_code}.json"
         self.FEATURES = self._load_features()
         self.VERSE_NAMES = list(self._verse_names())
+
+    def ENGLISH(self) -> dict:
+        return self._load(path=self.PATH,language_code="en",book_names=self.BOOKS)
+
+    def HEBREW(self) -> dict:
+        return self._load(path=self.PATH,language_code="he",book_names=self.BOOKS)
 
     @staticmethod
     def _load_features() -> dict:
@@ -188,7 +197,7 @@ class BibleText(Bible):
         return self.VERSE_NAMES[verse_index]
 
     def verse(self, language_code:str, cannon:str, book:str, chapter:int, verse:int) -> str:
-        version = (self.HEBREW,self.ENGLISH)[int(language_code=="en")]
+        version = self.ENGLISH() if language_code=="en" else self.HEBREW()
         return version[cannon][book][chapter-1][verse-1] 
 
 

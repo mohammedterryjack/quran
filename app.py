@@ -67,7 +67,7 @@ def search() -> str:
     return QURAN_VERSE_TEMPLATE.format(
         chapter=chapter,
         verse=verse,
-        chapter_name=QURAN.CHAPTER_NAMES[int(chapter)-1],
+        chapter_name=QURAN.CHAPTER_NAMES()[int(chapter)-1],
         verse_audio_hafs=QURAN_AUDIO.url(verse_key,0),
         verse_audio_warsh=QURAN_AUDIO.url(verse_key,1),
         verse_in_arabic=QURAN.arabic_verse(verse_key),
@@ -116,7 +116,7 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
     return QURAN_VERSE_TEMPLATE.format(
         chapter=chapter,
         verse=verse,
-        chapter_name=QURAN.CHAPTER_NAMES[int(chapter)-1],
+        chapter_name=QURAN.CHAPTER_NAMES()[int(chapter)-1],
         verse_audio_hafs=QURAN_AUDIO.url(verse_key,0),
         verse_audio_warsh=QURAN_AUDIO.url(verse_key,1),
         verse_in_arabic=QURAN.arabic_verse(verse_key),
