@@ -23,7 +23,10 @@ with open("html_templates/bible_verse.html") as html_file:
 
 app = Flask(__name__)
 
-
+@app.route('/')
+def hello() -> str:
+    return "Coming Soon..."
+    
 @app.route('/search', methods=['GET', 'POST'])
 def search() -> str:
     query = request.args.get('query')
