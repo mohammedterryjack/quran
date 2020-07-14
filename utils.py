@@ -9,7 +9,7 @@ from data_analysis.semantic_featuriser import cosine_similarity_for_sets
 ##########################################################
 class QuranAudio:
     def __init__(self) -> None:
-        self.URL = "https://raw.githubusercontent.com/mohammedterryjack/quran/master/"
+        self.URL = "https://raw.githubusercontent.com/mohammedterryjack/quran-data/master/"
         self.PATH = "data/audio"
         self.AUDIO_FORMAT = "mp3"
         self.WARSH_FILES = "warsh_aljazari"
