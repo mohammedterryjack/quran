@@ -1,8 +1,7 @@
 ############   NATIVE IMPORTS  ###########################
-from typing import List,Iterable,Set,Tuple
+from typing import List,Iterable,Set
 from ujson import load
 ############ INSTALLED IMPORTS ###########################
-from pandas import read_json
 from numpy import argsort
 ############   LOCAL IMPORTS   ###########################
 from data_analysis.semantic_featuriser import cosine_similarity_for_sets
@@ -40,10 +39,14 @@ class QuranAudio:
 
 class QuranText:
     def __init__(self) -> None:
-        self.CROSS_REFERENCES_QURAN = read_json("data/mushaf/quran.json")
-        self.CROSS_REFERENCES_BIBLE = read_json("data/mushaf/quran_biblical_crossreferences.json")
-        self.ENGLISH = read_json("data/mushaf/quran_en.json")
-        self.ARABIC = read_json("data/mushaf/quran_ar.json")
+        with open("data/mushaf/quran.json") as json_file:
+            self.CROSS_REFERENCES_QURAN = load(json_file)
+        with open("data/mushaf/quran_biblical_crossreferences.json") as json_file:
+            self.CROSS_REFERENCES_BIBLE = load(json_file)
+        with open("data/mushaf/quran_en.json") as json_file:
+            self.ENGLISH = load(json_file)
+        with open("data/mushaf/quran_ar.json") as json_file:
+            self.ARABIC = load(json_file)
         with open("data/mushaf/quran_features.json") as json_file:
             self.FEATURES = load(json_file)
         self.VERSE_NAMES = list(self.ENGLISH.keys())
@@ -92,7 +95,7 @@ class QuranText:
 
     def similar_verses_to_verse(self,verse:str, scripture:int, top_n:int=3) -> List[str]:
         SCRIPTURE = (self.CROSS_REFERENCES_QURAN,self.CROSS_REFERENCES_BIBLE)[scripture]
-        return SCRIPTURE[verse][:max(min(top_n,10),0)].to_list()
+        return SCRIPTURE[verse][:max(min(top_n,10),0)]
 
     def similar_bible_verses_to_verse(self,verse:str, top_n:int=3) -> List[str]:
 
