@@ -1,6 +1,6 @@
 ############   NATIVE IMPORTS  ###########################
 from typing import List,Iterable,Set,Tuple
-from json import load
+from ujson import load
 ############ INSTALLED IMPORTS ###########################
 from pandas import read_json
 from numpy import argsort

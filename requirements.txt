@@ -17,4 +17,5 @@ six==1.15.0
 sklearn==0.0
 threadpoolctl==2.1.0
 tqdm==4.47.0
+ujson==3.0.0
 Werkzeug==1.0.1
