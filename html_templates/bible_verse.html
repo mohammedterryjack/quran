@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head> 
 
-<body> 
+<body style="background-color:powderblue;"> 
     
-    <div style = "text-align:center" class="chapter-and-verse-name">
-    <p style="font-family:'Courier New'">
-    <b>{book}</b> 
+    <div style = "text-align:center;font-family:Arial, Helvetica, sans-serif" class="chapter-and-verse-name">
+    <p>
+    <h1>{book}</h1> 
     - Chapter {chapter} Verse {verse} 
     </p>
     </div>
@@ -19,11 +19,11 @@
     <p><small>{verse_in_english}</small></p>
     </div>
 
-    <div style="text-align:center" class="hebrew-verse">
-    <p style="font-size:30px;font-family:'Tahoma'">{verse_in_hebrew}</p>
+    <div style="text-align:center;font-family:'Tahoma';font-size:30px" class="hebrew-verse">
+    <p>{verse_in_hebrew}</p>
     </div> 
     
-    <div style="text-align:center" class="audio-recitations">
+    <div style="text-align:center;font-family:Arial, Helvetica, sans-serif" class="audio-recitations">
     <audio controls>
         <source style="text-align:center" src="{audio_hebrew}" type="audio/mpeg">
     </audio>
