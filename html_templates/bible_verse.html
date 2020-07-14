@@ -1,17 +1,39 @@
 <!DOCTYPE html> 
 <html> 
+
 <head> 
     <title>{cannon}</title> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head> 
+
 <body> 
-    <p  style="font-family:'Courier New'">
-        <b>{book}</b> 
-        - Chapter {chapter} Verse {verse} 
+    
+    <div style = "text-align:center" class="chapter-and-verse-name">
+    <p style="font-family:'Courier New'">
+    <b>{book}</b> 
+    - Chapter {chapter} Verse {verse} 
     </p>
+    </div>
+    
+    <div style = "text-align:center" class="english-verse">
     <p><small>{verse_in_english}</small></p>
-    <p  style="font-size:30px;font-family:'Tahoma'">{verse_in_hebrew}</p> 
+    </div>
+
+    <div style="text-align:center" class="hebrew-verse">
+    <p style="font-size:30px;font-family:'Tahoma'">{verse_in_hebrew}</p>
+    </div> 
+    
+    <div style="text-align:center" class="audio-recitations">
     <audio controls>
-        <source src="{audio_hebrew}" type="audio/mpeg">
+        <source style="text-align:center" src="{audio_hebrew}" type="audio/mpeg">
     </audio>
+    </div>
+
+    <div style="text-align:center" class="prev-next-verse">
+    <a href="{previous_page_url}">Previous Verse</a> -
+    <a href={next_page_url}>Next Verse</a>
+    </div>
+    
 </body> 
+
 </html> 
