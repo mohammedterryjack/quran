@@ -50,3 +50,4 @@ Cross-reference verses of the  Quran (in Arabic and English) with Jewish source 
 
 ### Frontend (css/html/js)
 - implement mock design frontend
+- user can link custom verses of Quran and Bible to a verse
