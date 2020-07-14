@@ -34,8 +34,32 @@ def search() -> str:
     verse_key = f"{chapter}:{verse}"
     next_verse_key = QURAN.next_verse(verse_key)
     previous_verse_key = QURAN.previous_verse(verse_key)
-    related_verses = verses[1:]
-    bible_verses = BIBLE.semantically_similar_verses_to_query(query_features,top_n=10)
+    related_verses = format_and_link_verses_for_html(
+        verses=verses[1:],
+        verses_to_display=map(
+            lambda verse_name:QURAN.english_translation_of_verse(
+                verse=verse_name,
+                translator=DEFAULT_TRANSLATOR
+            )[:50],
+            verses[1:]
+        ),
+        scripture="quran"
+    )
+    bible_verse_names = BIBLE.semantically_similar_verses_to_query(query_features,top_n=5)
+    bible_verses = format_and_link_verses_for_html(
+        verses=bible_verse_names,
+        verses_to_display = map(
+            lambda verse_name:BIBLE.verse(
+                language_code="en",
+                cannon=verse_name.split(":")[0],
+                book=verse_name.split(":")[1],
+                chapter=int(verse_name.split(":")[2]),
+                verse=int(verse_name.split(":")[3])
+            )[:50],
+            bible_verse_names
+        ),
+        scripture="bible",
+    )
 
     return QURAN_VERSE_TEMPLATE.format(
         chapter=chapter,
@@ -48,19 +72,45 @@ def search() -> str:
             sentences=QURAN.english_translations_of_verse(verse_key),
             default_displayed=6
         ),
-        related_verses_quran=format_and_link_verses_for_html(related_verses,"quran"),
-        related_verses_bible=format_and_link_verses_for_html(bible_verses,"bible"),
+        related_verses_quran=related_verses,
+        related_verses_bible=bible_verses,
         next_page_url = f"/quran/{next_verse_key.replace(':','/')}",
         previous_page_url = f"/quran/{previous_verse_key.replace(':','/')}",
     )
     
 @app.route('/quran/<chapter>/<verse>')
 def display_quranic_verse(chapter:str,verse:str) -> str:
+    DEFAULT_TRANSLATOR = 6
     verse_key = f"{chapter}:{verse}"
     next_verse_key = QURAN.next_verse(verse_key)
     previous_verse_key = QURAN.previous_verse(verse_key)
-    related_verses = QURAN.similar_verses_to_verse(verse_key, scripture=0, top_n=5)[1:]
-    bible_verses = QURAN.similar_verses_to_verse(verse_key, scripture=1, top_n=10)
+    verses = QURAN.similar_verses_to_verse(verse_key, scripture=0, top_n=5)
+    related_verses = format_and_link_verses_for_html(
+        verses=verses[1:],
+        verses_to_display=map(
+            lambda verse_name:QURAN.english_translation_of_verse(
+                verse=verse_name,
+                translator=DEFAULT_TRANSLATOR
+            )[:50],
+            verses[1:]
+        ),
+        scripture="quran"
+    )
+    bible_verse_names = QURAN.similar_verses_to_verse(verse_key, scripture=1, top_n=5)
+    bible_verses = format_and_link_verses_for_html(
+        verses=bible_verse_names,
+        verses_to_display = map(
+            lambda verse_name:BIBLE.verse(
+                language_code="en",
+                cannon=verse_name.split(":")[0],
+                book=verse_name.split(":")[1],
+                chapter=int(verse_name.split(":")[2]),
+                verse=int(verse_name.split(":")[3])
+            )[:50],
+            bible_verse_names
+        ),
+        scripture="bible"
+    )
     return QURAN_VERSE_TEMPLATE.format(
         chapter=chapter,
         verse=verse,
@@ -70,10 +120,10 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
         verse_in_arabic=QURAN.arabic_verse(verse_key),
         verses_in_english=format_sentences_to_be_hidden_html(
             sentences=QURAN.english_translations_of_verse(verse_key),
-            default_displayed=6
+            default_displayed=DEFAULT_TRANSLATOR
         ),
-        related_verses_quran=format_and_link_verses_for_html(related_verses,"quran"),
-        related_verses_bible=format_and_link_verses_for_html(bible_verses,"bible"),
+        related_verses_quran=related_verses,
+        related_verses_bible=bible_verses,
         next_page_url = f"/quran/{next_verse_key.replace(':','/')}",
         previous_page_url = f"/quran/{previous_verse_key.replace(':','/')}"
     )

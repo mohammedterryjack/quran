@@ -14,7 +14,7 @@ def format_sentences_to_be_hidden_html(sentences:List[str],default_displayed:int
     UNSELECTED = ''
     return '\n'.join(
         map(
-            lambda index,sentence:f'<div id="translation{index}" style="display:{(HIDE,SHOW)[index==default_displayed]}"><small>{format_sentence_for_html(sentence)}</small></div>',
+            lambda index,sentence:f'<div id="translation{index}" style="text-align:center; display:{(HIDE,SHOW)[index==default_displayed]}"><small>{format_sentence_for_html(sentence)}</small></div>',
             indexes,
             sentences
         )
@@ -35,13 +35,14 @@ def format_sentences_to_be_hidden_html(sentences:List[str],default_displayed:int
             )
         ) + "});</script>"
     
-def format_and_link_verses_for_html(verses:List[str],scripture:str) -> str:
+def format_and_link_verses_for_html(verses:List[str],verses_to_display:List[str],scripture:str) -> str:
     return ' '.join(  
-        "<p><small><a href= /{scripture}/{verse_address}>{verse}</a></small></p>".format(
+        "<p><small><a href= /{scripture}/{verse_address}>{verse}</a>  {verse_to_display}...</small></p>".format(
             scripture=scripture,
             verse_address=verse.replace(':','/'),
-            verse=verse.replace('%20',' ')
-        ) for verse in verses
+            verse=verse.replace('%20',' '),
+            verse_to_display=text,
+        ) for verse,text in zip(verses,verses_to_display)
     )
 
 def format_sentence_for_html(sentence:str) -> str:
