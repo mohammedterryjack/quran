@@ -9,64 +9,51 @@
 
 <body> 
     
-    <!--Search Bar-->
-    <div class="search-container">
+    <div style = "text-align:center" class="search-container">
     <form action="/search" method="GET">
         <input type="text" placeholder="Search Qur'an" name="query" >
     </form>
     </div>
 
-    <!--Title-->
-    <div>
-    <p style="text-align:center; font-family:'Courier New'">
+    <div style = "text-align:center" class="chapter-and-verse-name">
+    <p style="font-family:'Courier New'">
     <b>Surat {chapter_name}</b> 
     {chapter}:{verse}
     </p>
     </div>
     
-    <!--Parallel English Translations of Verse-->
     {verses_in_english}
     
-    <!--Arabic Verse-->
-    <div>
-    <p style="text-align:center; font-size:30px;font-family:'Tahoma'">{verse_in_arabic}</p>
+    <div style="text-align:center" class="arabic-verse">
+    <p style="font-size:30px;font-family:'Tahoma'">{verse_in_arabic}</p>
     </div> 
     
-    <!--Audio Recitation-->
-    <div>
+    <div style="text-align:center" class="audio-recitations">
     <p><small>
     Recitation 
     <i>(Hafs & Warsh)</i>
     </small></p>
     <audio controls>
-        <source src="{verse_audio_hafs}" type="audio/mpeg">
+        <source style="text-align:center" src="{verse_audio_hafs}" type="audio/mpeg">
     </audio>
     <audio controls>
-        <source src="{verse_audio_warsh}" type="audio/mpeg">
+        <source style="text-align:center" src="{verse_audio_warsh}" type="audio/mpeg">
     </audio>
     </div>
 
-    <!--Prev|Next Verse-->
-    <div>
+    <div style="text-align:center" class="prev-next-verse">
     <a href="{previous_page_url}">Previous Verse</a> -
     <a href={next_page_url}>Next Verse</a>
     </div>
     
-    <!--Related Quran Verses-->
-    <div>
-    <small>
-    Related Verses 
-    <i>(Qur'an)</i>
-    </small>
-    {related_verses_quran}
-    </div>
-    
-    <!--Related Bible Verses-->
-    <div>
-    <small>
-    Related Verses 
-    <i>(Bible)</i>
-    </small>
+    <div style="text-align:center" class="related-verses">
+    <br>
+    <p><u>Related Verses</u></p> 
+    <br>    
+    <u>Qur'an</u>
+    {related_verses_quran}    
+    <br>
+    <u>Tanakh</u>
     {related_verses_bible}
     </div>
 
