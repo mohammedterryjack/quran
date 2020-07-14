@@ -49,6 +49,11 @@ class QuranText:
         self.VERSE_NAMES = list(self.ENGLISH.keys())
         self.CHAPTER_NAMES = self._get_surah_names()
 
+    def common_features(self, query_features:Set[str], verse:str) -> Set[str]:
+        return query_features.intersection(
+            self.semantic_features_for_verse(verse)
+        )
+
     def next_verse(self, verse:str) -> str:  
         return self._increase_verse_by_n(verse=verse,n=1)
 
