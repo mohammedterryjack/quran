@@ -20,7 +20,16 @@ from data_analysis.utils import (
 
 # generate_bible_features()
 
-save_crossreference_quran_bible_to_file(
-    path="data/mushaf",
-    top_n_search_results=10,
-)
+# save_crossreference_quran_bible_to_file(
+#     path="data/mushaf",
+#     top_n_search_results=10,
+# )
+
+# from utils import BibleText,QuranText
+# QURAN = QuranText()
+# BIBLE = BibleText()
+# from pickle import dump, HIGHEST_PROTOCOL
+# with open('quran.pickle', 'wb') as f:
+#     dump(QURAN, f, protocol=HIGHEST_PROTOCOL)
+# with open('bible.pickle', 'wb') as f:
+#     dump(BIBLE, f, protocol=HIGHEST_PROTOCOL)

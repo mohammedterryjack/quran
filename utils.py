@@ -134,7 +134,13 @@ class BibleAudio(Bible):
 
     def url(self, cannon:str, book:str, chapter:int) -> str:
         """ get url of audio file for book """
-        return f"{self.URL}/t{self.BOOKS.get(f'{cannon}/{book}')}{str(chapter).zfill(2)}.{self.AUDIO_FORMAT}"
+        chapter_key = str(chapter)
+        if len(chapter_key) == 3:
+            a,b,c = chapter_key
+            chapter_key = f"{chr(int(a+b)+87)}{c}"
+        else:
+            chapter_key = chapter_key.zfill(2)
+        return f"{self.URL}/t{self.BOOKS.get(f'{cannon}/{book}')}{chapter_key}.{self.AUDIO_FORMAT}"
 
 class BibleText(Bible):
     def __init__(self) -> None:

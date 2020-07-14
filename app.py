@@ -1,8 +1,9 @@
 ############   NATIVE IMPORTS  ###########################
+from pickle import load
 ############ INSTALLED IMPORTS ###########################
 from flask import Flask, request
 ############   LOCAL IMPORTS   ###########################
-from utils import QuranAudio,BibleAudio,BibleText,QuranText
+from utils import QuranAudio,BibleAudio #,BibleText,QuranText
 from html_templates.utils import (
     format_sentences_to_be_hidden_html,
     format_and_link_verses_for_html,
@@ -12,12 +13,16 @@ from data_analysis.semantic_featuriser import set_of_semantic_features_for_sente
 ##########################################################
 DEFAULT_TRANSLATOR = 6
 QURAN_AUDIO = QuranAudio()
-QURAN = QuranText()
+with open('quran.pickle', 'rb') as f:
+    QURAN = load(f)
+#QURAN = QuranText()
 with open("html_templates/quran_verse.html") as html_file:
     QURAN_VERSE_TEMPLATE = html_file.read()
 
 BIBLE_AUDIO = BibleAudio()
-BIBLE = BibleText()
+with open('bible.pickle', 'rb') as f:
+    BIBLE = load(f)
+#BIBLE = BibleText()
 with open("html_templates/bible_verse.html") as html_file:
     BIBLE_VERSE_TEMPLATE = html_file.read()
 
