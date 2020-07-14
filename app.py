@@ -130,6 +130,9 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
 @app.route('/bible/<cannon>/<book>/<chapter>/<verse>')
 def display_bible_verse(cannon:str,book:str,chapter:str,verse:str) -> str:
     book_key = book.replace(" ","%20")
+    verse_key = f"{cannon}:{book_key}:{chapter}:{verse}"
+    next_verse_key = BIBLE.next_verse(verse_key)
+    previous_verse_key = BIBLE.previous_verse(verse_key)
     return BIBLE_VERSE_TEMPLATE.format(
         cannon=cannon.title(),
         book=book.title(),
@@ -139,7 +142,9 @@ def display_bible_verse(cannon:str,book:str,chapter:str,verse:str) -> str:
             sentence=BIBLE.verse("en",cannon,book_key,int(chapter),int(verse))
         ),
         verse_in_hebrew=BIBLE.verse("he",cannon,book_key,int(chapter),int(verse)),
-        audio_hebrew=BIBLE_AUDIO.url(cannon,book_key,chapter)
+        audio_hebrew=BIBLE_AUDIO.url(cannon,book_key,chapter),
+        next_page_url = f"/bible/{next_verse_key.replace(':','/')}",
+        previous_page_url = f"/bible/{previous_verse_key.replace(':','/')}"
     )
 
 if __name__ == '__main__':
