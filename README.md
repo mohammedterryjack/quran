@@ -21,7 +21,7 @@ Cross-reference verses of the  Quran (in Arabic and English) with Jewish source 
 - ✅ improve cross-reference results using wordnet vectors 
 - ✅ improve cross-reference results using morphological vectors
 - ✅ encode each verse by wordnet vectors + save vectors
-- encode sefaria data into same space
+- ✅ encode sefaria data into same space
 - Automatically segment Hebrew Audio so its in verses?
 - Automatically segment Arabic Hamza Recitation so its in verses
 
@@ -33,8 +33,7 @@ Cross-reference verses of the  Quran (in Arabic and English) with Jewish source 
 - ✅ search verse of quran against quran 
 - ✅ display what features the match was based on 
 - ✅ display arabic verse
-- include word-by-word english translation for Quran
-- search verse of quran against sefaria
+- ✅ search verse of quran against sefaria
 
 ### Deployment (python3 - flask, heroku)
 - ✅ setup a basic flask
