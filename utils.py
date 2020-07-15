@@ -158,8 +158,10 @@ class BibleText(Bible):
     def __init__(self) -> None:
         super().__init__() 
         self.PATH = "data/tanakh/{directory}/{book}_{language_code}.json"
-        self.FEATURES = self._load_features()
         self.VERSE_NAMES = list(self._verse_names())
+
+    def FEATURES(self) -> dict:
+        return self._load_features()
 
     def ENGLISH(self) -> dict:
         return self._load(path=self.PATH,language_code="en",book_names=self.BOOKS)
@@ -206,14 +208,14 @@ class BibleText(Bible):
 
 
     def _semantic_features(self) -> Iterable[Set[str]]:
-        for cannon,books in self.FEATURES.items():
+        for cannon,books in self.FEATURES().items():
             for book,chapters in books.items():
                 for verses in chapters:
                     for verse_features in verses:
                         yield set(verse_features)
 
     def _verse_names(self) -> Iterable[str]:
-        for cannon,books in self.FEATURES.items():
+        for cannon,books in self.FEATURES().items():
             for book,chapters in books.items():
                 for chapter_index,verses in enumerate(chapters):
                     for verse_index,verse_features in enumerate(verses):
