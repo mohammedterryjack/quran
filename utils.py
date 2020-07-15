@@ -38,13 +38,17 @@ class QuranAudio:
         return f"{self.URL}/{PATH_AND_FILENAME}?raw=true"
 
 class QuranText:
-    def __init__(self) -> None:
+    def __init__(self) -> None:               
+        self.VERSE_NAMES = list(self.ENGLISH().keys())
+    
+    def ENGLISH(self) -> dict:
         with open("data/mushaf/quran_en.json") as json_file:
-            self.ENGLISH = load(json_file)        
+            return load(json_file) 
+    
+    def FEATURES(self) -> dict:
         with open("data/mushaf/quran_features.json") as json_file:
-            self.FEATURES = load(json_file)
-        self.VERSE_NAMES = list(self.ENGLISH.keys())
-        
+            return load(json_file)
+
     def ARABIC(self) -> dict:
         with open("data/mushaf/quran_ar.json") as json_file:
             return load(json_file)
@@ -83,20 +87,20 @@ class QuranText:
 
     def semantic_features_for_verse(self, verse:str) -> Set[str]:
         index = str(self.VERSE_NAMES.index(verse))
-        return set(self.FEATURES[index])
+        return set(self.FEATURES()[index])
 
     def _semantic_features(self) -> Iterable[Set[str]]:
-        for features in self.FEATURES.values():
+        for features in self.FEATURES().values():
             yield set(features)
         
     def arabic_verse(self,verse:str) -> str:
         return self.ARABIC()[verse]["ARABIC"]
 
     def english_translations_of_verse(self,verse:str) -> List[str]:
-        return self.ENGLISH[verse]["ENGLISH"][:-1]
+        return self.ENGLISH()[verse]["ENGLISH"][:-1]
 
     def english_translation_of_verse(self,verse:str,translator:int) -> str:
-        return self.ENGLISH[verse]["ENGLISH"][max(min(translator,17),0)]
+        return self.ENGLISH()[verse]["ENGLISH"][max(min(translator,17),0)]
 
     def similar_verses_to_verse(self,verse:str, scripture:int, top_n:int=3) -> List[str]:
         SCRIPTURE = self.CROSS_REFERENCES_BIBLE() if scripture else self.CROSS_REFERENCES_QURAN()
