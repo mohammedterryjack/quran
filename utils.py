@@ -1,6 +1,6 @@
 ############   NATIVE IMPORTS  ###########################
 from typing import List,Iterable,Set
-from json import load
+from ujson import load
 ############ INSTALLED IMPORTS ###########################
 from numpy import argsort
 ############   LOCAL IMPORTS   ###########################
@@ -51,6 +51,10 @@ class HolyScripture:
         verse_index += n
         verse_index %= len(self.VERSE_NAMES)
         return self.VERSE_NAMES[verse_index]
+    
+    @staticmethod
+    def get_features(verse_json:dict) -> Set[str]:
+        return set(verse_json["FEATURES"])
 
 
 class Quran(HolyScripture):
@@ -81,10 +85,6 @@ class Quran(HolyScripture):
     @staticmethod
     def get_crossreference_quran(verse_json:dict,top_n:int=3) -> List[str]:
         return verse_json["CROSS_REFERENCE"]["QURAN"][:max(min(top_n,10),0)]
-
-    @staticmethod
-    def get_features(verse_json:dict) -> Set[str]:
-        return set(verse_json["FEATURES"])
         
     def get_chapter_name(self,chapter_index:str) -> str:
         return self.CHAPTER_NAMES[int(chapter_index)-1]
