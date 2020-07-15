@@ -2,7 +2,7 @@
 ############ INSTALLED IMPORTS ###########################
 from flask import Flask, request
 ############   LOCAL IMPORTS   ###########################
-from utils import QuranAudio,BibleAudio,BibleText,QuranText
+from utils import QuranAudio,TanakhAudio,TanakhText,QuranText
 from html_templates.utils import (
     format_sentences_to_be_hidden_html,
     format_and_link_verses_for_html,
@@ -14,10 +14,8 @@ DEFAULT_TRANSLATOR = 6
 QURAN_AUDIO = QuranAudio()
 QURAN = QuranText()
 
-# BIBLE_AUDIO = BibleAudio()
-# BIBLE = BibleText()
-# with open("html_templates/bible_verse.html") as html_file:
-#     BIBLE_VERSE_TEMPLATE = html_file.read()
+TANAKH_AUDIO = TanakhAudio()
+TANAKH = TanakhText()
 
 app = Flask(__name__)
 
@@ -75,25 +73,24 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
         previous_page_url = f"/quran/{previous_verse_key.replace(':','/')}"
     )
 
-# @app.route('/bible/<cannon>/<book>/<chapter>/<verse>')
-# def display_bible_verse(cannon:str,book:str,chapter:str,verse:str) -> str:
-#     book_key = book.replace(" ","%20")
-#     verse_key = f"{cannon}:{book_key}:{chapter}:{verse}"
-#     next_verse_key = BIBLE.next_verse(verse_key)
-#     previous_verse_key = BIBLE.previous_verse(verse_key)
-#     return BIBLE_VERSE_TEMPLATE.format(
-#         cannon=cannon.title(),
-#         book=book.title(),
-#         chapter=chapter,
-#         verse=verse,
-#         verse_in_english=format_sentence_for_html(
-#             sentence=BIBLE.verse("en",cannon,book_key,int(chapter),int(verse))
-#         ),
-#         verse_in_hebrew=BIBLE.verse("he",cannon,book_key,int(chapter),int(verse)),
-#         audio_hebrew=BIBLE_AUDIO.url(cannon,book_key,chapter),
-#         next_page_url = f"/bible/{next_verse_key.replace(':','/')}",
-#         previous_page_url = f"/bible/{previous_verse_key.replace(':','/')}"
-#     )
+@app.route('/tanakh/<collection>/<book>/<chapter>/<verse>')
+def display_bible_verse(collection:str,book:str,chapter:str,verse:str) -> str:
+    book_key = book.replace(" ","%20")
+    verse_key = f"{collection}:{book_key}:{chapter}:{verse}"
+    next_verse_key = TANAKH.get_next_verse_name(verse_key)
+    previous_verse_key = TANAKH.get_previous_verse_name(verse_key)
+    VERSE_DATA = TANAKH.get_verse_json(collection,book,chapter,verse)
+    return TANAKH.HTML.format(
+        collection=collection.title(),
+        book=book.title(),
+        chapter=chapter,
+        verse=verse,
+        verse_in_english=format_sentence_for_html(TANAKH.get_english(VERSE_DATA)),
+        verse_in_hebrew=TANAKH.get_hebrew(VERSE_DATA),
+        audio_hebrew=TANAKH_AUDIO.url(collection,book_key,chapter),
+        next_page_url = f"/tanakh/{next_verse_key.replace(':','/')}",
+        previous_page_url = f"/tanakh/{previous_verse_key.replace(':','/')}"
+    )
 
 # @app.route('/search', methods=['GET', 'POST'])
 # def search() -> str:
