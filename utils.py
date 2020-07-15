@@ -67,8 +67,8 @@ class Quran(HolyScripture):
         self.AUDIO = QuranAudio()
     
     @staticmethod
-    def get_english_parallel(verse_json:dict) -> str:
-        return list(verse_json["ENGLISH"].values())[:-1]
+    def get_english_parallel(verse_json:dict) -> Iterable[str]:
+        return verse_json["ENGLISH"].values()
 
     @staticmethod
     def get_english(verse_json:dict,translator:int) -> str:
