@@ -100,8 +100,8 @@ class Quran(HolyScripture):
         )[:summary_length]
 
     def get_all_features(self) -> Iterable[Set[str]]:
-        for verse_name in self.VERSE_NAMES():
-            yield HolyScripture.get_features(
+        for verse_name in self.VERSE_NAMES:
+            yield self.get_features(
                 verse_json = self.get_verse_json(*verse_name.split(":"))
             )
 
@@ -176,3 +176,22 @@ class Tanakh(HolyScripture):
     @staticmethod
     def get_hebrew(verse_json:dict) -> str:
         return verse_json["HEBREW"]
+
+    def get_all_features(self) -> Iterable[Set[str]]:
+        for verse_name in self.VERSE_NAMES:
+            yield self.get_features(
+                verse_json = self.get_verse_json(*verse_name.split(":"))
+            )
+
+    def get_verse_names_relevant_to_query(self, query_features:Set[str],top_n:int=3) -> List[str]:
+        semantic_scores = list(
+            map(
+                lambda verse_features: cosine_similarity_for_sets(
+                    features_a=query_features,
+                    features_b=verse_features
+                ),
+                self.get_all_features()
+            )
+        )
+        verse_indexes = argsort(semantic_scores)[:-top_n-1:-1]
+        return list(map(lambda index:self.VERSE_NAMES[index], verse_indexes))
