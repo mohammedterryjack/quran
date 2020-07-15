@@ -8,9 +8,7 @@ from data_analysis.semantic_featuriser import cosine_similarity_for_sets
 ##########################################################
 class QuranAudio:
     def __init__(self) -> None:
-        self.URL = "https://raw.githubusercontent.com/mohammedterryjack/quran-data/master/"
-        self.PATH = "data/audio"
-        self.AUDIO_FORMAT = "mp3"
+        self.URL = "https://raw.githubusercontent.com/mohammedterryjack/quran-data/master/audio/{filename}.mp3?raw=true"
         self.WARSH_FILES = "warsh_aljazari"
         self.HAFS_FILES = "hafs_alafasy"
 
@@ -27,15 +25,11 @@ class QuranAudio:
             VERSE_NAME = "audhubillah"
         return f"{RECITER}/{VERSE_NAME}"
 
-    def local_filename(self, verse_name:str, reciter:int) -> str:
-        """ get local filename for verse audio """
-        FILENAME = self._filename(verse_name=verse_name, reciter=reciter)
-        return f"{self.PATH}/{FILENAME}.{self.AUDIO_FORMAT}"
-
     def url(self, verse_name:str, reciter:int) -> str:
         """ get local filename for verse audio """
-        PATH_AND_FILENAME = self.local_filename(verse_name=verse_name, reciter=reciter)
-        return f"{self.URL}/{PATH_AND_FILENAME}?raw=true"
+        return self.URL.format(
+            filename=self._filename(verse_name=verse_name, reciter=reciter)
+        )
 
 class QuranText:
     def __init__(self) -> None:               
