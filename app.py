@@ -13,8 +13,6 @@ from data_analysis.semantic_featuriser import set_of_semantic_features_for_sente
 DEFAULT_TRANSLATOR = 6
 QURAN_AUDIO = QuranAudio()
 QURAN = QuranText()
-with open("html_templates/quran_verse.html") as html_file:
-    QURAN_VERSE_TEMPLATE = html_file.read()
 
 # BIBLE_AUDIO = BibleAudio()
 # BIBLE = BibleText()
@@ -26,7 +24,6 @@ app = Flask(__name__)
 @app.route('/')
 def hello() -> str:
     return "Coming Soon..."
-
     
 @app.route('/quran/<chapter>/<verse>')
 def display_quranic_verse(chapter:str,verse:str) -> str:
@@ -61,7 +58,7 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
     #     ),
     #     scripture="bible"
     # )
-    return QURAN_VERSE_TEMPLATE.format(
+    return QURAN.HTML.format(
         chapter=chapter,
         verse=verse,
         chapter_name=QURAN.get_chapter_name(chapter),
