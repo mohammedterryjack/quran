@@ -1,6 +1,6 @@
 ############   NATIVE IMPORTS  ###########################
 from typing import List,Iterable,Set
-from ujson import load
+from json import load
 ############ INSTALLED IMPORTS ###########################
 from numpy import argsort
 ############   LOCAL IMPORTS   ###########################
@@ -32,27 +32,17 @@ class QuranAudio:
         )
 
 class QuranText:
-    def __init__(self) -> None:               
-        self.VERSE_NAMES = list(self.ENGLISH().keys())
+    def __init__(self) -> None:   
+        with open("data/mushaf/metadata.json") as json_file:          
+            METADATA = load(json_file)
+        self.VERSE_NAMES = METADATA["VERSE_NAMES"]
+        self.CHAPTER_NAMES = METADATA["CHAPTER_NAMES"]
     
-    def ENGLISH(self) -> dict:
-        with open("data/mushaf/quran_en.json") as json_file:
-            return load(json_file) 
-    
-    def FEATURES(self) -> dict:
-        with open("data/mushaf/quran_features.json") as json_file:
-            return load(json_file)
-
-    def ARABIC(self) -> dict:
-        with open("data/mushaf/quran_ar.json") as json_file:
+    def verse_data(self,verse_name:str) -> dict:
+        chapter,verse = verse_name.split(":")
+        with open("data/mushaf/{chapter}/{verse}.json") as json_file:
             return load(json_file)
     
-    def CHAPTER_NAMES(self) -> List[str]:
-        surah_names = []
-        for index in range(1,115):
-            with open(f"raw_data/quran_surah_names/surah_{index}.json", encoding='utf-8') as json_file:
-                surah_names.append(load(json_file)["name"])
-        return surah_names
 
     def CROSS_REFERENCES_QURAN(self) -> dict:
         with open("data/mushaf/quran.json") as json_file:
