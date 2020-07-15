@@ -1,6 +1,6 @@
 ############   NATIVE IMPORTS  ###########################
 ############ INSTALLED IMPORTS ###########################
-from flask import Flask, request
+from flask import Flask, request, redirect
 ############   LOCAL IMPORTS   ###########################
 from utils import Tanakh,Quran
 from html_templates.utils import (
@@ -16,9 +16,10 @@ TANAKH = Tanakh()
 app = Flask(__name__)
 
 @app.route('/')
-def hello() -> str:
-    return "Coming Soon..."
-    
+def verse_of_the_minute() -> str:
+    verse_key = QURAN.verse_name_for_now().replace(":","/")
+    return redirect(f"/quran/{verse_key}")
+
 @app.route('/quran/<chapter>/<verse>')
 def display_quranic_verse(chapter:str,verse:str) -> str:
     verse_key = f"{chapter}:{verse}"

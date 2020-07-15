@@ -1,6 +1,7 @@
 ############   NATIVE IMPORTS  ###########################
 from typing import List,Iterable,Set
 from ujson import load
+from datetime import datetime
 ############ INSTALLED IMPORTS ###########################
 from numpy import argsort
 ############   LOCAL IMPORTS   ###########################
@@ -40,6 +41,15 @@ class HolyScripture:
             self.HTML = html_file.read()
         self.VERSE_NAMES = self._METADATA["VERSE_NAMES"]
 
+    def verse_name_for_now(self) -> str:
+        return self.VERSE_NAMES[self._index_for_now()]
+
+    def _index_for_now(self) -> int:
+        return HolyScripture._minutes_into_the_year() // self._update_every_n_minutes()
+
+    def _update_every_n_minutes(self) -> int:
+        return self._a_year_in_minutes() // len(self.VERSE_NAMES)
+
     def get_next_verse_name(self,verse_name:str) -> str:  
         return self._increase_verse_by_n(verse=verse_name,n=1)
 
@@ -55,6 +65,26 @@ class HolyScripture:
     @staticmethod
     def get_features(verse_json:dict) -> Set[str]:
         return set(verse_json["FEATURES"])
+
+    @staticmethod
+    def _a_year_in_minutes() -> int:
+        YEAR_IN_DAYS = 365
+        DAY_IN_HOURS = 24
+        HOUR_IN_MINUTES = 60
+        return YEAR_IN_DAYS * DAY_IN_HOURS * HOUR_IN_MINUTES
+    
+    @staticmethod
+    def _minutes_into_the_year() -> int:
+        SECONDS_IN_MINUTE = 60
+        now = datetime.now()
+        start_of_year = datetime(
+            year=now.year,
+            month=1,
+            day=1
+        )
+        seconds_into_the_year = (now - start_of_year).total_seconds()
+        return int(seconds_into_the_year // SECONDS_IN_MINUTE)
+
 
 
 class Quran(HolyScripture):
