@@ -2,7 +2,7 @@
 ############ INSTALLED IMPORTS ###########################
 from flask import Flask, request
 ############   LOCAL IMPORTS   ###########################
-from utils import QuranAudio,TanakhAudio,TanakhText,QuranText
+from utils import Tanakh,Quran
 from html_templates.utils import (
     format_sentences_to_be_hidden_html,
     format_and_link_verses_for_html,
@@ -10,12 +10,8 @@ from html_templates.utils import (
 )
 from data_analysis.semantic_featuriser import set_of_semantic_features_for_sentence
 ##########################################################
-DEFAULT_TRANSLATOR = 6
-QURAN_AUDIO = QuranAudio()
-QURAN = QuranText()
-
-TANAKH_AUDIO = TanakhAudio()
-TANAKH = TanakhText()
+QURAN = Quran()
+TANAKH = Tanakh()
 
 app = Flask(__name__)
 
@@ -34,41 +30,32 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
         scripture="quran",
         verses=related_quran_verses[1:],
         verses_to_display=map(
-            lambda verse_name:QURAN.get_english(
-                verse_json=VERSE_DATA,
-                translator=DEFAULT_TRANSLATOR
-            )[:50],
+            QURAN.get_english_summary_via_verse_name,
             related_quran_verses[1:]
         ),
     )
-    # bible_verse_names = QURAN.similar_verses_to_verse(verse_key, scripture=1, top_n=5)
-    # bible_verses = format_and_link_verses_for_html(
-    #     verses=bible_verse_names,
-    #     verses_to_display = map(
-    #         lambda verse_name:BIBLE.verse(
-    #             language_code="en",
-    #             cannon=verse_name.split(":")[0],
-    #             book=verse_name.split(":")[1],
-    #             chapter=int(verse_name.split(":")[2]),
-    #             verse=int(verse_name.split(":")[3])
-    #         )[:50],
-    #         bible_verse_names
-    #     ),
-    #     scripture="bible"
-    # )
+    related_bible_verses = QURAN.get_crossreference_bible(VERSE_DATA, top_n=5)
+    related_bible_verses_linked = format_and_link_verses_for_html(
+        scripture="tanakh",
+        verses=related_bible_verses,
+        verses_to_display = map(
+            TANAKH.get_english_summary_via_verse_name,
+            related_bible_verses
+        ),
+    )
     return QURAN.HTML.format(
         chapter=chapter,
         verse=verse,
         chapter_name=QURAN.get_chapter_name(chapter),
-        verse_audio_hafs=QURAN_AUDIO.url(verse_key,0),
-        verse_audio_warsh=QURAN_AUDIO.url(verse_key,1),
+        verse_audio_hafs=QURAN.AUDIO.url(verse_key,0),
+        verse_audio_warsh=QURAN.AUDIO.url(verse_key,1),
         verse_in_arabic=QURAN.get_arabic(VERSE_DATA),
         verses_in_english=format_sentences_to_be_hidden_html(
             sentences=QURAN.get_english_parallel(VERSE_DATA),
-            default_displayed=DEFAULT_TRANSLATOR
+            default_displayed=QURAN.DEFAULT_TRANSLATOR
         ),
         related_verses_quran=related_quran_verses_linked,
-        related_verses_bible="COMING SOON",#bible_verses,
+        related_verses_bible=related_bible_verses_linked,
         next_page_url = f"/quran/{next_verse_key.replace(':','/')}",
         previous_page_url = f"/quran/{previous_verse_key.replace(':','/')}"
     )
@@ -87,7 +74,7 @@ def display_bible_verse(collection:str,book:str,chapter:str,verse:str) -> str:
         verse=verse,
         verse_in_english=format_sentence_for_html(TANAKH.get_english(VERSE_DATA)),
         verse_in_hebrew=TANAKH.get_hebrew(VERSE_DATA),
-        audio_hebrew=TANAKH_AUDIO.url(collection,book_key,chapter),
+        audio_hebrew=TANAKH.AUDIO.url(collection,book_key,chapter),
         next_page_url = f"/tanakh/{next_verse_key.replace(':','/')}",
         previous_page_url = f"/tanakh/{previous_verse_key.replace(':','/')}"
     )

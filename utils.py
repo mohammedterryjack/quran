@@ -55,13 +55,37 @@ class HolyScripture:
     @staticmethod
     def get_features(verse_json:dict) -> Set[str]:
         return set(verse_json["FEATURES"])
+    
+    #def get_verse_names_relevant_to_query(self, query_features:Set[str],top_n:int=3) -> List[str]:
 
-class QuranText(HolyScripture):
+    # def _semantic_features(self) -> Iterable[Set[str]]:
+    #     for features in self.FEATURES().values():
+    #         yield set(features)
+        
+
+    # def semantically_similar_verses_to_query(self,query_features:Set[str],top_n:int=3) -> List[str]:
+    #     semantic_scores = list(
+    #         map(
+    #             lambda verse_features: cosine_similarity_for_sets(
+    #                 features_a=query_features,
+    #                 features_b=verse_features
+    #             ),
+    #             self._semantic_features()
+    #         )
+    #     )
+    #     verse_indexes = argsort(semantic_scores)[:-top_n-1:-1]
+    #     return list(map(lambda index:self.VERSE_NAMES[index], verse_indexes))
+
+
+
+class Quran(HolyScripture):
     def __init__(self) -> None:
         super().__init__(scripture_name="quran")    
+        self.DEFAULT_TRANSLATOR = 6
         self.CHAPTER_NAMES = self._METADATA["CHAPTER_NAMES"]
         with open("html_templates/quran_verse.html") as html_file:
             self.HTML = html_file.read()
+        self.AUDIO = QuranAudio()
     
     def get_chapter_name(self,chapter_index:str) -> str:
         return self.CHAPTER_NAMES[int(chapter_index)-1]
@@ -69,6 +93,12 @@ class QuranText(HolyScripture):
     def get_verse_json(self,chapter:str,verse:str) -> dict:
         with open(f"data/{self.NAME}/{chapter}/{verse}.json") as json_file:
             return load(json_file)
+
+    def get_english_summary_via_verse_name(self,verse_name:str,summary_length:int=50) -> List[str]:
+        return self.get_english(
+            verse_json=self.get_verse_json(*verse_name.split(":")),
+            translator=self.DEFAULT_TRANSLATOR  
+        )[:summary_length]
 
     @staticmethod
     def get_english_parallel(verse_json:dict) -> str:
@@ -94,24 +124,6 @@ class QuranText(HolyScripture):
     #     return query_features.intersection(
     #         self.semantic_features_for_verse(verse)
     #     )
-
-    # def _semantic_features(self) -> Iterable[Set[str]]:
-    #     for features in self.FEATURES().values():
-    #         yield set(features)
-        
-
-    # def semantically_similar_verses_to_query(self,query_features:Set[str],top_n:int=3) -> List[str]:
-    #     semantic_scores = list(
-    #         map(
-    #             lambda verse_features: cosine_similarity_for_sets(
-    #                 features_a=query_features,
-    #                 features_b=verse_features
-    #             ),
-    #             self._semantic_features()
-    #         )
-    #     )
-    #     verse_indexes = argsort(semantic_scores)[:-top_n-1:-1]
-    #     return list(map(lambda index:self.VERSE_NAMES[index], verse_indexes))
 
 
 BOOKS_IN_TANAKH = {
@@ -144,14 +156,20 @@ class TanakhAudio:
         return f"{self.URL}/t{self.BOOKS.get(f'{cannon}/{book}')}{chapter_key}.{self.AUDIO_FORMAT}"
 
 
-class TanakhText(HolyScripture):
+class Tanakh(HolyScripture):
     def __init__(self) -> None:
         super().__init__(scripture_name="tanakh") 
         self.BOOKS = BOOKS_IN_TANAKH
+        self.AUDIO = TanakhAudio()
 
     def get_verse_json(self,collection:str,book:str,chapter:str,verse:str) -> dict:
-        with open(f"data/{self.NAME}/{collection}/{book}/{chapter}/{verse}.json") as json_file:
+        with open(f"data/{self.NAME}/{collection}/{book.replace(' ','%20')}/{chapter}/{verse}.json") as json_file:
             return load(json_file)
+
+    def get_english_summary_via_verse_name(self,verse_name:str,summary_length:int=50) -> List[str]:
+        return self.get_english(
+            verse_json=self.get_verse_json(*verse_name.split(":"))            
+        )[:summary_length]
 
     @staticmethod
     def get_english(verse_json:dict) -> str:
