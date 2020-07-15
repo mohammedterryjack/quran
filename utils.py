@@ -37,6 +37,8 @@ class QuranText:
             METADATA = load(json_file)
         self.VERSE_NAMES = METADATA["VERSE_NAMES"]
         self.CHAPTER_NAMES = METADATA["CHAPTER_NAMES"]
+        with open("html_templates/quran_verse.html") as html_file:
+            self.HTML = html_file.read()
     
     def get_chapter_name(self,chapter_index:str) -> str:
         return self.CHAPTER_NAMES[int(chapter_index)-1]
