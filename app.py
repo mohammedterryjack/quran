@@ -31,18 +31,19 @@ def hello() -> str:
 @app.route('/quran/<chapter>/<verse>')
 def display_quranic_verse(chapter:str,verse:str) -> str:
     verse_key = f"{chapter}:{verse}"
-    next_verse_key = QURAN.next_verse(verse_key)
-    previous_verse_key = QURAN.previous_verse(verse_key)
-    VERSE_DATA = Quran.get_verse_json(chapter,verse)
+    next_verse_key = QURAN.get_next_verse_name(verse_key)
+    previous_verse_key = QURAN.get_previous_verse_name(verse_key)
+    VERSE_DATA = QURAN.get_verse_json(chapter,verse)
     related_quran_verses = QURAN.get_crossreference_quran(VERSE_DATA, top_n=5)
     related_quran_verses_linked = format_and_link_verses_for_html(
+        scripture="quran",
         verses=related_quran_verses[1:],
         verses_to_display=map(
             lambda verse_name:QURAN.get_english(
                 verse_json=VERSE_DATA,
                 translator=DEFAULT_TRANSLATOR
             )[:50],
-            verses[1:]
+            related_quran_verses[1:]
         ),
     )
     # bible_verse_names = QURAN.similar_verses_to_verse(verse_key, scripture=1, top_n=5)
