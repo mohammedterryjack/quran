@@ -3,6 +3,7 @@ Cross-reference verses of the  Quran (in Arabic and English) with Jewish source 
 
 ![](design/interface.png)
 
+https://bref-saucisson-56522.herokuapp.com/quran/1/1
 
 ## TODO
 
