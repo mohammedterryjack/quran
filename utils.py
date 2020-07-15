@@ -42,9 +42,14 @@ class QuranText:
         return self.CHAPTER_NAMES[int(chapter_index)-1]
 
     def get_verse_json(self,chapter:str,verse:str) -> dict:
-        chapter,verse = verse_name.split(":")
-        with open("data/mushaf/{chapter}/{verse}.json") as json_file:
+        with open(f"data/mushaf/{chapter}/{verse}.json") as json_file:
             return load(json_file)
+
+    def get_next_verse_name(self,verse_name:str) -> str:  
+        return self._increase_verse_by_n(verse=verse_name,n=1)
+
+    def get_previous_verse_name(self,verse_name:str) -> str:  
+        return self._increase_verse_by_n(verse=verse_name,n=-1)
     
     def _increase_verse_by_n(self, verse:str,n:int) -> str:
         verse_index = self.VERSE_NAMES.index(verse)
@@ -52,14 +57,9 @@ class QuranText:
         verse_index %= len(self.VERSE_NAMES)
         return self.VERSE_NAMES[verse_index]
 
-    # def common_features(self, query_features:Set[str], verse:str) -> Set[str]:
-    #     return query_features.intersection(
-    #         self.semantic_features_for_verse(verse)
-    #     )
-
     @staticmethod
     def get_english_parallel(verse_json:dict) -> str:
-        return verse_json["ENGLISH"].values()[:-1]
+        return list(verse_json["ENGLISH"].values())[:-1]
 
     @staticmethod
     def get_english(verse_json:dict,translator:int) -> str:
@@ -81,14 +81,10 @@ class QuranText:
     def get_crossreference_quran(verse_json:dict,top_n:int=3) -> List[str]:
         return verse_json["CROSS_REFERENCE"]["QURAN"][:max(min(top_n,10),0)]
 
-    @staticmethod
-    def get_next_verse_name(verse_name:str) -> str:  
-        return QuranText._increase_verse_by_n(verse=verse_name,n=1)
-
-    @staticmethod
-    def get_previous_verse_name(verse_name:str) -> str:  
-        return QuranText._increase_verse_by_n(verse=verse_name,n=-1)
-
+    # def common_features(self, query_features:Set[str], verse:str) -> Set[str]:
+    #     return query_features.intersection(
+    #         self.semantic_features_for_verse(verse)
+    #     )
 
     # def _semantic_features(self) -> Iterable[Set[str]]:
     #     for features in self.FEATURES().values():
