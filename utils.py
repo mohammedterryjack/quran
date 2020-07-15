@@ -38,7 +38,10 @@ class QuranText:
         self.VERSE_NAMES = METADATA["VERSE_NAMES"]
         self.CHAPTER_NAMES = METADATA["CHAPTER_NAMES"]
     
-    def get_verse_json(self,verse_name:str) -> dict:
+    def get_chapter_name(self,chapter_index:str) -> str:
+        return self.CHAPTER_NAMES[int(chapter_index)-1]
+
+    def get_verse_json(self,chapter:str,verse:str) -> dict:
         chapter,verse = verse_name.split(":")
         with open("data/mushaf/{chapter}/{verse}.json") as json_file:
             return load(json_file)
@@ -53,6 +56,10 @@ class QuranText:
     #     return query_features.intersection(
     #         self.semantic_features_for_verse(verse)
     #     )
+
+    @staticmethod
+    def get_english_parallel(verse_json:dict) -> str:
+        return verse_json["ENGLISH"].values()[:-1]
 
     @staticmethod
     def get_english(verse_json:dict,translator:int) -> str:
