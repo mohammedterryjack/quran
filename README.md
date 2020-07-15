@@ -47,8 +47,8 @@ Cross-reference verses of the  Quran (in Arabic and English) with Jewish source 
 - ✅ search by string, 
 - dropdown for chapter (quran and bible)
 - dropdown for verse (quran and bible)
-- host backend on heroku
-- reduce memory somehow
+- ✅host backend on heroku
+- ✅reduce memory somehow
 
 ### Frontend (css/html/js)
 - implement mock design frontend
