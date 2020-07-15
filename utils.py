@@ -154,7 +154,7 @@ class TanakhText(HolyScripture):
             return load(json_file)
 
     @staticmethod
-    def get_english(verse_json:dict,translator:int) -> str:
+    def get_english(verse_json:dict) -> str:
         return verse_json["ENGLISH"]
 
     @staticmethod
