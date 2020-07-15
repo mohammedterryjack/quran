@@ -38,74 +38,69 @@ class QuranText:
         self.VERSE_NAMES = METADATA["VERSE_NAMES"]
         self.CHAPTER_NAMES = METADATA["CHAPTER_NAMES"]
     
-    def verse_data(self,verse_name:str) -> dict:
+    def get_verse_json(self,verse_name:str) -> dict:
         chapter,verse = verse_name.split(":")
         with open("data/mushaf/{chapter}/{verse}.json") as json_file:
             return load(json_file)
     
-
-    def CROSS_REFERENCES_QURAN(self) -> dict:
-        with open("data/mushaf/quran.json") as json_file:
-            return load(json_file)
-
-    def CROSS_REFERENCES_BIBLE(self) -> dict:
-        with open("data/mushaf/quran_biblical_crossreferences.json") as json_file:
-            return load(json_file)
-
-    def common_features(self, query_features:Set[str], verse:str) -> Set[str]:
-        return query_features.intersection(
-            self.semantic_features_for_verse(verse)
-        )
-
-    def next_verse(self, verse:str) -> str:  
-        return self._increase_verse_by_n(verse=verse,n=1)
-
-    def previous_verse(self, verse:str) -> str:  
-        return self._increase_verse_by_n(verse=verse,n=-1)
-
     def _increase_verse_by_n(self, verse:str,n:int) -> str:
         verse_index = self.VERSE_NAMES.index(verse)
         verse_index += n
         verse_index %= len(self.VERSE_NAMES)
         return self.VERSE_NAMES[verse_index]
 
-    def semantic_features_for_verse(self, verse:str) -> Set[str]:
-        index = str(self.VERSE_NAMES.index(verse))
-        return set(self.FEATURES()[index])
+    # def common_features(self, query_features:Set[str], verse:str) -> Set[str]:
+    #     return query_features.intersection(
+    #         self.semantic_features_for_verse(verse)
+    #     )
 
-    def _semantic_features(self) -> Iterable[Set[str]]:
-        for features in self.FEATURES().values():
-            yield set(features)
+    @staticmethod
+    def get_english(verse_json:dict,translator:int) -> str:
+        return verse_json["ENGLISH"][f"TRANSLATION_{max(min(translator,17),0)}"]
+
+    @staticmethod
+    def get_arabic(verse_json:dict) -> str:
+        return verse_json["ARABIC"]
+
+    @staticmethod
+    def get_features(verse_json:dict) -> Set[str]:
+        return set(verse_json["FEATURES"])
+
+    @staticmethod
+    def get_crossreference_bible(verse_json:dict,top_n:int=3) -> List[str]:
+        return verse_json["CROSS_REFERENCE"]["BIBLE"][:max(min(top_n,10),0)]
+
+    @staticmethod
+    def get_crossreference_quran(verse_json:dict,top_n:int=3) -> List[str]:
+        return verse_json["CROSS_REFERENCE"]["QURAN"][:max(min(top_n,10),0)]
+
+    @staticmethod
+    def get_next_verse_name(verse_name:str) -> str:  
+        return QuranText._increase_verse_by_n(verse=verse_name,n=1)
+
+    @staticmethod
+    def get_previous_verse_name(verse_name:str) -> str:  
+        return QuranText._increase_verse_by_n(verse=verse_name,n=-1)
+
+
+    # def _semantic_features(self) -> Iterable[Set[str]]:
+    #     for features in self.FEATURES().values():
+    #         yield set(features)
         
-    def arabic_verse(self,verse:str) -> str:
-        return self.ARABIC()[verse]["ARABIC"]
 
-    def english_translations_of_verse(self,verse:str) -> List[str]:
-        return self.ENGLISH()[verse]["ENGLISH"][:-1]
+    # def semantically_similar_verses_to_query(self,query_features:Set[str],top_n:int=3) -> List[str]:
+    #     semantic_scores = list(
+    #         map(
+    #             lambda verse_features: cosine_similarity_for_sets(
+    #                 features_a=query_features,
+    #                 features_b=verse_features
+    #             ),
+    #             self._semantic_features()
+    #         )
+    #     )
+    #     verse_indexes = argsort(semantic_scores)[:-top_n-1:-1]
+    #     return list(map(lambda index:self.VERSE_NAMES[index], verse_indexes))
 
-    def english_translation_of_verse(self,verse:str,translator:int) -> str:
-        return self.ENGLISH()[verse]["ENGLISH"][max(min(translator,17),0)]
-
-    def similar_verses_to_verse(self,verse:str, scripture:int, top_n:int=3) -> List[str]:
-        SCRIPTURE = self.CROSS_REFERENCES_BIBLE() if scripture else self.CROSS_REFERENCES_QURAN()
-        return SCRIPTURE[verse][:max(min(top_n,10),0)]
-
-    def similar_bible_verses_to_verse(self,verse:str, top_n:int=3) -> List[str]:
-
-        return self.CROSS_REFERENCES_BIBLE[verse][:max(min(top_n,10),0)]
-
-    def semantically_similar_verses_to_query(self,query_features:Set[str],top_n:int=3) -> List[str]:
-        semantic_scores = list(
-            map(
-                lambda verse_features: cosine_similarity_for_sets(
-                    features_a=query_features,
-                    features_b=verse_features
-                ),
-                self._semantic_features()
-            )
-        )
-        verse_indexes = argsort(semantic_scores)[:-top_n-1:-1]
-        return list(map(lambda index:self.VERSE_NAMES[index], verse_indexes))
 
 class Bible:
     def __init__(self) -> None:
