@@ -16,7 +16,7 @@ https://bref-saucisson-56522.herokuapp.com/quran/1/1
 - ✅ Get tanakh for cross-referencing 
 - get ramban commentary for commentary of tanakh
 - get ahmad zaki translation of quran
-- get aisha bewley translation of quran
+- ✅ get aisha bewley translation of quran
 
 ### Backend AI / NLP (python3)
 - ✅ store each verse of quran in arabic and parallel english (csv)
@@ -40,7 +40,6 @@ https://bref-saucisson-56522.herokuapp.com/quran/1/1
 - ✅ display arabic verse
 - ✅ search verse of quran against sefaria
 - tags to show features and reasons why verses are linked
-- create features for each sentence so that longer verses can be searched more easily
 
 ### Deployment (python3 - flask, heroku)
 - ✅ setup a basic flask
