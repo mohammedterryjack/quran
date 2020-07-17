@@ -14,6 +14,9 @@ https://bref-saucisson-56522.herokuapp.com/quran/1/1
 - ✅ Get arabic verses of Quran to display
 - ✅ get audio of quran in hafs (mishary), warsh (jazari), hamza (sufi)
 - ✅ Get tanakh for cross-referencing 
+- get ramban commentary for commentary of tanakh
+- get ahmad zaki translation of quran
+- get aisha bewley translation of quran
 
 ### Backend AI / NLP (python3)
 - ✅ store each verse of quran in arabic and parallel english (csv)
@@ -25,6 +28,7 @@ https://bref-saucisson-56522.herokuapp.com/quran/1/1
 - ✅ encode sefaria data into same space
 - Automatically segment Hebrew Audio so its in verses?
 - Automatically segment Arabic Hamza Recitation so its in verses
+- incorporate glossary/index information of english translations
 
 ### Backend Functions (python3)
 - ✅ index search quran by chapter
@@ -58,5 +62,5 @@ https://bref-saucisson-56522.herokuapp.com/quran/1/1
 - ✅ implement minimalist design frontend
 - implement mock design frontend
 - user can link custom verses of Quran and Bible to a verse
-- favicon for quran = prophetic sandal
-- favicon for tanakh = hand of fatima
+- favicon for quran = prophetic sandal?
+- favicon for tanakh = hand of fatima?
