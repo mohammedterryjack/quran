@@ -23,6 +23,14 @@ def verse_of_the_minute() -> str:
 @app.route('/quran/<chapter>/<verse>')
 def display_quranic_verse(chapter:str,verse:str) -> str:
     verse_key = f"{chapter}:{verse}"
+    if verse_key not in QURAN.VERSE_NAMES:
+        return QURAN.HTML_ERROR.format(
+        verse_key=verse_key,
+        verse_in_arabic = "أعوذُ بِٱللَّهِ مِنَ ٱلشَّيۡطَٰنِ ٱلرَّجِيمِ",
+        verse_audio_hafs=QURAN.AUDIO.url("audhubillah",reciter=0),
+        verse_audio_warsh=QURAN.AUDIO.url("audhubillah",reciter=1),
+        verse_audio_hamza=QURAN.AUDIO.url("audhubillah",reciter=2),
+    )
     next_verse_key = QURAN.get_next_verse_name(verse_key)
     previous_verse_key = QURAN.get_previous_verse_name(verse_key)
     VERSE_DATA = QURAN.get_verse_json(chapter,verse)

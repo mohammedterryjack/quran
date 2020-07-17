@@ -96,6 +96,8 @@ class Quran(HolyScripture):
         self.CHAPTER_NAMES = self._METADATA["CHAPTER_NAMES"]
         with open("html_templates/quran_verse.html") as html_file:
             self.HTML = html_file.read()
+        with open("html_templates/quran_verse_not_found.html") as html_file:
+            self.HTML_ERROR = html_file.read()
         self.AUDIO = QuranAudio()
     
     @staticmethod
