@@ -12,13 +12,15 @@ class QuranAudio:
         self.URL = "https://raw.githubusercontent.com/mohammedterryjack/quran-data/master/audio/{filename}.mp3?raw=true"
         self.WARSH_FILES = "warsh_aljazari"
         self.HAFS_FILES = "hafs_alafasy"
+        self.HAMZA_FILES = "hamza_nuh"
 
     def _filename(self, verse_name:str, reciter:int) -> str:
         """ get name of audio file for verse """
         RECITER = (
             self.HAFS_FILES, 
-            self.WARSH_FILES
-        )[min(max(reciter,0),1)]
+            self.WARSH_FILES,
+            self.HAMZA_FILES,
+        )[min(max(reciter,0),2)]
         try:
             chapter,verse = verse_name.split(":")
             VERSE_NAME = f"{chapter.zfill(3)}{verse.zfill(3)}"

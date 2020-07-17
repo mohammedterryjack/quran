@@ -50,6 +50,7 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
         chapter_name=QURAN.get_chapter_name(chapter),
         verse_audio_hafs=QURAN.AUDIO.url(verse_key,0),
         verse_audio_warsh=QURAN.AUDIO.url(verse_key,1),
+        verse_audio_hamza=QURAN.AUDIO.url(verse_key,2),
         verse_in_arabic=QURAN.get_arabic(VERSE_DATA),
         verses_in_english=format_sentences_to_be_hidden_html(
             sentences=QURAN.get_english_parallel(VERSE_DATA),
@@ -117,6 +118,7 @@ def search() -> str:
         chapter_name=QURAN.get_chapter_name(chapter),
         verse_audio_hafs=QURAN.AUDIO.url(verse_key,0),
         verse_audio_warsh=QURAN.AUDIO.url(verse_key,1),
+        verse_audio_hamza=QURAN.AUDIO.url(verse_key,2),
         verse_in_arabic=QURAN.get_arabic(VERSE_DATA),
         verses_in_english=format_sentences_to_be_hidden_html(
             sentences=QURAN.get_english_parallel(VERSE_DATA),
