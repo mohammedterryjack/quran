@@ -92,7 +92,7 @@ class HolyScripture:
 class Quran(HolyScripture):
     def __init__(self) -> None:
         super().__init__(scripture_name="quran")    
-        self.DEFAULT_TRANSLATOR = 6
+        self.DEFAULT_TRANSLATOR = 7
         self.CHAPTER_NAMES = self._METADATA["CHAPTER_NAMES"]
         with open("html_templates/quran_verse.html") as html_file:
             self.HTML = html_file.read()
