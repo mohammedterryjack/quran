@@ -54,7 +54,7 @@ https://bref-saucisson-56522.herokuapp.com/quran/1/1
 - ✅ reduce memory somehow
 - dropdown for chapter (quran and bible)
 - dropdown for verse (quran and bible)
-- Audhubillah all three autoplay when going to verse which doesn't exist
+- ✅Audhubillah all three autoplay when going to verse which doesn't exist
 - rabbinic commentary alongside english translation of hebrew verse (i.e. ramban)
 
 ### Frontend (css/html/js)
