@@ -63,3 +63,4 @@ https://bref-saucisson-56522.herokuapp.com/quran/1/1
 - user can link custom verses of Quran and Bible to a verse
 - favicon for quran = prophetic sandal?
 - favicon for tanakh = hand of fatima?
+- add names of translators
