@@ -3,6 +3,14 @@ from typing import List
 ############ INSTALLED IMPORTS ###########################
 ############   LOCAL IMPORTS   ###########################
 ##########################################################
+def list_options_html(options:List[str], selected_option:str) -> str:
+    SELECTED = 'selected="selected"'
+    return '\n'.join(
+        map(
+            lambda option:f"<option {SELECTED if option == selected_option else ''}>{option}</option>",
+            options
+        )
+    )
 
 def format_sentences_to_be_hidden_html(sentences:List[str],default_displayed:int) -> str:
     indexes = range(len(sentences))

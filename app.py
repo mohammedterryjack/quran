@@ -6,7 +6,8 @@ from utils import Tanakh,Quran
 from html_templates.utils import (
     format_sentences_to_be_hidden_html,
     format_and_link_verses_for_html,
-    format_sentence_for_html
+    format_sentence_for_html,
+    list_options_html
 )
 from data_analysis.semantic_featuriser import set_of_semantic_features_for_sentence
 ##########################################################
@@ -52,10 +53,23 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
             related_bible_verses
         ),
     )
+    chapter_name = QURAN.get_chapter_name(chapter)
     return QURAN.HTML.format(
         chapter=chapter,
         verse=verse,
-        chapter_name=QURAN.get_chapter_name(chapter),
+        chapter_name=chapter_name,
+        chapter_names=list_options_html(
+            options=QURAN.CHAPTER_NAMES,
+            selected_option=chapter_name
+        ),
+        chapter_numbers=list_options_html(
+            options=range(1,115),
+            selected_option=int(chapter)
+        ),
+        verse_numbers=list_options_html(
+            options=range(1,QURAN.CHAPTER_SIZES[int(chapter)-1]+1),
+            selected_option=int(verse)
+        ),
         verse_audio_hafs=QURAN.AUDIO.url(verse_key,0),
         verse_audio_warsh=QURAN.AUDIO.url(verse_key,1),
         verse_audio_hamza=QURAN.AUDIO.url(verse_key,2),
@@ -89,54 +103,54 @@ def display_bible_verse(collection:str,book:str,chapter:str,verse:str) -> str:
         previous_page_url = f"/tanakh/{previous_verse_key.replace(':','/')}"
     )
 
-@app.route('/search', methods=['GET', 'POST'])
-def search() -> str:
-    query = request.args.get('query')
-    query_features = set_of_semantic_features_for_sentence(query)
+# @app.route('/search', methods=['GET', 'POST'])
+# def search() -> str:
+#     query = request.args.get('query')
+#     query_features = set_of_semantic_features_for_sentence(query)
 
-    related_quran_verses = QURAN.get_verse_names_relevant_to_query(query_features, top_n=5)
-    verse_key = related_quran_verses[0]
-    chapter,verse = verse_key.split(":")
+#     related_quran_verses = QURAN.get_verse_names_relevant_to_query(query_features, top_n=5)
+#     verse_key = related_quran_verses[0]
+#     chapter,verse = verse_key.split(":")
 
-    next_verse_key = QURAN.get_next_verse_name(verse_key)
-    previous_verse_key = QURAN.get_previous_verse_name(verse_key)
-    VERSE_DATA = QURAN.get_verse_json(chapter,verse)
-    related_quran_verses = QURAN.get_crossreference_quran(VERSE_DATA, top_n=5)
-    related_quran_verses_linked = format_and_link_verses_for_html(
-        scripture="quran",
-        verses=related_quran_verses[1:],
-        verses_to_display=map(
-            QURAN.get_english_summary_via_verse_name,
-            related_quran_verses[1:]
-        ),
-    )
+#     next_verse_key = QURAN.get_next_verse_name(verse_key)
+#     previous_verse_key = QURAN.get_previous_verse_name(verse_key)
+#     VERSE_DATA = QURAN.get_verse_json(chapter,verse)
+#     related_quran_verses = QURAN.get_crossreference_quran(VERSE_DATA, top_n=5)
+#     related_quran_verses_linked = format_and_link_verses_for_html(
+#         scripture="quran",
+#         verses=related_quran_verses[1:],
+#         verses_to_display=map(
+#             QURAN.get_english_summary_via_verse_name,
+#             related_quran_verses[1:]
+#         ),
+#     )
 
-    related_bible_verses = TANAKH.get_verse_names_relevant_to_query(query_features,top_n=5)
-    related_bible_verses_linked = format_and_link_verses_for_html(
-        scripture="tanakh",
-        verses=related_bible_verses,
-        verses_to_display = map(
-            TANAKH.get_english_summary_via_verse_name,
-            related_bible_verses
-        ),
-    )
-    return QURAN.HTML.format(
-        chapter=chapter,
-        verse=verse,
-        chapter_name=QURAN.get_chapter_name(chapter),
-        verse_audio_hafs=QURAN.AUDIO.url(verse_key,0),
-        verse_audio_warsh=QURAN.AUDIO.url(verse_key,1),
-        verse_audio_hamza=QURAN.AUDIO.url(verse_key,2),
-        verse_in_arabic=QURAN.get_arabic(VERSE_DATA),
-        verses_in_english=format_sentences_to_be_hidden_html(
-            sentences=QURAN.get_english_parallel(VERSE_DATA),
-            default_displayed=QURAN.DEFAULT_TRANSLATOR
-        ),
-        related_verses_quran=related_quran_verses_linked,
-        related_verses_bible=related_bible_verses_linked,
-        next_page_url = f"/quran/{next_verse_key.replace(':','/')}",
-        previous_page_url = f"/quran/{previous_verse_key.replace(':','/')}"
-    )
+#     related_bible_verses = TANAKH.get_verse_names_relevant_to_query(query_features,top_n=5)
+#     related_bible_verses_linked = format_and_link_verses_for_html(
+#         scripture="tanakh",
+#         verses=related_bible_verses,
+#         verses_to_display = map(
+#             TANAKH.get_english_summary_via_verse_name,
+#             related_bible_verses
+#         ),
+#     )
+#     return QURAN.HTML.format(
+#         chapter=chapter,
+#         verse=verse,
+#         chapter_name=QURAN.get_chapter_name(chapter),
+#         verse_audio_hafs=QURAN.AUDIO.url(verse_key,0),
+#         verse_audio_warsh=QURAN.AUDIO.url(verse_key,1),
+#         verse_audio_hamza=QURAN.AUDIO.url(verse_key,2),
+#         verse_in_arabic=QURAN.get_arabic(VERSE_DATA),
+#         verses_in_english=format_sentences_to_be_hidden_html(
+#             sentences=QURAN.get_english_parallel(VERSE_DATA),
+#             default_displayed=QURAN.DEFAULT_TRANSLATOR
+#         ),
+#         related_verses_quran=related_quran_verses_linked,
+#         related_verses_bible=related_bible_verses_linked,
+#         next_page_url = f"/quran/{next_verse_key.replace(':','/')}",
+#         previous_page_url = f"/quran/{previous_verse_key.replace(':','/')}"
+#     )
 
 
 if __name__ == '__main__':

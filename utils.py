@@ -9,7 +9,7 @@ from data_analysis.semantic_featuriser import cosine_similarity_for_sets
 ##########################################################
 class QuranAudio:
     def __init__(self) -> None:
-        self.URL = "https://raw.githubusercontent.com/mohammedterryjack/quran-data/master/audio/{filename}.mp3?raw=true"
+        self.URL = "https://raw.githubusercontent.com/mohammedterryjack/quran-data/master/audio-quran/{filename}.mp3?raw=true"
         self.WARSH_FILES = "warsh_aljazari"
         self.HAFS_FILES = "hafs_alafasy"
         self.HAMZA_FILES = "hamza_nuh"
@@ -99,6 +99,7 @@ class Quran(HolyScripture):
         with open("html_templates/quran_verse_not_found.html") as html_file:
             self.HTML_ERROR = html_file.read()
         self.AUDIO = QuranAudio()
+        self.CHAPTER_SIZES = self.get_surah_sizes()
     
     @staticmethod
     def get_english_parallel(verse_json:dict) -> Iterable[str]:
@@ -120,6 +121,19 @@ class Quran(HolyScripture):
     def get_crossreference_quran(verse_json:dict,top_n:int=3) -> List[str]:
         return verse_json["CROSS_REFERENCE"]["QURAN"][:max(min(top_n,10),0)]
         
+    def get_surah_sizes(self) -> List[int]:
+        prev_chapter = "1"
+        prev_verse = None
+        surah_sizes = []
+        for verse_key in self.VERSE_NAMES:
+            chapter,verse = verse_key.split(":")
+            if chapter != prev_chapter:
+                surah_sizes.append(int(prev_verse))
+                prev_chapter = chapter
+            prev_verse = verse
+        surah_sizes.append(int(prev_verse))
+        return surah_sizes
+
     def get_chapter_name(self,chapter_index:str) -> str:
         return self.CHAPTER_NAMES[int(chapter_index)-1]
 
@@ -173,20 +187,11 @@ BOOKS_IN_TANAKH = {
 
 class TanakhAudio:
     def __init__(self) -> None:
-        self.URL = "http://www.mechon-mamre.org/mp3"
-        self.AUDIO_FORMAT = "mp3"
-        self.BOOKS = BOOKS_IN_TANAKH
+        self.URL = "https://raw.githubusercontent.com/mohammedterryjack/quran-data/master/audio-tanakh/{filename}.mp3?raw=true"
 
     def url(self, cannon:str, book:str, chapter:int) -> str:
         """ get url of audio file for book """
-        chapter_key = str(chapter)
-        if len(chapter_key) == 3:
-            a,b,c = chapter_key
-            chapter_key = f"{chr(int(a+b)+87)}{c}"
-        else:
-            chapter_key = chapter_key.zfill(2)
-        return f"{self.URL}/t{self.BOOKS.get(f'{cannon}/{book}')}{chapter_key}.{self.AUDIO_FORMAT}"
-
+        return self.URL.format(filename=f"{cannon}_{book}_{chapter}")
 
 class Tanakh(HolyScripture):
     def __init__(self) -> None:

@@ -10,18 +10,32 @@
 <body style="background-color:lightgoldenrodyellow;"> 
     
     <div style = "text-align:center;font-family:Arial, Helvetica, sans-serif" class="search-container">
-    <form action="/search" method="GET">
-        <input type="text" placeholder="Search Qur'an" name="query" >
+    <form action="/" method="GET">
+        <!-- <input type="text" placeholder="Search Qur'an" name="query" > -->
+        <select id="chapter by name">
+            {chapter_names}
+        </select>
     </form>
     </div>
 
     <div style = "text-align:center;font-family:Arial, Helvetica, sans-serif" class="chapter-and-verse-name">
-    <p>
     <h1>Surat {chapter_name}</h1> 
     {chapter}:{verse}
-    </p>
     </div>
-    
+
+    <div style = "text-align:center;font-family:Arial, Helvetica, sans-serif">
+    <form action="/chapter/number" method="GET">
+    <p></p>
+    <select id="chapter">
+        {chapter_numbers}
+    </select>
+    <select id="verse">
+        {verse_numbers}
+    </select>
+    <p></p>
+    </form>
+    </div>
+
     {verses_in_english}
     
     <div style="text-align:center;font-family:'Tahoma';font-size:30px" class="arabic-verse">
