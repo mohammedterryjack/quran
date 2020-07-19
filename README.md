@@ -29,6 +29,7 @@ https://bref-saucisson-56522.herokuapp.com/quran/1/1
 - Automatically segment Hebrew Audio so its in verses?
 - Automatically segment Arabic Hamza Recitation so its in verses
 - incorporate glossary/index information of english translations
+- inverse feature vectors so can search verses by feature (eg name of prophet)
 
 ### Backend Functions (python3)
 - ✅ index search quran by chapter
