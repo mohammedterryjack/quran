@@ -3,14 +3,27 @@ from typing import List
 ############ INSTALLED IMPORTS ###########################
 ############   LOCAL IMPORTS   ###########################
 ##########################################################
-def list_options_html(options:List[str], selected_option:str) -> str:
+def list_options_html(options:List[str], urls:List[str],selected_option:str) -> str:
     SELECTED = 'selected="selected"'
     return '\n'.join(
         map(
-            lambda option:f"<option {SELECTED if option == selected_option else ''}>{option}</option>",
-            options
+            lambda option,url:f'<option {SELECTED if option == selected_option else ""} value="{url}">{option}</option>',
+            options,
+            urls
         )
-    )
+    ) + """
+    <script>
+    jQuery(function($) {
+        $('select').on('change', function() {
+            var url = $(this).val();
+            if (url) {
+                window.location = url;
+            }
+            return false;
+        });
+    });
+    </script>
+    """
 
 def format_sentences_to_be_hidden_html(sentences:List[str],default_displayed:int) -> str:
     indexes = range(len(sentences))
