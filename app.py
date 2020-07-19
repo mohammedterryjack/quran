@@ -54,20 +54,33 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
         ),
     )
     chapter_name = QURAN.get_chapter_name(chapter)
+    chapter_numbers = range(1,115)
     return QURAN.HTML.format(
         chapter=chapter,
         verse=verse,
         chapter_name=chapter_name,
         chapter_names=list_options_html(
             options=QURAN.CHAPTER_NAMES,
+            urls=map(
+                lambda chapter_name:f"/quran/{QURAN.CHAPTER_NAMES.index(chapter_name)+1}/1",
+                QURAN.CHAPTER_NAMES
+            ),
             selected_option=chapter_name
         ),
         chapter_numbers=list_options_html(
-            options=range(1,115),
+            options=chapter_numbers,
+            urls=map(
+                lambda chapter_number:f"/quran/{chapter_number}/1",
+                chapter_numbers
+            ),
             selected_option=int(chapter)
         ),
         verse_numbers=list_options_html(
             options=range(1,QURAN.CHAPTER_SIZES[int(chapter)-1]+1),
+            urls= map(
+                lambda verse_number:f"/quran/{chapter}/{verse_number}",
+                range(1,QURAN.CHAPTER_SIZES[int(chapter)-1]+1)
+            ),
             selected_option=int(verse)
         ),
         verse_audio_hafs=QURAN.AUDIO.url(verse_key,0),

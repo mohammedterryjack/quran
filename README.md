@@ -54,15 +54,13 @@ https://bref-saucisson-56522.herokuapp.com/quran/1/1
 - ✅ search by string, 
 - ✅ host backend on heroku
 - ✅ reduce memory somehow
-- dropdown for chapter (quran and bible)
-- dropdown for verse (quran and bible)
+- ✅dropdown for chapter (quran and bible)
+- ✅dropdown for verse (quran and bible)
 - ✅Audhubillah all three autoplay when going to verse which doesn't exist
 - rabbinic commentary alongside english translation of hebrew verse (i.e. ramban)
+- add names of translators
+- allow users to create/compile source sheets (with audio)
 
 ### Frontend (css/html/js)
 - ✅ implement minimalist design frontend
 - implement mock design frontend
-- user can link custom verses of Quran and Bible to a verse
-- favicon for quran = prophetic sandal?
-- favicon for tanakh = hand of fatima?
-- add names of translators

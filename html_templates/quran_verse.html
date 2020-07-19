@@ -10,9 +10,9 @@
 <body style="background-color:lightgoldenrodyellow;"> 
     
     <div style = "text-align:center;font-family:Arial, Helvetica, sans-serif" class="search-container">
-    <form action="/" method="GET">
+    <form onformchange="var sel = this.getElementsByTagName('select')[0];">
         <!-- <input type="text" placeholder="Search Qur'an" name="query" > -->
-        <select id="chapter by name">
+        <select>
             {chapter_names}
         </select>
     </form>
@@ -24,7 +24,7 @@
     </div>
 
     <div style = "text-align:center;font-family:Arial, Helvetica, sans-serif">
-    <form action="/chapter/number" method="GET">
+    <form onsubmit="var sel = this.getElementsByTagName('select')[0];">
     <p></p>
     <select id="chapter">
         {chapter_numbers}
