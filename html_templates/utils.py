@@ -3,6 +3,38 @@ from typing import List
 ############ INSTALLED IMPORTS ###########################
 ############   LOCAL IMPORTS   ###########################
 ##########################################################
+def keyword_filter_dropdown(keywords:List[str]) -> str:
+    return """
+    <div id="search_by_keyword" style = "font-size:10px;text-align:center;font-family:Arial, Helvetica, sans-serif">
+    <input type="text" placeholder="Search.." id="keyword" onkeyup="filterFunction()">
+    <br>
+    """ + "\n".join(
+        map(
+            lambda keyword:f'<a style="text-decoration: none" href="quran/{keyword}">{keyword}</a>',
+            keywords
+        )
+    ) + """
+    </div>
+    
+    <script>
+        function filterFunction() {
+          var input, filter, ul, li, a, i;
+          input = document.getElementById("keyword");
+          filter = input.value.toUpperCase();
+          div = document.getElementById("search_by_keyword");
+          a = div.getElementsByTagName("a");
+          for (i = 0; i < a.length; i++) {
+            txtValue = a[i].textContent || a[i].innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              a[i].style.display = "";
+            } else {
+              a[i].style.display = "none";
+            }
+          }
+        }
+    </script>
+    """
+
 def list_options_html(options:List[str], urls:List[str],selected_option:str) -> str:
     SELECTED = 'selected="selected"'
     return '\n'.join(
@@ -33,18 +65,18 @@ def format_sentences_to_be_hidden_html(sentences:List[str],default_displayed:int
     show = "show"
     SELECTED = 'selected="selected"'
     UNSELECTED = ''
-    return '<div style = "text-align:center;font-family:Arial, Helvetica, sans-serif" class="parallel-english-translations-of-verse">' + '\n'.join(
+    return '<div style = "text-align:center;font-family:Arial, Helvetica, sans-serif" class="parallel-english-translations-of-verse">' + '<select id="translator" style="background-color:lightgoldenrodyellow;border-top:none;border-left:none;border-right:none">' + '\n'.join(
+        map(
+            lambda index: f'<option {(UNSELECTED,SELECTED)[index==default_displayed]} value="{index}">English Translation {index}</option>',
+            indexes
+        )
+    ) + '</select><br><br>' + '\n'.join(
         map(
             lambda index,sentence:f'<div id="translation{index}" style="display:{(HIDE,SHOW)[index==default_displayed]}"><small>{format_sentence_for_html(sentence)}</small></div>',
             indexes,
             sentences
         )
-    ) + '<select id="translator" style="background-color:lightgoldenrodyellow;border:none">' + '\n'.join(
-        map(
-            lambda index: f'<option {(UNSELECTED,SELECTED)[index==default_displayed]} value="{index}">English Translation {index}</option>',
-            indexes
-        )
-    ) + '</select>' + "</div>" + "<script>$('#translator').on('change', function () {" + '\n'.join(
+    ) +  "</div>" + "<script>$('#translator').on('change', function () {" + '\n'.join(
             map(
                 lambda selected_index:f'if( $(this).val()==="{selected_index}")' + "{" + '\n'.join(
                     map(

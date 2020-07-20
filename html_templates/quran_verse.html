@@ -11,26 +11,18 @@
 
     <div style = "text-align:center;font-family:Arial, Helvetica, sans-serif" class="chapter-and-verse-name">
         <form>
-            <h1>
+            <h1 style = "font-weight:normal">
             Surat
             <select id="search_chapter_name" style="font-size: 30px;background-color:lightgoldenrodyellow;border: none;display: inline-block"> {chapter_names} </select>
             </h1> 
-            <a href="{previous_page_url}" style="width: 50px; text-decoration: none; display: inline-block;background-color:none" >&#8249;</a>
+            <a href="{previous_page_url}" style="width: 50px; text-decoration: none; display: inline-block;background-color:whitesmoke;border-radius: 50%" >&#8249;</a>
             <select id="search_chapter_number" style="background-color:lightgoldenrodyellow;border: none;display: inline-block"> {chapter_numbers} </select>
             <select id="search_verse_number" style="background-color:lightgoldenrodyellow;border: none;display: inline-block"> {verse_numbers} </select>
-            <a href="{next_page_url}" style="width: 50px; text-decoration: none; display: inline-block;background-color:none">&#8250;</a>
+            <a href="{next_page_url}" style="width: 50px; text-decoration: none; display: inline-block;background-color:whitesmoke;border-radius: 50%">&#8250;</a>
         </form>
         <br>
     </div>
-    
-    
-
-    {verses_in_english}
-    
-    <div style="text-align:center;font-family:'Tahoma';font-size:30px" class="arabic-verse">
-    <p>{verse_in_arabic}</p>
-    </div> 
-    
+            
     <div style="text-align:center;font-family:Arial, Helvetica, sans-serif" class="audio-recitations">
     <p><small>
     Recitation 
@@ -47,6 +39,12 @@
     </audio>
     </div>
     
+    <div style="text-align:center;font-family:'Tahoma';font-size:30px" class="arabic-verse">
+    <p>{verse_in_arabic}</p>
+    </div> 
+    
+    {verses_in_english}
+
     <div style="text-align:center;font-family:Arial, Helvetica, sans-serif;font-size:13px" class="related-verses">
     <br>
     <p><u>Related Verses</u></p> 
@@ -57,6 +55,8 @@
     <u>Tanakh</u>
     {related_verses_bible}
     </div>
+
+    {keyword_search}
 
 </body> 
 
