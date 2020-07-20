@@ -121,7 +121,8 @@ def display_bible_verse(collection:str,book:str,chapter:str,verse:str) -> str:
         verse_in_hebrew=TANAKH.get_hebrew(VERSE_DATA),
         audio_hebrew=TANAKH.AUDIO.url(collection,book_key,chapter),
         next_page_url = f"/tanakh/{next_verse_key.replace(':','/')}",
-        previous_page_url = f"/tanakh/{previous_verse_key.replace(':','/')}"
+        previous_page_url = f"/tanakh/{previous_verse_key.replace(':','/')}",
+        keyword_search = keyword_filter_dropdown(KEYWORDS),
     )
 
 @app.route('/search/<keyword>')
