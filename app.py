@@ -10,10 +10,13 @@ from html_templates.utils import (
     list_options_html,
     keyword_filter_dropdown
 )
-from data_analysis.semantic_featuriser import set_of_semantic_features_for_sentence
+#from data_analysis.semantic_featuriser import set_of_semantic_features_for_sentence
 ##########################################################
 QURAN = Quran()
 TANAKH = Tanakh()
+KEYWORDS = list(set(QURAN.KEYWORDS) | set(TANAKH.KEYWORDS))
+with open("html_templates/search.html") as html_file:
+    SEARCH_HTML = html_file.read()
 
 app = Flask(__name__)
 
@@ -99,7 +102,7 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
         related_verses_bible=related_bible_verses_linked,
         next_page_url = f"/quran/{next_verse_key.replace(':','/')}",
         previous_page_url = f"/quran/{previous_verse_key.replace(':','/')}",
-        keyword_search = keyword_filter_dropdown(QURAN.CHAPTER_NAMES),
+        keyword_search = keyword_filter_dropdown(KEYWORDS),
     )
 
 @app.route('/tanakh/<collection>/<book>/<chapter>/<verse>')
@@ -123,7 +126,28 @@ def display_bible_verse(collection:str,book:str,chapter:str,verse:str) -> str:
 
 @app.route('/search/<keyword>')
 def search(keyword:str) -> str:
-    return f"Coming Soon ({keyword})"
+    quran_verses = []
+    if keyword in QURAN.KEYWORDS:
+        quran_verses = QURAN.KEYWORDS[keyword]
+
+    tanakh_verses = []
+    if keyword in TANAKH.KEYWORDS:
+        tanakh_verses = TANAKH.KEYWORDS[keyword]
+
+    return SEARCH_HTML.format(
+        number_of_quran_verses = len(quran_verses),
+        number_of_tanakh_verses = len(tanakh_verses),
+        quran_verses=format_and_link_verses_for_html(            
+            verses=quran_verses,
+            verses_to_display=[""]*len(quran_verses),
+            scripture="quran"
+        ),
+        tanakh_verses=format_and_link_verses_for_html(            
+            verses=tanakh_verses,
+            verses_to_display=[""]*len(tanakh_verses),
+            scripture="tanakh"
+        )
+    )
     
 # @app.route('/search', methods=['GET', 'POST'])
 # def search() -> str:

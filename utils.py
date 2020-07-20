@@ -42,7 +42,8 @@ class HolyScripture:
         with open(f"html_templates/{self.NAME}_verse.html") as html_file:
             self.HTML = html_file.read()
         self.VERSE_NAMES = self._METADATA["VERSE_NAMES"]
-
+        self.KEYWORDS = self._METADATA["KEYWORDS"]
+        
     def verse_name_for_now(self) -> str:
         return self.VERSE_NAMES[self._index_for_now()]
 
