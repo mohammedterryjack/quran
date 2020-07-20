@@ -121,6 +121,10 @@ def display_bible_verse(collection:str,book:str,chapter:str,verse:str) -> str:
         previous_page_url = f"/tanakh/{previous_verse_key.replace(':','/')}"
     )
 
+@app.route('/search/<keyword>')
+def search(keyword:str) -> str:
+    return f"Coming Soon ({keyword})"
+    
 # @app.route('/search', methods=['GET', 'POST'])
 # def search() -> str:
 #     query = request.args.get('query')
