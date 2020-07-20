@@ -39,7 +39,7 @@ def format_sentences_to_be_hidden_html(sentences:List[str],default_displayed:int
             indexes,
             sentences
         )
-    ) + '<select id="translator">' + '\n'.join(
+    ) + '<select id="translator" style="background-color:lightgoldenrodyellow;border:none">' + '\n'.join(
         map(
             lambda index: f'<option {(UNSELECTED,SELECTED)[index==default_displayed]} value="{index}">English Translation {index}</option>',
             indexes

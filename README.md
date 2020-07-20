@@ -59,8 +59,9 @@ https://bref-saucisson-56522.herokuapp.com/quran/1/1
 - ✅Audhubillah all three autoplay when going to verse which doesn't exist
 - rabbinic commentary alongside english translation of hebrew verse (i.e. ramban)
 - add names of translators
-- allow users to create/compile source sheets (with audio)
+- allow users to create/compile source sheets (with audio) - e.g. a wird
 
 ### Frontend (css/html/js)
-- ✅ implement minimalist design frontend
+- ✅ implement minimalist design 
+- sliding bar to show how far you are in the book
 - implement mock design frontend
