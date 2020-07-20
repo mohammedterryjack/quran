@@ -7,20 +7,20 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head> 
 
-<body style="background-color:lightgoldenrodyellow;"> 
-
-    <div style = "text-align:center;font-family:Arial, Helvetica, sans-serif">
-        <form>
-            <select id="search_chapter_name" > {chapter_names} </select>
-            <select id="search_chapter_number"> {chapter_numbers} </select>
-            <select id="search_verse_number"> {verse_numbers} </select>
-        </form>
-    </div>
-
+<body style="background-color:lightgoldenrodyellow;">    
 
     <div style = "text-align:center;font-family:Arial, Helvetica, sans-serif" class="chapter-and-verse-name">
-        <h1>Surat {chapter_name}</h1> 
-        <p>{chapter}:{verse}</p>
+        <form>
+            <h1>
+            Surat
+            <select id="search_chapter_name" style="font-size: 30px;background-color:lightgoldenrodyellow;border: none;display: inline-block"> {chapter_names} </select>
+            </h1> 
+            <a href="{previous_page_url}" style="width: 50px; text-decoration: none; display: inline-block;background-color:none" >&#8249;</a>
+            <select id="search_chapter_number" style="background-color:lightgoldenrodyellow;border: none;display: inline-block"> {chapter_numbers} </select>
+            <select id="search_verse_number" style="background-color:lightgoldenrodyellow;border: none;display: inline-block"> {verse_numbers} </select>
+            <a href="{next_page_url}" style="width: 50px; text-decoration: none; display: inline-block;background-color:none">&#8250;</a>
+        </form>
+        <br>
     </div>
     
     
@@ -45,11 +45,6 @@
     <audio controls>
         <source style="text-align:center" src="{verse_audio_hamza}" type="audio/mpeg">
     </audio>
-    </div>
-
-    <div style="text-align:center;font-family:'Courier New'"; class="prev-next-verse">
-    <a href="{previous_page_url}">Previous Verse</a> -
-    <a href={next_page_url}>Next Verse</a>
     </div>
     
     <div style="text-align:center;font-family:Arial, Helvetica, sans-serif;font-size:13px" class="related-verses">

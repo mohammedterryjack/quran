@@ -56,9 +56,6 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
     chapter_name = QURAN.get_chapter_name(chapter)
     chapter_numbers = range(1,115)
     return QURAN.HTML.format(
-        chapter=chapter,
-        verse=verse,
-        chapter_name=chapter_name,
         chapter_names=list_options_html(
             options=QURAN.CHAPTER_NAMES,
             urls=map(
