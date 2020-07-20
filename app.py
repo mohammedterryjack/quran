@@ -7,7 +7,8 @@ from html_templates.utils import (
     format_sentences_to_be_hidden_html,
     format_and_link_verses_for_html,
     format_sentence_for_html,
-    list_options_html
+    list_options_html,
+    keyword_filter_dropdown
 )
 from data_analysis.semantic_featuriser import set_of_semantic_features_for_sentence
 ##########################################################
@@ -65,20 +66,26 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
             selected_option=chapter_name
         ),
         chapter_numbers=list_options_html(
-            options=chapter_numbers,
+            options=map(
+                lambda number:f"Chapter {number}",
+                chapter_numbers
+            ),
             urls=map(
                 lambda chapter_number:f"/quran/{chapter_number}/1",
                 chapter_numbers
             ),
-            selected_option=int(chapter)
+            selected_option=f"Chapter {chapter}"
         ),
         verse_numbers=list_options_html(
-            options=range(1,QURAN.CHAPTER_SIZES[int(chapter)-1]+1),
+            options=map(
+                lambda number:f"Verse {number}",
+                range(1,QURAN.CHAPTER_SIZES[int(chapter)-1]+1)
+            ),
             urls= map(
                 lambda verse_number:f"/quran/{chapter}/{verse_number}",
                 range(1,QURAN.CHAPTER_SIZES[int(chapter)-1]+1)
             ),
-            selected_option=int(verse)
+            selected_option=f"Verse {verse}"
         ),
         verse_audio_hafs=QURAN.AUDIO.url(verse_key,0),
         verse_audio_warsh=QURAN.AUDIO.url(verse_key,1),
@@ -91,7 +98,8 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
         related_verses_quran=related_quran_verses_linked,
         related_verses_bible=related_bible_verses_linked,
         next_page_url = f"/quran/{next_verse_key.replace(':','/')}",
-        previous_page_url = f"/quran/{previous_verse_key.replace(':','/')}"
+        previous_page_url = f"/quran/{previous_verse_key.replace(':','/')}",
+        keyword_search = keyword_filter_dropdown(QURAN.CHAPTER_NAMES),
     )
 
 @app.route('/tanakh/<collection>/<book>/<chapter>/<verse>')
