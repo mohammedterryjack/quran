@@ -5,8 +5,16 @@ from datetime import datetime
 ############ INSTALLED IMPORTS ###########################
 from numpy import argsort
 ############   LOCAL IMPORTS   ###########################
-from data_analysis.semantic_featuriser import cosine_similarity_for_sets
 ##########################################################
+def cosine_similarity_for_sets(features_a:set, features_b:set) -> float: 
+    """
+    returns the cosine similarity of two sets
+    1.0=Identical. 0.0=Nothing in Common
+    """
+    features_in_common = features_a.intersection(features_b)
+    denominator = len(features_a)**.5 * len(features_b)**.5
+    return len(features_in_common)/denominator if denominator else .0
+
 class QuranAudio:
     def __init__(self) -> None:
         self.URL = "https://raw.githubusercontent.com/mohammedterryjack/quran-data/master/audio-quran/{filename}.mp3?raw=true"
@@ -37,17 +45,13 @@ class QuranAudio:
 class HolyScripture:
     def __init__(self,scripture_name:str) -> None:
         self.NAME = scripture_name
-        with open(f"data/{self.NAME}/metadata.json") as json_file:          
+        with open(f"data/{self.NAME}/metadata.json") as json_file:
             self._METADATA = load(json_file)
         with open(f"html_templates/{self.NAME}_verse.html") as html_file:
             self.HTML = html_file.read()
         self.VERSE_NAMES = self._METADATA["VERSE_NAMES"]
-<<<<<<< HEAD
         self.KEYWORDS = self._METADATA["KEYWORDS"]
         
-=======
-
->>>>>>> 978699987326b648b1c1800d656cb8d428440c02
     def verse_name_for_now(self) -> str:
         return self.VERSE_NAMES[self._index_for_now()]
 
@@ -196,11 +200,7 @@ class TanakhAudio:
 
     def url(self, cannon:str, book:str, chapter:int) -> str:
         """ get url of audio file for book """
-<<<<<<< HEAD
         return self.URL.format(filename=f"{cannon}_{book.replace('%20','%2520')}_{chapter}")
-=======
-        return self.URL.format(filename=f"{cannon}_{book}_{chapter}")
->>>>>>> 978699987326b648b1c1800d656cb8d428440c02
 
 class Tanakh(HolyScripture):
     def __init__(self) -> None:
