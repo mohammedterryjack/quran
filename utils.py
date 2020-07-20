@@ -192,7 +192,7 @@ class TanakhAudio:
 
     def url(self, cannon:str, book:str, chapter:int) -> str:
         """ get url of audio file for book """
-        return self.URL.format(filename=f"{cannon}_{book}_{chapter}")
+        return self.URL.format(filename=f"{cannon}_{book.replace('%20','%2520')}_{chapter}")
 
 class Tanakh(HolyScripture):
     def __init__(self) -> None:
