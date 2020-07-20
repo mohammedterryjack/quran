@@ -42,8 +42,12 @@ class HolyScripture:
         with open(f"html_templates/{self.NAME}_verse.html") as html_file:
             self.HTML = html_file.read()
         self.VERSE_NAMES = self._METADATA["VERSE_NAMES"]
+<<<<<<< HEAD
         self.KEYWORDS = self._METADATA["KEYWORDS"]
         
+=======
+
+>>>>>>> 978699987326b648b1c1800d656cb8d428440c02
     def verse_name_for_now(self) -> str:
         return self.VERSE_NAMES[self._index_for_now()]
 
@@ -192,7 +196,11 @@ class TanakhAudio:
 
     def url(self, cannon:str, book:str, chapter:int) -> str:
         """ get url of audio file for book """
+<<<<<<< HEAD
         return self.URL.format(filename=f"{cannon}_{book.replace('%20','%2520')}_{chapter}")
+=======
+        return self.URL.format(filename=f"{cannon}_{book}_{chapter}")
+>>>>>>> 978699987326b648b1c1800d656cb8d428440c02
 
 class Tanakh(HolyScripture):
     def __init__(self) -> None:

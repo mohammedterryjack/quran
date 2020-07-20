@@ -10,6 +10,7 @@ from html_templates.utils import (
     list_options_html,
     keyword_filter_dropdown
 )
+<<<<<<< HEAD
 #from data_analysis.semantic_featuriser import set_of_semantic_features_for_sentence
 ##########################################################
 QURAN = Quran()
@@ -17,6 +18,12 @@ TANAKH = Tanakh()
 KEYWORDS = list(set(QURAN.KEYWORDS) | set(TANAKH.KEYWORDS))
 with open("html_templates/search.html") as html_file:
     SEARCH_HTML = html_file.read()
+=======
+from data_analysis.semantic_featuriser import set_of_semantic_features_for_sentence
+##########################################################
+QURAN = Quran()
+TANAKH = Tanakh()
+>>>>>>> 978699987326b648b1c1800d656cb8d428440c02
 
 app = Flask(__name__)
 
@@ -102,7 +109,11 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
         related_verses_bible=related_bible_verses_linked,
         next_page_url = f"/quran/{next_verse_key.replace(':','/')}",
         previous_page_url = f"/quran/{previous_verse_key.replace(':','/')}",
+<<<<<<< HEAD
         keyword_search = keyword_filter_dropdown(KEYWORDS),
+=======
+        keyword_search = keyword_filter_dropdown(QURAN.CHAPTER_NAMES),
+>>>>>>> 978699987326b648b1c1800d656cb8d428440c02
     )
 
 @app.route('/tanakh/<collection>/<book>/<chapter>/<verse>')
@@ -121,12 +132,17 @@ def display_bible_verse(collection:str,book:str,chapter:str,verse:str) -> str:
         verse_in_hebrew=TANAKH.get_hebrew(VERSE_DATA),
         audio_hebrew=TANAKH.AUDIO.url(collection,book_key,chapter),
         next_page_url = f"/tanakh/{next_verse_key.replace(':','/')}",
+<<<<<<< HEAD
         previous_page_url = f"/tanakh/{previous_verse_key.replace(':','/')}",
         keyword_search = keyword_filter_dropdown(KEYWORDS),
+=======
+        previous_page_url = f"/tanakh/{previous_verse_key.replace(':','/')}"
+>>>>>>> 978699987326b648b1c1800d656cb8d428440c02
     )
 
 @app.route('/search/<keyword>')
 def search(keyword:str) -> str:
+<<<<<<< HEAD
     quran_verses = []
     if keyword in QURAN.KEYWORDS:
         quran_verses = QURAN.KEYWORDS[keyword]
@@ -149,6 +165,9 @@ def search(keyword:str) -> str:
             scripture="tanakh"
         )
     )
+=======
+    return f"Coming Soon ({keyword})"
+>>>>>>> 978699987326b648b1c1800d656cb8d428440c02
     
 # @app.route('/search', methods=['GET', 'POST'])
 # def search() -> str:
