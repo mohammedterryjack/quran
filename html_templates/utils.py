@@ -14,7 +14,7 @@ def list_options_html(options:List[str], urls:List[str],selected_option:str) -> 
     ) + """
     <script>
     jQuery(function($) {
-        $('select').on('change', function() {
+        $('#search_chapter_name, #search_chapter_number, #search_verse_number').on('change', function() {
             var url = $(this).val();
             if (url) {
                 window.location = url;
