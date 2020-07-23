@@ -14,9 +14,9 @@ https://bref-saucisson-56522.herokuapp.com/quran/1/1
 - ✅ Get arabic verses of Quran to display
 - ✅ get audio of quran in hafs (mishary), warsh (jazari), hamza (sufi)
 - ✅ Get tanakh for cross-referencing 
-- get ramban commentary for commentary of tanakh
 - get ahmad zaki translation of quran
 - ✅ get aisha bewley translation of quran
+- get kabballah>sefer yetzira in hebrew and english from sefaria
 
 ### Backend AI / NLP (python3)
 - ✅ store each verse of quran in arabic and parallel english (csv)
@@ -57,7 +57,6 @@ https://bref-saucisson-56522.herokuapp.com/quran/1/1
 - ✅dropdown for chapter (quran and bible)
 - ✅dropdown for verse (quran and bible)
 - ✅Audhubillah all three autoplay when going to verse which doesn't exist
-- rabbinic commentary alongside english translation of hebrew verse (i.e. ramban)
 - add names of translators
 - allow users to create/compile source sheets (with audio) - e.g. a wird
 
