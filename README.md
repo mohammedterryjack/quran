@@ -16,7 +16,7 @@ https://bref-saucisson-56522.herokuapp.com/quran/1/1
 - ✅ Get tanakh for cross-referencing 
 - get ahmad zaki translation of quran
 - ✅ get aisha bewley translation of quran
-- get kabballah>sefer yetzira in hebrew and english from sefaria
+- ✅ get kabballah>sefer yetzira & zohar in hebrew and english from sefaria
 
 ### Backend AI / NLP (python3)
 - ✅ store each verse of quran in arabic and parallel english (csv)
@@ -26,6 +26,7 @@ https://bref-saucisson-56522.herokuapp.com/quran/1/1
 - ✅ improve cross-reference results using morphological vectors
 - ✅ encode each verse by wordnet vectors + save vectors
 - ✅ encode sefaria data into same space
+- encode kabbalah data in same space
 - Automatically segment Hebrew Audio so its in verses?
 - Automatically segment Arabic Hamza Recitation so its in verses
 - incorporate glossary/index information of english translations
