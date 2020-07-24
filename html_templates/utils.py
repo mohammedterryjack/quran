@@ -4,7 +4,7 @@ from typing import List
 ############   LOCAL IMPORTS   ###########################
 ##########################################################
 def keyword_filter_dropdown(keywords:List[str]) -> str:
-    return """
+    return f"""
     <div id="search_by_keyword" style = "font-size:10px;text-align:center;font-family:Arial, Helvetica, sans-serif">
     <input type="text" placeholder="Search.." id="keyword" onkeyup="filterFunction()">
     <br>
@@ -15,7 +15,7 @@ def keyword_filter_dropdown(keywords:List[str]) -> str:
         )
     ) + """
     </div>
-    
+
     <script>
         function filterFunction() {
           var input, filter, ul, li, a, i;
@@ -88,15 +88,29 @@ def format_sentences_to_be_hidden_html(sentences:List[str],default_displayed:int
             )
         ) + "});</script>"
     
-def format_and_link_verses_for_html(verses:List[str],verses_to_display:List[str],scripture:str) -> str:
-    return ' '.join(  
+def format_and_link_verses_for_html(button_text:str,verses:List[str],verses_to_display:List[str],scripture:str) -> str:
+    return f"""<div class="dropdown"  style = "font-size: 10px;text-align:center;font-family:Arial, Helvetica, sans-serif">
+        <button onclick="dropDown()" style="background-color:lightgoldenrodyellow;border-top:none;border-left:none;border-right:none">{button_text}</button>
+    </div>
+
+    <div id="drop_down_menu">   
+    """ + ' '.join(  
         "<p><small><a href= /{scripture}/{verse_address}>{verse}</a>  {verse_to_display}...</small></p>".format(
             scripture=scripture,
             verse_address=verse.replace(':','/'),
             verse=verse.replace('%20',' '),
             verse_to_display=text,
         ) for verse,text in zip(verses,verses_to_display)
-    )
+    ) + """
+    </div>
+
+    <script>
+        function dropDown() {
+            document.getElementById("drop_down_menu").classList.toggle("show");
+        }
+    </script>
+
+    """
 
 def format_sentence_for_html(sentence:str) -> str:
     return sentence.replace(",",",<br>").replace(";",";<br>").replace(

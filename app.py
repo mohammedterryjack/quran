@@ -41,6 +41,7 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
     VERSE_DATA = QURAN.get_verse_json(chapter,verse)
     related_quran_verses = QURAN.get_crossreference_quran(VERSE_DATA, top_n=5)
     related_quran_verses_linked = format_and_link_verses_for_html(
+        button_text="Qur'an",
         scripture="quran",
         verses=related_quran_verses[1:],
         verses_to_display=map(
@@ -50,6 +51,7 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
     )
     related_bible_verses = QURAN.get_crossreference_bible(VERSE_DATA, top_n=5)
     related_bible_verses_linked = format_and_link_verses_for_html(
+        button_text="Tanakh",
         scripture="tanakh",
         verses=related_bible_verses,
         verses_to_display = map(
@@ -102,7 +104,7 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
         related_verses_bible=related_bible_verses_linked,
         next_page_url = f"/quran/{next_verse_key.replace(':','/')}",
         previous_page_url = f"/quran/{previous_verse_key.replace(':','/')}",
-        keyword_search = keyword_filter_dropdown(KEYWORDS),
+        keyword_search = keyword_filter_dropdown(keywords=KEYWORDS),
     )
 
 @app.route('/tanakh/<collection>/<book>/<chapter>/<verse>')
@@ -123,7 +125,7 @@ def display_tanakh_verse(collection:str,book:str,chapter:str,verse:str) -> str:
         audio_hebrew=TANAKH.AUDIO.url(collection,book_key,chapter),
         next_page_url = f"/tanakh/{next_verse_key.replace(':','/')}",
         previous_page_url = f"/tanakh/{previous_verse_key.replace(':','/')}",
-        keyword_search = keyword_filter_dropdown(KEYWORDS),
+        keyword_search = keyword_filter_dropdown(keywords=KEYWORDS),
     )
 
 @app.route('/kabbalah/<book>/<chapter>/<verse>')
@@ -141,7 +143,7 @@ def display_kabbalah_verse(book:str,chapter:str,verse:str) -> str:
         verse_in_hebrew=KABBALAH.get_hebrew(VERSE_DATA),
         next_page_url = f"/kabbalah/{next_verse_key.replace(':','/')}",
         previous_page_url = f"/kabbalah/{previous_verse_key.replace(':','/')}",
-        keyword_search = keyword_filter_dropdown(KEYWORDS),
+        keyword_search = keyword_filter_dropdown(keywords=KEYWORDS),
     )
 
 @app.route('/search/<keyword>')
@@ -153,19 +155,38 @@ def search(keyword:str) -> str:
     tanakh_verses = []
     if keyword in TANAKH.KEYWORDS:
         tanakh_verses = TANAKH.KEYWORDS[keyword]
+    
+    kabbalah_verses = []
+    if keyword in KABBALAH.KEYWORDS:
+        kabbalah_verses = KABBALAH.KEYWORDS[keyword]
 
     return SEARCH_HTML.format(
-        number_of_quran_verses = len(quran_verses),
-        number_of_tanakh_verses = len(tanakh_verses),
         quran_verses=format_and_link_verses_for_html(            
+            button_text=f"Qur'an ({len(quran_verses)})",
+            scripture="quran",
             verses=quran_verses,
-            verses_to_display=[""]*len(quran_verses),
-            scripture="quran"
+            verses_to_display = map(
+                lambda _:"",
+                quran_verses
+            ),
         ),
-        tanakh_verses=format_and_link_verses_for_html(            
+        tanakh_verses=format_and_link_verses_for_html(    
+            button_text=f"Tanakh ({len(tanakh_verses)})",        
+            scripture="tanakh",
             verses=tanakh_verses,
-            verses_to_display=[""]*len(tanakh_verses),
-            scripture="tanakh"
+            verses_to_display = map(
+                lambda _:"",
+                tanakh_verses
+            ),
+        ),
+        kabbalah_verses=format_and_link_verses_for_html(    
+            button_text=f"Kabbalah ({len(kabbalah_verses)})",        
+            scripture="kabbalah",
+            verses=kabbalah_verses,
+            verses_to_display = map(
+                lambda _:"",
+                kabbalah_verses
+            ),
         )
     )
     
