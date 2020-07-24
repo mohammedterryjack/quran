@@ -90,10 +90,10 @@ def format_sentences_to_be_hidden_html(sentences:List[str],default_displayed:int
     
 def format_and_link_verses_for_html(button_text:str,verses:List[str],verses_to_display:List[str],scripture:str) -> str:
     return f"""<div class="dropdown"  style = "font-size: 10px;text-align:center;font-family:Arial, Helvetica, sans-serif">
-        <button onclick="dropDown()" style="background-color:lightgoldenrodyellow;border-top:none;border-left:none;border-right:none">{button_text}</button>
+        <button onclick="myFunction()" style="background-color:lightgoldenrodyellow;border-top:none;border-left:none;border-right:none">{button_text}</button>
     </div>
 
-    <div id="drop_down_menu">   
+    <div id="drop_down_menu" style="display:'none'">   
     """ + ' '.join(  
         "<p><small><a href= /{scripture}/{verse_address}>{verse}</a>  {verse_to_display}...</small></p>".format(
             scripture=scripture,
@@ -105,8 +105,8 @@ def format_and_link_verses_for_html(button_text:str,verses:List[str],verses_to_d
     </div>
 
     <script>
-        function dropDown() {
-            document.getElementById("drop_down_menu").classList.toggle("show");
+        function myFunction() {
+            document.getElementById("drop_down_menu").toggle("show");
         }
     </script>
 
