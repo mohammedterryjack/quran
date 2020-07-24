@@ -112,7 +112,8 @@ def display_bible_verse(collection:str,book:str,chapter:str,verse:str) -> str:
     previous_verse_key = TANAKH.get_previous_verse_name(verse_key)
     VERSE_DATA = TANAKH.get_verse_json(collection,book,chapter,verse)
     return TANAKH.HTML.format(
-        collection=collection.title(),
+        collection = collection,
+        collection_title=collection.title(),
         book=book.title(),
         chapter=chapter,
         verse=verse,
