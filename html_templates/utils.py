@@ -90,10 +90,10 @@ def format_sentences_to_be_hidden_html(sentences:List[str],default_displayed:int
     
 def format_and_link_verses_for_html(button_text:str,verses:List[str],verses_to_display:List[str],scripture:str) -> str:
     return f"""<div class="dropdown"  style = "font-size: 10px;text-align:center;font-family:Arial, Helvetica, sans-serif">
-        <button onclick="myFunction()" style="background-color:lightgoldenrodyellow;border-top:none;border-left:none;border-right:none">{button_text}</button>
+        <button onclick="toggleDisplay{scripture}()" style="background-color:lightgoldenrodyellow;border-top:none;border-left:none;border-right:none">{button_text}</button>
     </div>
 
-    <div id="drop_down_menu" style="display:'none'">   
+    <div id="drop_down_menu_{scripture}" style="display:none">   
     """ + ' '.join(  
         "<p><small><a href= /{scripture}/{verse_address}>{verse}</a>  {verse_to_display}...</small></p>".format(
             scripture=scripture,
@@ -101,12 +101,17 @@ def format_and_link_verses_for_html(button_text:str,verses:List[str],verses_to_d
             verse=verse.replace('%20',' '),
             verse_to_display=text,
         ) for verse,text in zip(verses,verses_to_display)
-    ) + """
+    ) + f"""
     </div>
 
     <script>
-        function myFunction() {
-            document.getElementById("drop_down_menu").toggle("show");
+        function toggleDisplay{scripture}()""" +  "{" + f"""
+            var x = document.getElementById("drop_down_menu_{scripture}");
+            if (x.style.display === "none") """ + """{
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
         }
     </script>
 

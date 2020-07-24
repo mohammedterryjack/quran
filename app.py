@@ -59,6 +59,16 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
             related_bible_verses
         ),
     )
+    related_kabbalah_verses = []#KABBALAH.get_crossreference_bible(VERSE_DATA, top_n=5)
+    related_kabbalah_verses_linked = format_and_link_verses_for_html(
+        button_text="Kabbalah",
+        scripture="kabbalah",
+        verses=related_kabbalah_verses,
+        verses_to_display = map(
+            KABBALAH.get_english_summary_via_verse_name,
+            related_kabbalah_verses
+        ),
+    )
     chapter_name = QURAN.get_chapter_name(chapter)
     chapter_numbers = range(1,115)
     return QURAN.HTML.format(
@@ -101,7 +111,8 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
             default_displayed=QURAN.DEFAULT_TRANSLATOR
         ),
         related_verses_quran=related_quran_verses_linked,
-        related_verses_bible=related_bible_verses_linked,
+        related_verses_tanakh=related_bible_verses_linked,
+        related_verses_kabbalah=related_kabbalah_verses_linked,
         next_page_url = f"/quran/{next_verse_key.replace(':','/')}",
         previous_page_url = f"/quran/{previous_verse_key.replace(':','/')}",
         keyword_search = keyword_filter_dropdown(keywords=KEYWORDS),
