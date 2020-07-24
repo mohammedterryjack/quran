@@ -2,7 +2,7 @@
 ############ INSTALLED IMPORTS ###########################
 from flask import Flask, request, redirect
 ############   LOCAL IMPORTS   ###########################
-from utils import Tanakh,Quran
+from utils import Tanakh,Quran,Kabbalah
 from html_templates.utils import (
     format_sentences_to_be_hidden_html,
     format_and_link_verses_for_html,
@@ -13,7 +13,8 @@ from html_templates.utils import (
 ##########################################################
 QURAN = Quran()
 TANAKH = Tanakh()
-KEYWORDS = list(set(QURAN.KEYWORDS) | set(TANAKH.KEYWORDS))
+KABBALAH = Kabbalah()
+KEYWORDS = list(set(QURAN.KEYWORDS) | set(TANAKH.KEYWORDS) | set(KABBALAH.KEYWORDS))
 with open("html_templates/search.html") as html_file:
     SEARCH_HTML = html_file.read()
 
@@ -105,7 +106,7 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
     )
 
 @app.route('/tanakh/<collection>/<book>/<chapter>/<verse>')
-def display_bible_verse(collection:str,book:str,chapter:str,verse:str) -> str:
+def display_tanakh_verse(collection:str,book:str,chapter:str,verse:str) -> str:
     book_key = book.replace(" ","%20")
     verse_key = f"{collection}:{book_key}:{chapter}:{verse}"
     next_verse_key = TANAKH.get_next_verse_name(verse_key)
@@ -122,6 +123,24 @@ def display_bible_verse(collection:str,book:str,chapter:str,verse:str) -> str:
         audio_hebrew=TANAKH.AUDIO.url(collection,book_key,chapter),
         next_page_url = f"/tanakh/{next_verse_key.replace(':','/')}",
         previous_page_url = f"/tanakh/{previous_verse_key.replace(':','/')}",
+        keyword_search = keyword_filter_dropdown(KEYWORDS),
+    )
+
+@app.route('/kabbalah/<book>/<chapter>/<verse>')
+def display_kabbalah_verse(book:str,chapter:str,verse:str) -> str:
+    book_key = book.replace(" ","%20")
+    verse_key = f"{book_key}:{chapter}:{verse}"
+    next_verse_key = KABBALAH.get_next_verse_name(verse_key)
+    previous_verse_key = KABBALAH.get_previous_verse_name(verse_key)
+    VERSE_DATA = KABBALAH.get_verse_json(book,chapter,verse)
+    return KABBALAH.HTML.format(
+        book=book.title(),
+        chapter=chapter,
+        verse=verse,
+        verse_in_english=format_sentence_for_html(KABBALAH.get_english(VERSE_DATA)),
+        verse_in_hebrew=KABBALAH.get_hebrew(VERSE_DATA),
+        next_page_url = f"/kabbalah/{next_verse_key.replace(':','/')}",
+        previous_page_url = f"/kabbalah/{previous_verse_key.replace(':','/')}",
         keyword_search = keyword_filter_dropdown(KEYWORDS),
     )
 
