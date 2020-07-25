@@ -130,6 +130,10 @@ class Quran(HolyScripture):
     def get_crossreference_quran(verse_json:dict,top_n:int=3) -> List[str]:
         return verse_json["CROSS_REFERENCE"]["QURAN"][:max(min(top_n,10),0)]
         
+    @staticmethod
+    def get_crossreference_kabbalah(verse_json:dict,top_n:int=3) -> List[str]:
+        return verse_json["CROSS_REFERENCE"]["KABBALAH"][:max(min(top_n,10),0)]
+    
     def get_surah_sizes(self) -> List[int]:
         prev_chapter = "1"
         prev_verse = None

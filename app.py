@@ -59,7 +59,7 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
             related_bible_verses
         ),
     )
-    related_kabbalah_verses = []#KABBALAH.get_crossreference_bible(VERSE_DATA, top_n=5)
+    related_kabbalah_verses = QURAN.get_crossreference_kabbalah(VERSE_DATA, top_n=5)
     related_kabbalah_verses_linked = format_and_link_verses_for_html(
         button_text="Kabbalah",
         scripture="kabbalah",

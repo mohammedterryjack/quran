@@ -46,6 +46,18 @@
             "torah:numbers:32:11",
             "prophets:isaiah:43:10",
             "writings:psalms:64:10"
+        ],
+        "KABBALAH": [
+            "Sefer%20Yetzirah:6:2",
+            "Sefer%20Yetzirah:1:6",
+            "Sefer%20Yetzirah:1:5",
+            "Sefer%20Yetzirah:6:3",
+            "Sefer%20Yetzirah:1:1",
+            "Sefer%20Yetzirah:1:4",
+            "Sefer%20Yetzirah:1:7",
+            "Sefer%20Yetzirah:2:5",
+            "Sefer%20Yetzirah:4:5",
+            "Sefer%20Yetzirah:5:2"
         ]
     }
 }

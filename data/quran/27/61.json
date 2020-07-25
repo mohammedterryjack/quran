@@ -46,6 +46,18 @@
             "torah:numbers:2:17",
             "prophets:amos:7:8",
             "writings:nehemiah:13:11"
+        ],
+        "KABBALAH": [
+            "Sefer%20Yetzirah:6:1",
+            "Sefer%20Yetzirah:1:7",
+            "Sefer%20Yetzirah:2:5",
+            "Sefer%20Yetzirah:6:4",
+            "Sefer%20Yetzirah:3:3",
+            "Sefer%20Yetzirah:1:8",
+            "Sefer%20Yetzirah:1:11",
+            "Sefer%20Yetzirah:3:2",
+            "Sefer%20Yetzirah:1:6",
+            "Sefer%20Yetzirah:6:5"
         ]
     }
 }
