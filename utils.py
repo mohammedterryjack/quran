@@ -1,7 +1,8 @@
 ############   NATIVE IMPORTS  ###########################
 from typing import List,Iterable,Set
-from ujson import load
+from ujson import load,loads
 from datetime import datetime
+from urllib.request import urlopen 
 ############ INSTALLED IMPORTS ###########################
 from numpy import argsort
 ############   LOCAL IMPORTS   ###########################
@@ -44,9 +45,10 @@ class QuranAudio:
 
 class HolyScripture:
     def __init__(self,scripture_name:str) -> None:
+        self.URL = "https://raw.githubusercontent.com/mohammedterryjack/quran-data/master/{scripture}/{book_chapter_verse}.json"
         self.NAME = scripture_name
-        with open(f"data/{self.NAME}/metadata.json") as json_file:
-            self._METADATA = load(json_file)
+        with urlopen(self.URL.format(scripture = self.NAME, book_chapter_verse="metadata")) as url:
+            self._METADATA = loads(url.read().decode())
         with open(f"html_templates/{self.NAME}_verse.html") as html_file:
             self.HTML = html_file.read()
         self.VERSE_NAMES = self._METADATA["VERSE_NAMES"]
@@ -151,6 +153,8 @@ class Quran(HolyScripture):
         return self.CHAPTER_NAMES[int(chapter_index)-1]
 
     def get_verse_json(self,chapter:str,verse:str) -> dict:
+        # with urlopen(self.URL.format(scripture = self.NAME, book_chapter_verse=f"{chapter}/{verse}")) as url:
+        #     return loads(url.read().decode())
         with open(f"data/{self.NAME}/{chapter}/{verse}.json") as json_file:
             return load(json_file)
 
@@ -178,24 +182,6 @@ class Quran(HolyScripture):
         )
         verse_indexes = argsort(semantic_scores)[:-top_n-1:-1]
         return list(map(lambda index:self.VERSE_NAMES[index], verse_indexes))
-
-    # def common_features(self, query_features:Set[str], verse:str) -> Set[str]:
-    #     return query_features.intersection(
-    #         self.semantic_features_for_verse(verse)
-    #     )
-
-
-# BOOKS_IN_TANAKH = {
-#     "torah/genesis":"01","torah/exodus":"02","torah/leviticus":"03","torah/numbers":"04","torah/deuteronomy":"05",
-#     "prophets/joshua":"06","prophets/judges":"07","prophets/i%20samuel":"08a","prophets/ii%20samuel":"08b",
-#     "prophets/i%20kings":"09a","prophets/ii%20kings":"09b","prophets/isaiah":"10","prophets/jeremiah":"11",
-#     "prophets/ezekiel":"12","prophets/hosea":"13","prophets/joel":"14","prophets/amos":"15","prophets/obadiah":"16",
-#     "prophets/jonah":"17","prophets/micah":"18","prophets/nahum":"19","prophets/habakkuk":"20",
-#     "prophets/zephaniah":"21","prophets/haggai":"22","prophets/zechariah":"23","prophets/malachi":"24",
-#     "writings/i%20chronicles":"25a","writings/ii%20chronicles":"25b","writings/psalms":"26","writings/job":"27",
-#     "writings/proverbs":"28","writings/ruth":"29","writings/song%20of%20songs":"30","writings/ecclesiastes":"31",
-#     "writings/lamentations":"32","writings/esther":"33","writings/daniel":"34","writings/ezra":"35a","writings/nehemiah":"35b"
-# }
 
 
 class TanakhAudio:

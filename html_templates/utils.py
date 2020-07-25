@@ -10,7 +10,7 @@ def keyword_filter_dropdown(keywords:List[str]) -> str:
     <br>
     """ + "\n".join(
         map(
-            lambda keyword:f'<a style="text-decoration: none" href = /search/{keyword}>{keyword}</a>',
+            lambda keyword:f'<a style="text-decoration: none; display:none" href = /search/{keyword}>{keyword}</a>',
             keywords
         )
     ) + """
