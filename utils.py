@@ -153,10 +153,10 @@ class Quran(HolyScripture):
         return self.CHAPTER_NAMES[int(chapter_index)-1]
 
     def get_verse_json(self,chapter:str,verse:str) -> dict:
-        # with urlopen(self.URL.format(scripture = self.NAME, book_chapter_verse=f"{chapter}/{verse}")) as url:
-        #     return loads(url.read().decode())
-        with open(f"data/{self.NAME}/{chapter}/{verse}.json") as json_file:
-            return load(json_file)
+        with urlopen(self.URL.format(scripture = self.NAME, book_chapter_verse=f"{chapter}/{verse}")) as url:
+            return loads(url.read().decode())
+        #with open(f"data/{self.NAME}/{chapter}/{verse}.json") as json_file:
+        #    return load(json_file)
 
     def get_english_summary_via_verse_name(self,verse_name:str,summary_length:int=50) -> List[str]:
         return self.get_english(
@@ -199,6 +199,8 @@ class Tanakh(HolyScripture):
         self.AUDIO = TanakhAudio()
 
     def get_verse_json(self,collection:str,book:str,chapter:str,verse:str) -> dict:
+        #with urlopen(self.URL.format(scripture = self.NAME, book_chapter_verse=f"{collection}/{book.replace(' ','%2520')}/{chapter}/{verse}")) as url:
+        #    return loads(url.read().decode())
         with open(f"data/{self.NAME}/{collection}/{book.replace(' ','%20')}/{chapter}/{verse}.json") as json_file:
             return load(json_file)
 
@@ -241,6 +243,8 @@ class Kabbalah(HolyScripture):
         self.AUDIO = None
     
     def get_verse_json(self,book:str,chapter:str,verse:str) -> dict:
+        #with urlopen(self.URL.format(scripture = self.NAME, book_chapter_verse=f"{book.replace(' ','%2520')}/{chapter}/{verse}")) as url:
+        #    return loads(url.read().decode())
         with open(f"data/{self.NAME}/{book.replace(' ','%20')}/{chapter}/{verse}.json") as json_file:
             return load(json_file)
 
