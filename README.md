@@ -17,6 +17,7 @@ https://bref-saucisson-56522.herokuapp.com/quran/1/1
 - get ahmad zaki translation of quran
 - ✅ get aisha bewley translation of quran
 - ✅ get kabballah>sefer yetzira & zohar in hebrew and english from sefaria
+- include parallel translation of septuagint (with additional books)
 
 ### Backend AI / NLP (python3)
 - ✅ store each verse of quran in arabic and parallel english (csv)
@@ -26,12 +27,12 @@ https://bref-saucisson-56522.herokuapp.com/quran/1/1
 - ✅ improve cross-reference results using morphological vectors
 - ✅ encode each verse by wordnet vectors + save vectors
 - ✅ encode sefaria data into same space
-- encode kabbalah data in same space
-- Automatically segment Hebrew Audio so its in verses?
-- Automatically segment Arabic Hamza Recitation so its in verses
-- incorporate glossary/index information of english translations
-- inverse feature vectors so can search verses by feature (eg name of prophet) - this would also speed up semantic search
+- ✅ encode kabbalah data in same space
+- ✅ Automatically segment Hebrew Audio so its in verses?
+- ✅ Automatically segment Arabic Hamza Recitation so its in verses
+- ✅ inverse feature vectors so can search verses by feature (eg name of prophet) - this would also speed up semantic search
 - fix errors with bewley translation
+- complete segmentation of audio files
 
 ### Backend Functions (python3)
 - ✅ index search quran by chapter
@@ -42,7 +43,7 @@ https://bref-saucisson-56522.herokuapp.com/quran/1/1
 - ✅ display what features the match was based on 
 - ✅ display arabic verse
 - ✅ search verse of quran against sefaria
-- tags to show features and reasons why verses are linked
+- parallel translation for english texts of tanakh/septuagint
 
 ### Deployment (python3 - flask, heroku)
 - ✅ setup a basic flask
