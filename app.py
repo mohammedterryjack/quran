@@ -17,6 +17,8 @@ KABBALAH = Kabbalah()
 KEYWORDS = list(set(QURAN.KEYWORDS) | set(TANAKH.KEYWORDS) | set(KABBALAH.KEYWORDS))
 with open("html_templates/search.html") as html_file:
     SEARCH_HTML = html_file.read()
+with open(f"html_templates/space.html") as html_file:
+    SPACE_HTML = html_file.read()
 
 app = Flask(__name__)
 
@@ -35,6 +37,7 @@ def display_quranic_verse(chapter:str,verse:str) -> str:
         verse_audio_hafs=QURAN.AUDIO.url("audhubillah",reciter=0),
         verse_audio_warsh=QURAN.AUDIO.url("audhubillah",reciter=1),
         verse_audio_hamza=QURAN.AUDIO.url("audhubillah",reciter=2),
+        keyword_search = keyword_filter_dropdown(keywords=KEYWORDS),
     )
     next_verse_key = QURAN.get_next_verse_name(verse_key)
     previous_verse_key = QURAN.get_previous_verse_name(verse_key)
@@ -159,6 +162,9 @@ def display_kabbalah_verse(book:str,chapter:str,verse:str) -> str:
 
 @app.route('/search/<keyword>')
 def search(keyword:str) -> str:
+    if keyword=="naboo":
+        return SPACE_HTML
+
     quran_verses = []
     if keyword in QURAN.KEYWORDS:
         quran_verses = QURAN.KEYWORDS[keyword]

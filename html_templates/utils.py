@@ -3,6 +3,8 @@ from typing import List
 ############ INSTALLED IMPORTS ###########################
 ############   LOCAL IMPORTS   ###########################
 ##########################################################
+
+
 def keyword_filter_dropdown(keywords:List[str]) -> str:
     return f"""
     <div id="search_by_keyword" style = "font-size:10px;text-align:center;font-family:Arial, Helvetica, sans-serif">
@@ -90,7 +92,7 @@ def format_sentences_to_be_hidden_html(sentences:List[str],default_displayed:int
     
 def format_and_link_verses_for_html(button_text:str,verses:List[str],verses_to_display:List[str],scripture:str) -> str:
     return f"""<div class="dropdown"  style = "font-size: 10px;text-align:center;font-family:Arial, Helvetica, sans-serif">
-        <button onclick="toggleDisplay{scripture}()" style="background-color:lightgoldenrodyellow;border-top:none;border-left:none;border-right:none">{button_text}</button>
+        <button onclick="toggleDisplay{scripture}()" style="background-color:transparent;border-top:none;border-left:none;border-right:none">{button_text}</button>
     </div>
 
     <div id="drop_down_menu_{scripture}" style="display:none">   
