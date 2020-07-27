@@ -17,7 +17,7 @@ KABBALAH = Kabbalah()
 KEYWORDS = list(set(QURAN.KEYWORDS) | set(TANAKH.KEYWORDS) | set(KABBALAH.KEYWORDS))
 with open("html_templates/search.html") as html_file:
     SEARCH_HTML = html_file.read()
-with open(f"html_templates/space.html") as html_file:
+with open(f"html_templates/minigames/space.html") as html_file:
     SPACE_HTML = html_file.read()
 
 app = Flask(__name__)
@@ -178,6 +178,7 @@ def search(keyword:str) -> str:
         kabbalah_verses = KABBALAH.KEYWORDS[keyword]
 
     return SEARCH_HTML.format(
+        keyword_search = keyword_filter_dropdown(keywords=KEYWORDS),
         quran_verses=format_and_link_verses_for_html(            
             button_text=f"Qur'an ({len(quran_verses)})",
             scripture="quran",

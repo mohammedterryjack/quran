@@ -4,7 +4,6 @@ from typing import List
 ############   LOCAL IMPORTS   ###########################
 ##########################################################
 
-
 def keyword_filter_dropdown(keywords:List[str]) -> str:
     return f"""
     <div id="search_by_keyword" style = "font-size:10px;text-align:center;font-family:Arial, Helvetica, sans-serif">
